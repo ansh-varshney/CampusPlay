@@ -19,8 +19,8 @@ function normalizePhone(phone: string): string {
     return n
 }
 
-export async function loginWithGoogle(_role: string = 'student') {
-    await signIn('google', { redirectTo: '/' })
+export async function loginWithGoogle(role: string = 'student') {
+    await signIn('google', { redirectTo: `/?from=${role}` })
 }
 
 // Kept for any leftover references — not shown in UI

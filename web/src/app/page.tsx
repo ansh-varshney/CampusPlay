@@ -8,8 +8,13 @@ import { db } from '@/db'
 import { profiles } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
-export default async function Home() {
+export default async function Home({
+    searchParams,
+}: {
+    searchParams: Promise<{ from?: string }>
+}) {
     const session = await auth()
+    const { from } = await searchParams
 
     if (session?.user?.id) {
         const [profile] = await db
@@ -17,6 +22,20 @@ export default async function Home() {
             .from(profiles)
             .where(eq(profiles.id, session.user.id))
             .limit(1)
+
+        if (from === 'admin') {
+            const allowed = process.env.ALLOWED_ADMIN_EMAIL
+            if (!allowed || session.user.email !== allowed) {
+                redirect('/login?error=AccessDenied&role=admin')
+            }
+        }
+
+        if (from === 'manager') {
+            const allowed = process.env.ALLOWED_MANAGER_EMAIL
+            if (!allowed || session.user.email !== allowed) {
+                redirect('/login?error=AccessDenied&role=manager')
+            }
+        }
 
         if (profile?.role === 'student') redirect('/student')
         if (profile?.role === 'manager') redirect('/manager')
