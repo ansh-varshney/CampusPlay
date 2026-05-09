@@ -22,7 +22,9 @@ declare module 'next-auth' {
 export const { handlers, signIn, signOut, auth } = NextAuth({
     useSecureCookies: false,
     providers: [
-        Google,
+        Google({
+            checks: ['state'],
+        }),
 
         // Phone OTP provider for manager/admin login
         Credentials({
