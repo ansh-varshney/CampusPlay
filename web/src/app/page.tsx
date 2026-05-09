@@ -8,11 +8,7 @@ import { db } from '@/db'
 import { profiles } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 
-export default async function Home({
-    searchParams,
-}: {
-    searchParams: Promise<{ from?: string }>
-}) {
+export default async function Home({ searchParams }: { searchParams: Promise<{ from?: string }> }) {
     const session = await auth()
     const { from } = await searchParams
 
