@@ -20,6 +20,7 @@ declare module 'next-auth' {
 // ─── NextAuth configuration ───────────────────────────────────────────────────
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+    useSecureCookies: false,
     providers: [
         Google,
 
