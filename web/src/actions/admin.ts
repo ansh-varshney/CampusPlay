@@ -504,6 +504,7 @@ export async function cancelReservation(bookingId: string) {
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Asia/Kolkata',
         })
 
         const confirmedIds = new Set<string>()
@@ -580,6 +581,7 @@ export async function priorityReserveSlot(
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Asia/Kolkata',
         })
 
         for (const bk of conflicting) {
@@ -677,6 +679,7 @@ export async function reserveForMaintenance(
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Asia/Kolkata',
         })
 
         for (const bk of conflicting) {
@@ -773,6 +776,7 @@ export async function forceCancelBooking(bookingId: string) {
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Asia/Kolkata',
         })
 
         const confirmedIds = new Set<string>()

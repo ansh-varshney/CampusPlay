@@ -334,6 +334,7 @@ export async function createBooking(prevState: any, formData: FormData) {
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Asia/Kolkata',
         })
 
         const [bookerProfile] = await db
@@ -491,6 +492,7 @@ export async function cancelBooking(bookingId: string) {
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Asia/Kolkata',
         })
         await sendNotifications(
             confirmedPlayerIds.map((pid: string) => ({
@@ -559,6 +561,7 @@ export async function withdrawFromBooking(bookingId: string) {
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Asia/Kolkata',
         })
         const cancelBody = `Your booking for ${courtInfo?.name || 'a court'} on ${startDisplay} was automatically cancelled because the player count dropped below the minimum required (${limits.min}).`
 
@@ -613,6 +616,7 @@ export async function withdrawFromBooking(bookingId: string) {
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
+        timeZone: 'Asia/Kolkata',
     })
     await sendNotification({
         recipientId: booking.user_id,
@@ -745,6 +749,7 @@ export async function studentStartPlay(bookingId: string) {
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
+        timeZone: 'Asia/Kolkata',
     })
 
     await notifyManagers({

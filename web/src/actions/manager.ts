@@ -336,6 +336,7 @@ export async function updateBookingStatus(
                     day: 'numeric',
                     hour: '2-digit',
                     minute: '2-digit',
+                    timeZone: 'Asia/Kolkata',
                 })
                 await sendNotifications(
                     studentIds.map((id) => ({
@@ -574,6 +575,7 @@ export async function rejectWithReason(
                             day: 'numeric',
                             month: 'long',
                             year: 'numeric',
+                            timeZone: 'Asia/Kolkata',
                         })
                         return {
                             recipientId: id,
@@ -597,6 +599,7 @@ export async function rejectWithReason(
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit',
+            timeZone: 'Asia/Kolkata',
         })
         const reasonLabel = reason.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
         await sendNotifications(
