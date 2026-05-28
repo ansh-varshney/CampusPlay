@@ -5,8 +5,22 @@ import { eq, and, inArray, gte, asc, desc } from 'drizzle-orm'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'
 import { CalendarPlus, Trophy, AlertCircle, Megaphone, Clock } from 'lucide-react'
-import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
+
+// Format datetime in IST regardless of server timezone
+function formatDateTimeIST(dateStr: string | Date, includeDate = true): string {
+    const opts: Intl.DateTimeFormatOptions = {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Kolkata',
+    }
+    if (includeDate) {
+        opts.month = 'short'
+        opts.day = 'numeric'
+    }
+    return new Date(dateStr).toLocaleString('en-IN', opts)
+}
 
 export default async function StudentHome() {
     const session = await auth()
@@ -165,10 +179,7 @@ export default async function StudentHome() {
                                             </h4>
                                             <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
                                                 <Clock className="w-3 h-3" />
-                                                {format(
-                                                    new Date(booking.start_time),
-                                                    'MMM d, h:mm a'
-                                                )}
+                                                {formatDateTimeIST(booking.start_time)}
                                             </p>
                                         </div>
                                         <span
@@ -221,7 +232,7 @@ export default async function StudentHome() {
                                             </p>
                                         )}
                                         <p className="text-xs text-gray-400 mt-1">
-                                            {format(new Date(ann.created_at), 'MMM d, h:mm a')}
+                                            {formatDateTimeIST(ann.created_at)}
                                         </p>
                                     </div>
                                 </CardContent>

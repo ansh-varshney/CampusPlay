@@ -253,7 +253,7 @@ export default function BookingUI({
 
     // ─── Render ──────────────────────────────────────────────────────────────
     return (
-        <div className="space-y-4">
+        <div className={cn('space-y-4', selectedSlot && 'pb-[60vh]')}>
             {/* Filters: Sport dropdown + Date picker */}
             <Card>
                 <CardContent className="p-4">
@@ -435,8 +435,8 @@ export default function BookingUI({
 
             {/* Booking Dialog (slides up from bottom) */}
             {selectedSlot && (
-                <div className="fixed bottom-0 left-0 md:left-64 right-0 z-50 bg-white border-t-2 border-[#004d40] shadow-2xl rounded-t-2xl max-h-[70vh] overflow-y-auto animate-in slide-in-from-bottom-4">
-                    <div className="p-4 space-y-4">
+                <div className="fixed bottom-0 left-0 md:left-64 right-0 z-50 bg-white border-t-2 border-[#004d40] shadow-2xl rounded-t-2xl max-h-[55vh] overflow-y-auto animate-in slide-in-from-bottom-4">
+                    <div className="p-4 pb-20 space-y-4">
                         {/* Header */}
                         <div className="flex items-center justify-between">
                             <div>
