@@ -1,8 +1,17 @@
-﻿import { getCurrentBookings } from '@/actions/manager'
+import { getCurrentBookings } from '@/actions/manager'
 import { Card, CardContent } from '@/components/ui/card'
-import { format } from 'date-fns'
 import Link from 'next/link'
 import { Timer, ChevronRight } from 'lucide-react'
+
+// Format time in IST regardless of server timezone
+function formatTimeIST(dateStr: string | Date): string {
+    return new Date(dateStr).toLocaleTimeString('en-IN', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Kolkata',
+    })
+}
 
 export default async function ActiveSessionsPage() {
     const allBookings = await getCurrentBookings()
@@ -32,8 +41,8 @@ export default async function ActiveSessionsPage() {
                                             </h3>
                                         </div>
                                         <p className="text-sm text-gray-600">
-                                            {format(new Date(booking.start_time), 'h:mm a')} –{' '}
-                                            {format(new Date(booking.end_time), 'h:mm a')}
+                                            {formatTimeIST(booking.start_time)} –{' '}
+                                            {formatTimeIST(booking.end_time)}
                                         </p>
                                         <p className="text-xs text-gray-500 mt-1">
                                             {booking.profiles?.full_name}
