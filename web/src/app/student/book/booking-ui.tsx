@@ -396,8 +396,8 @@ export default function BookingUI({
                                                             isSelected
                                                                 ? 'bg-[#004d40] text-white ring-2 ring-[#004d40] ring-offset-1'
                                                                 : isBooked
-                                                                  ? 'bg-blue-50 border-l-[3px] border-l-blue-500 cursor-default'
-                                                                  : 'bg-white hover:bg-[#004d40]/5 cursor-pointer'
+                                                                    ? 'bg-blue-50 border-l-[3px] border-l-blue-500 cursor-default'
+                                                                    : 'bg-white hover:bg-[#004d40]/5 cursor-pointer'
                                                         )}
                                                     >
                                                         {isSelected ? (
@@ -409,8 +409,8 @@ export default function BookingUI({
                                                                 <div className="font-semibold text-blue-700 text-[11px] truncate">
                                                                     {booking.profiles?.full_name
                                                                         ? booking.profiles.full_name.split(
-                                                                              ' '
-                                                                          )[0]
+                                                                            ' '
+                                                                        )[0]
                                                                         : 'Booked'}
                                                                 </div>
                                                                 {booking.num_players && (
@@ -562,7 +562,7 @@ export default function BookingUI({
                                         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                                         <input
                                             type="text"
-                                            value={playerSearch.trim()}
+                                            value={playerSearch}
                                             onChange={(e) => setPlayerSearch(e.target.value)}
                                             placeholder="Search by name..."
                                             className="w-full pl-8 pr-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] placeholder:text-gray-400"
@@ -624,8 +624,8 @@ export default function BookingUI({
                                                 eq.in_use
                                                     ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                                                     : selectedEquipment.includes(eq.id)
-                                                      ? 'bg-[#004d40] text-white border-[#004d40]'
-                                                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#004d40]'
+                                                        ? 'bg-[#004d40] text-white border-[#004d40]'
+                                                        : 'bg-white text-gray-600 border-gray-200 hover:border-[#004d40]'
                                             )}
                                         >
                                             {eq.name}{' '}
