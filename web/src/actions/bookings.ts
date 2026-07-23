@@ -814,7 +814,7 @@ export async function searchStudents(query: string) {
     const user = await getCurrentUser()
     if (!user) return []
 
-    if (!query || query.trim().length < 2) return []
+    if (!query || query.length < 2) return []
 
     const now = new Date()
     const data = await db
@@ -832,7 +832,7 @@ export async function searchStudents(query: string) {
             and(
                 eq(profiles.role, 'student'),
                 ne(profiles.id, user.id),
-                ilike(profiles.full_name, `%${query.trim()}%`),
+                ilike(profiles.full_name, `%${query}%`),
                 or(isNull(profiles.banned_until), lt(profiles.banned_until, now))
             )
         )
