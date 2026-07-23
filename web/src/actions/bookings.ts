@@ -149,268 +149,292 @@ export async function createBooking(prevState: any, formData: FormData) {
     const user = await getCurrentUser()
     if (!user) return { error: 'Unauthorized' }
 
-    // Check ban and priority status
-    const [profileData] = await db
-        .select({
-            banned_until: profiles.banned_until,
-            priority_booking_remaining: profiles.priority_booking_remaining,
-        })
-        .from(profiles)
-        .where(eq(profiles.id, user.id))
-
-    if (profileData?.banned_until && new Date(profileData.banned_until) > new Date()) {
-        const banDate = new Date(profileData.banned_until).toLocaleDateString('en-IN', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-        })
-        return {
-            error: `You are temporarily banned until ${banDate} due to repeated late arrivals. Contact admin for early clearance.`,
-        }
-    }
-
-    // Check violation count (suspended if 3+)
-    const [{ count: violationCount }] = await db
-        .select({ count: sql<number>`cast(count(*) as integer)` })
-        .from(studentViolations)
-        .where(eq(studentViolations.student_id, user.id))
-
-    if (violationCount >= 3) {
-        return {
-            error: 'Your account has been suspended due to 3 or more violations. Contact admin.',
-        }
-    }
-
-    // Duration validation
-    if (duration === 90) {
-        if ((profileData?.priority_booking_remaining ?? 0) <= 0) {
-            return {
-                error: 'You do not have a priority booking slot available. Only 30 or 60 minute bookings are allowed.',
-            }
-        }
-    } else if (duration !== 30 && duration !== 60) {
-        return { error: 'Invalid booking duration. Please select 30 or 60 minutes.' }
-    }
-
-    // Overlap check — same court
-    const conflictingBookings = await db
-        .select({ id: bookings.id })
-        .from(bookings)
-        .where(
-            and(
-                eq(bookings.court_id, courtId),
-                ne(bookings.status, 'cancelled'),
-                ne(bookings.status, 'rejected'),
-                lt(bookings.start_time, endTime),
-                gt(bookings.end_time, startTime)
-            )
-        )
-
-    if (conflictingBookings.length > 0) {
-        return { error: 'Time slot is already booked' }
-    }
-
-    // Prevent double-booking same student on any court
-    const studentConflicts = await db
-        .select({ id: bookings.id })
-        .from(bookings)
-        .where(
-            and(
-                eq(bookings.user_id, user.id),
-                ne(bookings.status, 'cancelled'),
-                ne(bookings.status, 'rejected'),
-                lt(bookings.start_time, endTime),
-                gt(bookings.end_time, startTime)
-            )
-        )
-
-    if (studentConflicts.length > 0) {
-        return { error: 'You already have a booking during this time' }
-    }
-
     // Parse optional fields
     const equipmentIds: string[] = equipmentIdsStr ? JSON.parse(equipmentIdsStr) : []
     const numPlayers = numPlayersStr ? parseInt(numPlayersStr) : 2
     const rawPlayersList: { id: string; full_name?: string; [key: string]: unknown }[] =
         playersListStr ? JSON.parse(playersListStr) : []
 
-    // Enrich players_list with profile snapshot
-    let playersList = rawPlayersList
-    if (rawPlayersList.length > 0) {
-        const playerIds = rawPlayersList.map((p) => p.id).filter(Boolean)
-        const playerProfiles = await db
+    const playerIds = rawPlayersList.map((p) => p.id).filter(Boolean)
+    const allInvolvedUserIds = [user.id, ...playerIds]
+
+    const result = await db.transaction(async (tx) => {
+        // --- 1. Locking Phase ---
+        // Lock Court
+        await tx.select().from(courts).where(eq(courts.id, courtId)).for('update')
+
+        // Lock all involved users (booker + invited players) to prevent concurrent double bookings
+        const sortedUserIds = [...allInvolvedUserIds].sort()
+        await tx.select().from(profiles).where(inArray(profiles.id, sortedUserIds)).for('update')
+
+        // Lock equipment if needed
+        if (equipmentIds.length > 0) {
+            const sortedEqIds = [...equipmentIds].sort()
+            await tx.select().from(equipment).where(inArray(equipment.id, sortedEqIds)).for('update')
+        }
+
+        // --- 2. Validation Phase ---
+        // Check ban and priority status
+        const [profileData] = await tx
             .select({
-                id: profiles.id,
+                banned_until: profiles.banned_until,
+                priority_booking_remaining: profiles.priority_booking_remaining,
                 full_name: profiles.full_name,
-                branch: profiles.branch,
-                gender: profiles.gender,
-                year: profiles.year,
             })
             .from(profiles)
-            .where(inArray(profiles.id, playerIds))
+            .where(eq(profiles.id, user.id))
 
-        if (playerProfiles) {
-            const profileMap = Object.fromEntries(playerProfiles.map((p: any) => [p.id, p]))
-            playersList = rawPlayersList.map((p) => ({
-                ...p,
-                branch: profileMap[p.id]?.branch ?? p.branch ?? null,
-                gender: profileMap[p.id]?.gender ?? p.gender ?? null,
-                year: profileMap[p.id]?.year ?? (p.year as string | null) ?? null,
-                full_name: profileMap[p.id]?.full_name ?? p.full_name ?? null,
-                // Players start as 'pending' — confirmed only after they accept play request
-                status: 'pending',
-            }))
+        if (profileData?.banned_until && new Date(profileData.banned_until) > new Date()) {
+            const banDate = new Date(profileData.banned_until).toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+            })
+            return {
+                error: `You are temporarily banned until ${banDate} due to repeated late arrivals. Contact admin for early clearance.`,
+            }
         }
-    }
 
-    // Validate player count against sport limits
-    const [courtData] = await db
-        .select({ sport: courts.sport, name: courts.name })
-        .from(courts)
-        .where(eq(courts.id, courtId))
+        // Check violation count (suspended if 3+)
+        const [{ count: violationCount }] = await tx
+            .select({ count: sql<number>`cast(count(*) as integer)` })
+            .from(studentViolations)
+            .where(eq(studentViolations.student_id, user.id))
 
-    if (courtData) {
-        const limits = getPlayerLimits(courtData.sport)
-        if (numPlayers < limits.min) {
-            return { error: `Minimum ${limits.min} players required for ${courtData.sport}` }
+        if (violationCount >= 3) {
+            return {
+                error: 'Your account has been suspended due to 3 or more violations. Contact admin.',
+            }
         }
-        if (limits.max && numPlayers > limits.max) {
-            return { error: `Maximum ${limits.max} players allowed for ${courtData.sport}` }
-        }
-    }
 
-    // Check for time-slot conflicts on requested equipment
-    if (equipmentIds.length > 0) {
-        const conflicts = await db
-            .select({ equipment_ids: bookings.equipment_ids })
+        // Duration validation
+        if (duration === 90) {
+            if ((profileData?.priority_booking_remaining ?? 0) <= 0) {
+                return {
+                    error: 'You do not have a priority booking slot available. Only 30 or 60 minute bookings are allowed.',
+                }
+            }
+        } else if (duration !== 30 && duration !== 60) {
+            return { error: 'Invalid booking duration. Please select 30 or 60 minutes.' }
+        }
+
+        // Overlap check — same court
+        const conflictingBookings = await tx
+            .select({ id: bookings.id })
             .from(bookings)
             .where(
                 and(
+                    eq(bookings.court_id, courtId),
                     ne(bookings.status, 'cancelled'),
                     ne(bookings.status, 'rejected'),
-                    ne(bookings.status, 'completed'),
                     lt(bookings.start_time, endTime),
                     gt(bookings.end_time, startTime)
                 )
             )
 
-        const conflictingIds = new Set<string>()
-        conflicts.forEach((b) => (b.equipment_ids || []).forEach((id) => conflictingIds.add(id)))
+        if (conflictingBookings.length > 0) {
+            return { error: 'Time slot is already booked' }
+        }
 
-        const hasConflict = equipmentIds.some((id) => conflictingIds.has(id))
-        if (hasConflict) {
-            return {
-                error: 'One or more equipment items are no longer available for this time slot. Please refresh and try again.',
+        // Prevent double-booking: Check if booker OR any invited player is already booked at this time
+        const jsonbChecks = allInvolvedUserIds.map((id) => sql`${bookings.players_list} @> ${JSON.stringify([{ id }])}::jsonb`)
+        
+        const studentConflicts = await tx
+            .select({ id: bookings.id })
+            .from(bookings)
+            .where(
+                and(
+                    ne(bookings.status, 'cancelled'),
+                    ne(bookings.status, 'rejected'),
+                    lt(bookings.start_time, endTime),
+                    gt(bookings.end_time, startTime),
+                    or(
+                        inArray(bookings.user_id, allInvolvedUserIds),
+                        ...jsonbChecks
+                    )
+                )
+            )
+
+        if (studentConflicts.length > 0) {
+            return { error: 'You or one of the invited players already have a booking during this time' }
+        }
+
+        // Validate player count against sport limits
+        const [courtData] = await tx
+            .select({ sport: courts.sport, name: courts.name })
+            .from(courts)
+            .where(eq(courts.id, courtId))
+
+        if (courtData) {
+            const limits = getPlayerLimits(courtData.sport)
+            if (numPlayers < limits.min) {
+                return { error: `Minimum ${limits.min} players required for ${courtData.sport}` }
+            }
+            if (limits.max && numPlayers > limits.max) {
+                return { error: `Maximum ${limits.max} players allowed for ${courtData.sport}` }
             }
         }
-    }
 
-    // Insert booking
-    const [newBooking] = await db
-        .insert(bookings)
-        .values({
-            user_id: user.id,
-            court_id: courtId,
-            start_time: startTime,
-            end_time: endTime,
-            status: 'confirmed',
-            players_list: playersList,
-            equipment_ids: equipmentIds,
-            num_players: numPlayers,
-        })
-        .returning({ id: bookings.id })
+        // Check for time-slot conflicts on requested equipment
+        if (equipmentIds.length > 0) {
+            const conflicts = await tx
+                .select({ equipment_ids: bookings.equipment_ids })
+                .from(bookings)
+                .where(
+                    and(
+                        ne(bookings.status, 'cancelled'),
+                        ne(bookings.status, 'rejected'),
+                        ne(bookings.status, 'completed'),
+                        lt(bookings.start_time, endTime),
+                        gt(bookings.end_time, startTime)
+                    )
+                )
 
-    if (!newBooking) {
-        return { error: 'Failed to create booking' }
-    }
+            const conflictingIds = new Set<string>()
+            conflicts.forEach((b) => (b.equipment_ids || []).forEach((id) => conflictingIds.add(id)))
 
-    // Send play requests + notifications to invited players
-    if (rawPlayersList.length > 0) {
-        const courtName = courtData?.name || 'Court'
-        const sport = courtData?.sport || ''
-        const startDisplay = startTime.toLocaleString('en-IN', {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZone: 'Asia/Kolkata',
-        })
+            const hasConflict = equipmentIds.some((id) => conflictingIds.has(id))
+            if (hasConflict) {
+                return {
+                    error: 'One or more equipment items are no longer available for this time slot. Please refresh and try again.',
+                }
+            }
+        }
 
-        const [bookerProfile] = await db
-            .select({ full_name: profiles.full_name })
-            .from(profiles)
-            .where(eq(profiles.id, user.id))
-        const bookerName = bookerProfile?.full_name || 'Someone'
-
-        for (const player of rawPlayersList) {
-            // Create play request first to get its ID, then include it in the notification data
-            const [newPR] = await db
-                .insert(playRequests)
-                .values({
-                    booking_id: newBooking.id,
-                    requester_id: user.id,
-                    recipient_id: player.id,
-                    status: 'pending',
-                    notification_id: null,
+        // Enrich players_list with profile snapshot
+        let playersList = rawPlayersList
+        if (rawPlayersList.length > 0) {
+            const playerProfiles = await tx
+                .select({
+                    id: profiles.id,
+                    full_name: profiles.full_name,
+                    branch: profiles.branch,
+                    gender: profiles.gender,
+                    year: profiles.year,
                 })
-                .returning({ id: playRequests.id })
+                .from(profiles)
+                .where(inArray(profiles.id, playerIds))
 
-            const notifId = await sendNotification({
-                recipientId: player.id,
+            if (playerProfiles) {
+                const profileMap = Object.fromEntries(playerProfiles.map((p: any) => [p.id, p]))
+                playersList = rawPlayersList.map((p) => ({
+                    ...p,
+                    branch: profileMap[p.id]?.branch ?? p.branch ?? null,
+                    gender: profileMap[p.id]?.gender ?? p.gender ?? null,
+                    year: profileMap[p.id]?.year ?? (p.year as string | null) ?? null,
+                    full_name: profileMap[p.id]?.full_name ?? p.full_name ?? null,
+                    status: 'pending',
+                }))
+            }
+        }
+
+        // Insert booking
+        const [newBooking] = await tx
+            .insert(bookings)
+            .values({
+                user_id: user.id,
+                court_id: courtId,
+                start_time: startTime,
+                end_time: endTime,
+                status: 'confirmed',
+                players_list: playersList,
+                equipment_ids: equipmentIds,
+                num_players: numPlayers,
+            })
+            .returning({ id: bookings.id })
+
+        if (!newBooking) {
+            return { error: 'Failed to create booking' }
+        }
+
+        // Send play requests + notifications to invited players
+        if (rawPlayersList.length > 0) {
+            const courtName = courtData?.name || 'Court'
+            const sport = courtData?.sport || ''
+            const startDisplay = startTime.toLocaleString('en-IN', {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                timeZone: 'Asia/Kolkata',
+            })
+
+            const bookerName = profileData?.full_name || 'Someone'
+
+            for (const player of rawPlayersList) {
+                const [newPR] = await tx
+                    .insert(playRequests)
+                    .values({
+                        booking_id: newBooking.id,
+                        requester_id: user.id,
+                        recipient_id: player.id,
+                        status: 'pending',
+                        notification_id: null,
+                    })
+                    .returning({ id: playRequests.id })
+
+                const notifId = await sendNotification({
+                    recipientId: player.id,
+                    senderId: user.id,
+                    type: 'play_request_received',
+                    title: 'Play Request',
+                    body: `${bookerName} invited you to play ${sport} at ${courtName} on ${startDisplay}. Accept or decline below.`,
+                    data: {
+                        booking_id: newBooking.id,
+                        play_request_id: newPR.id,
+                        court_name: courtName,
+                        sport,
+                        start_time: startTime.toISOString(),
+                        end_time: endTime.toISOString(),
+                        booker_name: bookerName,
+                    },
+                })
+
+                if (notifId) {
+                    await tx
+                        .update(playRequests)
+                        .set({ notification_id: notifId })
+                        .where(eq(playRequests.id, newPR.id))
+                }
+            }
+
+            await notifyManagers({
                 senderId: user.id,
-                type: 'play_request_received',
-                title: 'Play Request',
-                body: `${bookerName} invited you to play ${sport} at ${courtName} on ${startDisplay}. Accept or decline below.`,
+                type: 'new_booking',
+                title: 'New Booking',
+                body: `${bookerName} booked ${courtName} (${sport}) for ${startDisplay}.`,
                 data: {
                     booking_id: newBooking.id,
-                    play_request_id: newPR.id,
                     court_name: courtName,
                     sport,
                     start_time: startTime.toISOString(),
-                    end_time: endTime.toISOString(),
                     booker_name: bookerName,
                 },
             })
-
-            if (notifId) {
-                await db
-                    .update(playRequests)
-                    .set({ notification_id: notifId })
-                    .where(eq(playRequests.id, newPR.id))
-            }
         }
 
-        // Notify managers of new booking
-        await notifyManagers({
-            senderId: user.id,
-            type: 'new_booking',
-            title: 'New Booking',
-            body: `${bookerName} booked ${courtName} (${sport}) for ${startDisplay}.`,
-            data: {
-                booking_id: newBooking.id,
-                court_name: courtName,
-                sport,
-                start_time: startTime.toISOString(),
-                booker_name: bookerName,
-            },
-        })
-    }
+        // Consume priority booking slot if 90-min
+        if (duration === 90) {
+            await tx
+                .update(profiles)
+                .set({ priority_booking_remaining: 0 })
+                .where(eq(profiles.id, user.id))
 
-    // Consume priority booking slot if 90-min
-    if (duration === 90) {
-        await db
-            .update(profiles)
-            .set({ priority_booking_remaining: 0 })
-            .where(eq(profiles.id, user.id))
+            await sendNotification({
+                recipientId: user.id,
+                type: 'priority_booking_used',
+                title: 'Priority Booking Slot Used',
+                body: 'You have used your monthly 90-minute priority booking. Your bookings now return to the standard 30 or 60-minute options.',
+                data: { booking_id: newBooking.id },
+            })
+        }
 
-        await sendNotification({
-            recipientId: user.id,
-            type: 'priority_booking_used',
-            title: 'Priority Booking Slot Used',
-            body: 'You have used your monthly 90-minute priority booking. Your bookings now return to the standard 30 or 60-minute options.',
-            data: { booking_id: newBooking.id },
-        })
+        return { success: true }
+    })
+
+    if (result.error) {
+        return result
     }
 
     revalidatePath('/student/book')
