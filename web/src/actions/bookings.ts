@@ -256,7 +256,7 @@ export async function createBooking(prevState: any, formData: FormData) {
             )
 
         if (studentConflicts.length > 0) {
-            return { error: 'You or one of the invited players already have a booking during this time' }
+            return { error: 'You already have a booking during this time' }
         }
 
         // Validate player count against sport limits
