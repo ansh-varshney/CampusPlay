@@ -60,7 +60,7 @@ function makeChain() {
         'onConflictDoNothing',
         'onConflictDoUpdate',
     ]
-    obj.for = vi.fn(() => obj)
+    obj.for = vi.fn(() => Promise.resolve([]))
     for (const m of builders) {
         obj[m] = vi.fn(() => obj)
     }
