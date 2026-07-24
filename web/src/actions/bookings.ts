@@ -114,7 +114,7 @@ export async function getAvailableEquipment(sport: string, startTime?: string, e
 
         if (overlapping) {
             overlapping.forEach((b: any) => {
-                ;(b.equipment_ids || []).forEach((id: string) => reservedIds.add(id))
+                ; (b.equipment_ids || []).forEach((id: string) => reservedIds.add(id))
             })
         }
     }
@@ -152,7 +152,7 @@ export async function createBooking(prevState: any, formData: FormData) {
     // Parse optional fields
     const equipmentIds: string[] = equipmentIdsStr ? JSON.parse(equipmentIdsStr) : []
     const numPlayers = numPlayersStr ? parseInt(numPlayersStr) : 2
-    const rawPlayersList: { id: string; full_name?: string; [key: string]: unknown }[] =
+    const rawPlayersList: { id: string; full_name?: string;[key: string]: unknown }[] =
         playersListStr ? JSON.parse(playersListStr) : []
 
     const playerIds = rawPlayersList.map((p) => p.id).filter(Boolean)
@@ -238,7 +238,7 @@ export async function createBooking(prevState: any, formData: FormData) {
 
         // Prevent double-booking: Check if booker OR any invited player is already booked at this time
         const jsonbChecks = allInvolvedUserIds.map((id) => sql`${bookings.players_list} @> ${JSON.stringify([{ id }])}::jsonb`)
-        
+
         const studentConflicts = await tx
             .select({ id: bookings.id })
             .from(bookings)
