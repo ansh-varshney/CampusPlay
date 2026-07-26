@@ -60,6 +60,7 @@ function makeChain() {
         'onConflictDoNothing',
         'onConflictDoUpdate',
     ]
+    obj.for = vi.fn(() => Promise.resolve([]))
     for (const m of builders) {
         obj[m] = vi.fn(() => obj)
     }
@@ -74,6 +75,16 @@ export const mockDrizzleDb = {
     update: vi.fn(() => makeChain()),
     delete: vi.fn(() => makeChain()),
     execute: vi.fn(() => Promise.resolve(pop())),
+    transaction: vi.fn(async (callback: (tx: any) => Promise<any>) => {
+        const tx = {
+            select: mockDrizzleDb.select,
+            insert: mockDrizzleDb.insert,
+            update: mockDrizzleDb.update,
+            delete: mockDrizzleDb.delete,
+            execute: mockDrizzleDb.execute,
+        }
+        return callback(tx)
+    }),
 
     // ── Test helpers ─────────────────────────────────────────────────────────
     /** Enqueue one or more responses (each response = one DB call's result) */
