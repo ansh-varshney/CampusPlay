@@ -55,7 +55,7 @@ export default async function ApprovalsPage() {
                                                 className={cn(
                                                     'text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full border',
                                                     statusColors[booking.status] ||
-                                                    'bg-gray-100 text-gray-600'
+                                                        'bg-gray-100 text-gray-600'
                                                 )}
                                             >
                                                 {statusLabels[booking.status] || booking.status}

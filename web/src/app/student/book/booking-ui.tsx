@@ -91,7 +91,6 @@ export default function BookingUI({
     } | null>(null)
     const [duration, setDuration] = useState<30 | 60 | 90>(30)
     const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([])
-    const [showSearchInput, setShowSearchInput] = useState(false)
     const [playerSearch, setPlayerSearch] = useState('')
     const [searchResults, setSearchResults] = useState<Player[]>([])
     const [searchingPlayers, setSearchingPlayers] = useState(false)
@@ -169,15 +168,13 @@ export default function BookingUI({
 
     // Debounced player search
     useEffect(() => {
-        const cleanQuery = playerSearch.trim()
-        if (cleanQuery.length < 2) {
+        if (playerSearch.length < 2) {
             setSearchResults([])
-            setSearchingPlayers(false)
             return
         }
         const timer = setTimeout(async () => {
             setSearchingPlayers(true)
-            const results = await searchStudents(cleanQuery)
+            const results = await searchStudents(playerSearch)
             setSearchResults(
                 results.filter((r: any) => !selectedPlayers.some((p) => p.id === r.id))
             )
@@ -210,9 +207,7 @@ export default function BookingUI({
         setDuration(30)
         setSelectedPlayers([])
         setSelectedEquipment([])
-        setShowSearchInput(false)
         setPlayerSearch('')
-        setSearchResults([])
         setMessage(null)
     }
 
@@ -243,7 +238,7 @@ export default function BookingUI({
             }
 
             const result = await createBooking(null, formData)
-            if (result && 'error' in result && typeof result.error === 'string') {
+            if (result?.error) {
                 setMessage({ text: result.error, type: 'error' })
             } else {
                 setMessage({ text: 'Slot booked successfully!', type: 'success' })
@@ -518,19 +513,12 @@ export default function BookingUI({
                                             </span>
                                             {!atMax && (
                                                 <button
-                                                    onClick={() => {
-                                                        setShowSearchInput((prev) => {
-                                                            if (prev) {
-                                                                setPlayerSearch('')
-                                                                setSearchResults([])
-                                                            }
-                                                            return !prev
-                                                        })
-                                                    }}
-                                                    className="flex items-center gap-1 text-[#004d40] text-xs font-bold normal-case hover:underline"
+                                                    onClick={() =>
+                                                        setPlayerSearch(playerSearch ? '' : ' ')
+                                                    }
+                                                    className="flex items-center gap-1 text-[#004d40] text-xs font-bold normal-case"
                                                 >
-                                                    <UserPlus className="w-3.5 h-3.5" />
-                                                    {showSearchInput ? 'Cancel' : 'Add'}
+                                                    <UserPlus className="w-3.5 h-3.5" /> Add
                                                 </button>
                                             )}
                                             {atMax && (
@@ -552,17 +540,15 @@ export default function BookingUI({
                                     {selectedPlayers.map((p) => (
                                         <span
                                             key={p.id}
-                                            className="flex items-center gap-1 bg-[#004d40]/10 text-[#004d40] px-2.5 py-1 rounded-full text-xs font-medium"
+                                            className="flex items-center gap-1 bg-[#004d40]/10 text-[#004d40] px-2 py-1 rounded-full text-xs font-medium"
                                         >
-                                            {p.full_name || 'Student'}
-                                            {p.student_id ? ` (${p.student_id})` : ''}
+                                            {p.full_name}
                                             <button
                                                 onClick={() =>
                                                     setSelectedPlayers((prev) =>
                                                         prev.filter((x) => x.id !== p.id)
                                                     )
                                                 }
-                                                className="hover:text-red-600 transition-colors"
                                             >
                                                 <X className="w-3 h-3" />
                                             </button>
@@ -570,34 +556,21 @@ export default function BookingUI({
                                     ))}
                                 </div>
                             )}
-                            {showSearchInput && (
-                                <div className="relative mt-1">
+                            {playerSearch !== '' && (
+                                <div className="relative">
                                     <div className="relative">
                                         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                                         <input
                                             type="text"
                                             value={playerSearch}
                                             onChange={(e) => setPlayerSearch(e.target.value)}
-                                            placeholder="Search by name, ID, or email..."
-                                            className="w-full pl-8 pr-8 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] placeholder:text-gray-400"
+                                            placeholder="Search by name..."
+                                            className="w-full pl-8 pr-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] placeholder:text-gray-400"
                                             autoFocus
                                         />
-                                        {searchingPlayers ? (
-                                            <Loader2 className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 animate-spin text-[#004d40]" />
-                                        ) : playerSearch ? (
-                                            <button
-                                                onClick={() => {
-                                                    setPlayerSearch('')
-                                                    setSearchResults([])
-                                                }}
-                                                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 text-gray-400 hover:text-gray-600"
-                                            >
-                                                <X className="w-3.5 h-3.5" />
-                                            </button>
-                                        ) : null}
                                     </div>
                                     {searchResults.length > 0 && (
-                                        <div className="absolute z-20 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-40 overflow-y-auto">
+                                        <div className="absolute z-20 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-36 overflow-y-auto">
                                             {searchResults.map((s) => (
                                                 <button
                                                     key={s.id}
@@ -609,21 +582,16 @@ export default function BookingUI({
                                                     className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center justify-between text-sm border-b last:border-0"
                                                 >
                                                     <div>
-                                                        <p className="font-medium text-gray-900">{s.full_name || 'Unnamed Student'}</p>
+                                                        <p className="font-medium">{s.full_name}</p>
                                                         {s.student_id && (
-                                                            <p className="text-xs text-gray-500">
-                                                                ID: {s.student_id}
+                                                            <p className="text-xs text-gray-400">
+                                                                Roll: {s.student_id}
                                                             </p>
                                                         )}
                                                     </div>
                                                     <UserPlus className="w-4 h-4 text-[#004d40]" />
                                                 </button>
                                             ))}
-                                        </div>
-                                    )}
-                                    {playerSearch.trim().length >= 2 && !searchingPlayers && searchResults.length === 0 && (
-                                        <div className="absolute z-20 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg p-3 text-xs text-gray-500 text-center">
-                                            No matching student found for "{playerSearch.trim()}"
                                         </div>
                                     )}
                                 </div>
