@@ -180,7 +180,27 @@ describe('createBooking', () => {
         mockDrizzleDb.enqueue(NO_CONFLICTS) // no court overlap
         mockDrizzleDb.enqueue([{ id: 'own-booking' }]) // student conflict
         const result = await createBooking(null, makeFormData())
-        expect(result.error).toBe('You already have a booking during this time')
+        expect(result.error).toMatch(/already have a booking/)
+    })
+
+    it('rejects when student already has a booking for another sport in the same slot', async () => {
+        mockDrizzleDb.enqueue([PROFILE_OK])
+        mockDrizzleDb.enqueue(VIOLATIONS_ZERO)
+        mockDrizzleDb.enqueue(NO_CONFLICTS)
+        mockDrizzleDb.enqueue([{ id: 'own-booking-squash', courts: { sport: 'squash', name: 'Squash Ct 1' } }])
+        const result = await createBooking(null, makeFormData())
+        expect(result.error).toBe('You already have a booking for Squash during this time')
+    })
+
+    it('rejects when an invited player already has a booking in the same slot', async () => {
+        const players = [{ id: 'student-2', full_name: 'Bob' }]
+        mockDrizzleDb.enqueue([PROFILE_OK])
+        mockDrizzleDb.enqueue(VIOLATIONS_ZERO)
+        mockDrizzleDb.enqueue(NO_CONFLICTS) // no court overlap
+        mockDrizzleDb.enqueue(NO_CONFLICTS) // no booker conflict
+        mockDrizzleDb.enqueue([{ id: 'bob-tennis-booking', courts: { sport: 'tennis' } }]) // player conflict
+        const result = await createBooking(null, makeFormData({ playersList: JSON.stringify(players) }))
+        expect(result.error).toBe('Bob already has a booking (Tennis) during this time slot')
     })
 
     it('rejects when player count is below sport minimum', async () => {
@@ -223,15 +243,16 @@ describe('createBooking', () => {
         mockDrizzleDb.enqueue(VIOLATIONS_ZERO) // 2: violations
         mockDrizzleDb.enqueue(NO_CONFLICTS) // 3: court overlap
         mockDrizzleDb.enqueue(NO_CONFLICTS) // 4: student conflict
+        mockDrizzleDb.enqueue(NO_CONFLICTS) // 5: player conflict
         mockDrizzleDb.enqueue([
-            // 5: player enrichment
+            // 6: player enrichment
             { id: 'student-2', full_name: 'Bob', branch: 'ECE', gender: 'male', year: '3' },
         ])
-        mockDrizzleDb.enqueue([COURT_BADMINTON]) // 6: courts
-        mockDrizzleDb.enqueue([{ id: 'booking-new' }]) // 7: insert booking
-        mockDrizzleDb.enqueue([{ full_name: 'Alice' }]) // 8: booker profile
-        mockDrizzleDb.enqueue([{ id: 'pr-new' }]) // 9: insert playRequests returning
-        mockDrizzleDb.enqueueEmpty() // 10: update playRequests notification_id
+        mockDrizzleDb.enqueue([COURT_BADMINTON]) // 7: courts
+        mockDrizzleDb.enqueue([{ id: 'booking-new' }]) // 8: insert booking
+        mockDrizzleDb.enqueue([{ full_name: 'Alice' }]) // 9: booker profile
+        mockDrizzleDb.enqueue([{ id: 'pr-new' }]) // 10: insert playRequests returning
+        mockDrizzleDb.enqueueEmpty() // 11: update playRequests notification_id
 
         const fd = makeFormData({ numPlayers: '2', playersList: JSON.stringify(players) })
         await createBooking(null, fd)

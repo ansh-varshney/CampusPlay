@@ -30,7 +30,7 @@ import {
     sql,
 } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
-import { addMinutes } from 'date-fns'
+import { addMinutes, addDays } from 'date-fns'
 import { getPlayerLimits } from '@/lib/sport-config'
 import {
     sendNotification,
@@ -70,6 +70,41 @@ export async function getBookingsForDateRange(courtId: string, startDate: Date, 
         )
 
     return rows
+}
+
+export async function getUserBookingsForDate(dateStr: string) {
+    const user = await getCurrentUser()
+    if (!user || !dateStr) return []
+
+    const start = new Date(dateStr)
+    start.setHours(0, 0, 0, 0)
+    const end = addDays(start, 1)
+
+    const userBookings = await db
+        .select({
+            id: bookings.id,
+            court_id: bookings.court_id,
+            start_time: bookings.start_time,
+            end_time: bookings.end_time,
+            status: bookings.status,
+            courts: { sport: courts.sport, name: courts.name },
+        })
+        .from(bookings)
+        .leftJoin(courts, eq(bookings.court_id, courts.id))
+        .where(
+            and(
+                or(
+                    eq(bookings.user_id, user.id),
+                    sql`${bookings.players_list} @> ${JSON.stringify([{ id: user.id }])}::jsonb`
+                ),
+                ne(bookings.status, 'cancelled'),
+                ne(bookings.status, 'rejected'),
+                gte(bookings.start_time, start),
+                lte(bookings.end_time, end)
+            )
+        )
+
+    return userBookings
 }
 
 export async function getAvailableEquipment(sport: string, startTime?: string, endTime?: string) {
@@ -210,13 +245,20 @@ export async function createBooking(prevState: any, formData: FormData) {
         return { error: 'Time slot is already booked' }
     }
 
-    // Prevent double-booking same student on any court
+    // Prevent double-booking same student on any court/sport (as booker or invited player)
     const studentConflicts = await db
-        .select({ id: bookings.id })
+        .select({
+            id: bookings.id,
+            courts: { sport: courts.sport, name: courts.name },
+        })
         .from(bookings)
+        .leftJoin(courts, eq(bookings.court_id, courts.id))
         .where(
             and(
-                eq(bookings.user_id, user.id),
+                or(
+                    eq(bookings.user_id, user.id),
+                    sql`${bookings.players_list} @> ${JSON.stringify([{ id: user.id }])}::jsonb`
+                ),
                 ne(bookings.status, 'cancelled'),
                 ne(bookings.status, 'rejected'),
                 lt(bookings.start_time, endTime),
@@ -225,7 +267,11 @@ export async function createBooking(prevState: any, formData: FormData) {
         )
 
     if (studentConflicts.length > 0) {
-        return { error: 'You already have a booking during this time' }
+        const conflictSport = studentConflicts[0].courts?.sport
+        const sportMsg = conflictSport
+            ? ` for ${conflictSport.charAt(0).toUpperCase() + conflictSport.slice(1)}`
+            : ''
+        return { error: `You already have a booking${sportMsg} during this time` }
     }
 
     // Parse optional fields
@@ -233,6 +279,42 @@ export async function createBooking(prevState: any, formData: FormData) {
     const numPlayers = numPlayersStr ? parseInt(numPlayersStr) : 2
     const rawPlayersList: { id: string; full_name?: string; [key: string]: unknown }[] =
         playersListStr ? JSON.parse(playersListStr) : []
+
+    // Prevent double-booking for any invited player on any sport
+    if (rawPlayersList.length > 0) {
+        for (const p of rawPlayersList) {
+            const playerConflicts = await db
+                .select({
+                    id: bookings.id,
+                    courts: { sport: courts.sport },
+                })
+                .from(bookings)
+                .leftJoin(courts, eq(bookings.court_id, courts.id))
+                .where(
+                    and(
+                        or(
+                            eq(bookings.user_id, p.id),
+                            sql`${bookings.players_list} @> ${JSON.stringify([{ id: p.id }])}::jsonb`
+                        ),
+                        ne(bookings.status, 'cancelled'),
+                        ne(bookings.status, 'rejected'),
+                        lt(bookings.start_time, endTime),
+                        gt(bookings.end_time, startTime)
+                    )
+                )
+
+            if (playerConflicts.length > 0) {
+                const playerName = p.full_name || 'One of the selected players'
+                const pSport = playerConflicts[0].courts?.sport
+                const sportText = pSport
+                    ? ` (${pSport.charAt(0).toUpperCase() + pSport.slice(1)})`
+                    : ''
+                return {
+                    error: `${playerName} already has a booking${sportText} during this time slot`,
+                }
+            }
+        }
+    }
 
     // Enrich players_list with profile snapshot
     let playersList = rawPlayersList

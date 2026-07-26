@@ -9,6 +9,7 @@ import {
     getBookingsForDateRange,
     getAvailableEquipment,
     searchStudents,
+    getUserBookingsForDate,
 } from '@/actions/bookings'
 import { getPlayerLimits } from '@/lib/sport-config'
 import {
@@ -79,6 +80,7 @@ export default function BookingUI({
     const [selectedSport, setSelectedSport] = useState('')
     const [selectedDate, setSelectedDate] = useState('')
     const [bookings, setBookings] = useState<Booking[]>([])
+    const [userBookings, setUserBookings] = useState<any[]>([])
     const [loadingBookings, setLoadingBookings] = useState(false)
     const [isPending, startTransition] = useTransition()
     const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null)
@@ -133,7 +135,9 @@ export default function BookingUI({
                 const data = await getBookingsForDateRange(court.id, date, addDays(date, 1))
                 allBookings.push(...(data as Booking[]))
             }
+            const myBookings = await getUserBookingsForDate(dateStr)
             setBookings(allBookings)
+            setUserBookings(myBookings || [])
         } finally {
             setLoadingBookings(false)
         }
@@ -199,9 +203,35 @@ export default function BookingUI({
         })
     }
 
+    const getUserBookingForSlot = (slotTime: string) => {
+        if (!selectedDate) return undefined
+        const [slotH, slotM] = slotTime.split(':').map(Number)
+        const slotDate = new Date(selectedDate)
+        slotDate.setHours(slotH, slotM, 0, 0)
+        const slotMs = slotDate.getTime()
+
+        return userBookings.find((b) => {
+            const bStart = new Date(b.start_time).getTime()
+            const bEnd = new Date(b.end_time).getTime()
+            return slotMs >= bStart && slotMs < bEnd
+        })
+    }
+
     const handleSlotClick = (court: Court, time: string) => {
         const booking = getBookingForSlot(court.id, time)
         if (booking) return // Can't book occupied slot
+
+        const userBooking = getUserBookingForSlot(time)
+        if (userBooking) {
+            const sportName = userBooking.courts?.sport
+                ? userBooking.courts.sport.charAt(0).toUpperCase() + userBooking.courts.sport.slice(1)
+                : 'another sport'
+            setMessage({
+                text: `You already have a booking for ${sportName} at ${formatTime(time)}. You cannot book multiple sports at the same time.`,
+                type: 'error',
+            })
+            return
+        }
 
         setSelectedSlot({ courtId: court.id, courtName: court.name, time })
         setDuration(30)
@@ -383,6 +413,8 @@ export default function BookingUI({
                                             {filteredCourts.map((court) => {
                                                 const booking = getBookingForSlot(court.id, time)
                                                 const isBooked = !!booking
+                                                const userBooking = getUserBookingForSlot(time)
+                                                const isUserBookedOtherSport = !isBooked && !!userBooking
                                                 const isSelected =
                                                     selectedSlot?.courtId === court.id &&
                                                     selectedSlot?.time === time
@@ -397,7 +429,9 @@ export default function BookingUI({
                                                                 ? 'bg-[#004d40] text-white ring-2 ring-[#004d40] ring-offset-1'
                                                                 : isBooked
                                                                     ? 'bg-blue-50 dark:bg-blue-950/40 border-l-[3px] border-l-blue-500 cursor-default'
-                                                                    : 'bg-white dark:bg-slate-900 hover:bg-[#004d40]/5 dark:hover:bg-[#004d40]/20 cursor-pointer'
+                                                                    : isUserBookedOtherSport
+                                                                        ? 'bg-purple-50 dark:bg-purple-950/30 border-l-[3px] border-l-purple-500 cursor-pointer opacity-90'
+                                                                        : 'bg-white dark:bg-slate-900 hover:bg-[#004d40]/5 dark:hover:bg-[#004d40]/20 cursor-pointer'
                                                         )}
                                                     >
                                                         {isSelected ? (
@@ -419,6 +453,15 @@ export default function BookingUI({
                                                                         {booking.num_players}
                                                                     </div>
                                                                 )}
+                                                            </div>
+                                                        ) : isUserBookedOtherSport ? (
+                                                            <div>
+                                                                <div className="font-semibold text-purple-700 dark:text-purple-300 text-[10px] truncate">
+                                                                    Your {userBooking.courts?.sport ? (userBooking.courts.sport.charAt(0).toUpperCase() + userBooking.courts.sport.slice(1)) : 'Booking'}
+                                                                </div>
+                                                                <div className="text-[9px] text-purple-600 dark:text-purple-400">
+                                                                    (Conflict)
+                                                                </div>
                                                             </div>
                                                         ) : null}
                                                     </div>
