@@ -129,10 +129,14 @@ export default function BookingUI({
         if (!dateStr || filteredCourts.length === 0) return
         setLoadingBookings(true)
         try {
-            const date = new Date(dateStr)
+            const startOfDayDate = new Date(dateStr)
+            startOfDayDate.setHours(0, 0, 0, 0)
+            const endOfDayDate = new Date(dateStr)
+            endOfDayDate.setHours(23, 59, 59, 999)
+
             const allBookings: Booking[] = []
             for (const court of filteredCourts) {
-                const data = await getBookingsForDateRange(court.id, date, addDays(date, 1))
+                const data = await getBookingsForDateRange(court.id, startOfDayDate, endOfDayDate)
                 allBookings.push(...(data as Booking[]))
             }
             setBookings(allBookings)
