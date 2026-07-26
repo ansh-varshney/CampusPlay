@@ -34,6 +34,8 @@ type Booking = {
     user_id: string
     profiles?: { full_name: string | null } | null
     num_players?: number | null
+    is_priority?: boolean | null
+    notes?: string | null
 }
 type Equipment = {
     id: string
@@ -396,7 +398,9 @@ export default function BookingUI({
                                                             isSelected
                                                                 ? 'bg-[#004d40] text-white ring-2 ring-[#004d40] ring-offset-1'
                                                                 : isBooked
-                                                                    ? 'bg-blue-50 dark:bg-blue-950/40 border-l-[3px] border-l-blue-500 cursor-default'
+                                                                    ? (booking.is_priority
+                                                                        ? 'bg-amber-50 dark:bg-amber-950/40 border-l-[3px] border-l-amber-500 cursor-default'
+                                                                        : 'bg-blue-50 dark:bg-blue-950/40 border-l-[3px] border-l-blue-500 cursor-default')
                                                                     : 'bg-white dark:bg-slate-900 hover:bg-[#004d40]/5 dark:hover:bg-[#004d40]/20 cursor-pointer'
                                                         )}
                                                     >
@@ -406,12 +410,12 @@ export default function BookingUI({
                                                             </span>
                                                         ) : booking ? (
                                                             <div>
-                                                                <div className="font-semibold text-blue-700 dark:text-blue-400 text-[11px] truncate">
-                                                                    {booking.profiles?.full_name
-                                                                        ? booking.profiles.full_name.split(
-                                                                            ' '
-                                                                        )[0]
-                                                                        : 'Booked'}
+                                                                <div className={cn("font-semibold text-[11px] truncate", booking.is_priority ? "text-amber-700 dark:text-amber-400" : "text-blue-700 dark:text-blue-400")}>
+                                                                    {booking.is_priority
+                                                                        ? (booking.notes || 'Team Practice')
+                                                                        : (booking.profiles?.full_name
+                                                                            ? booking.profiles.full_name.split(' ')[0]
+                                                                            : 'Booked')}
                                                                 </div>
                                                                 {booking.num_players && (
                                                                     <div className="text-[10px] text-blue-500 dark:text-blue-400 flex items-center gap-0.5">
