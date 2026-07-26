@@ -21,7 +21,7 @@ export function DatePicker() {
             <input
                 type="date"
                 id="date-picker"
-                min={new Date().toISOString().split('T')[0]}
+                min={new Date().toLocaleDateString('en-CA')}
                 value={selectedDate}
                 onChange={(e) => handleDateChange(e.target.value)}
                 className="px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-sm text-gray-900 dark:text-slate-100 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40] focus:border-transparent"
