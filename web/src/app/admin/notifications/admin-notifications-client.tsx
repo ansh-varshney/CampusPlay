@@ -108,10 +108,10 @@ export function AdminNotificationsClient({ notifications }: { notifications: App
                             key={n.id}
                             onClick={() => !n.is_read && markRead(n.id)}
                             className={cn(
-                                'p-4 rounded-xl border bg-white cursor-pointer transition-colors',
+                                'p-4 rounded-xl border bg-white dark:bg-slate-900 cursor-pointer transition-colors',
                                 n.is_read
-                                    ? 'border-gray-100 opacity-70'
-                                    : 'border-[#004d40]/20 shadow-sm hover:border-[#004d40]/40'
+                                    ? 'border-gray-100 dark:border-slate-800 opacity-70'
+                                    : 'border-[#004d40]/20 dark:border-teal-500/30 shadow-sm hover:border-[#004d40]/40'
                             )}
                         >
                             <div className="flex items-start gap-3">
@@ -120,20 +120,20 @@ export function AdminNotificationsClient({ notifications }: { notifications: App
                                     <div className="flex items-start justify-between gap-2">
                                         <p
                                             className={cn(
-                                                'text-sm font-semibold text-gray-900',
-                                                n.is_read && 'font-medium text-gray-600'
+                                                'text-sm font-semibold text-gray-900 dark:text-slate-100',
+                                                n.is_read && 'font-medium text-gray-600 dark:text-slate-400'
                                             )}
                                         >
                                             {n.title}
                                         </p>
                                         {!n.is_read && (
-                                            <span className="w-2 h-2 rounded-full bg-[#004d40] shrink-0 mt-1.5" />
+                                            <span className="w-2 h-2 rounded-full bg-[#004d40] dark:bg-teal-400 shrink-0 mt-1.5" />
                                         )}
                                     </div>
-                                    <p className="text-sm text-gray-600 mt-0.5 leading-snug">
+                                    <p className="text-sm text-gray-600 dark:text-slate-300 mt-0.5 leading-snug">
                                         {n.body}
                                     </p>
-                                    <p className="text-xs text-gray-400 mt-1.5">
+                                    <p className="text-xs text-gray-400 dark:text-slate-500 mt-1.5">
                                         {formatDistanceToNow(new Date(n.created_at), {
                                             addSuffix: true,
                                         })}

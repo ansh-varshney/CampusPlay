@@ -376,7 +376,7 @@ export default function BookingUI({
                                     {/* Only future time slots */}
                                     {visibleTimeSlots.map((time) => (
                                         <React.Fragment key={time}>
-                                            <div className="sticky left-0 z-10 bg-gray-50 border-r border-b border-gray-200 p-1.5 text-[11px] text-gray-500 font-medium flex items-center">
+                                            <div className="sticky left-0 z-10 bg-gray-50 dark:bg-slate-800 border-r border-b border-gray-200 dark:border-slate-700 p-1.5 text-[11px] text-gray-500 dark:text-slate-400 font-medium flex items-center">
                                                 {formatTime(time)}
                                             </div>
 
@@ -392,12 +392,12 @@ export default function BookingUI({
                                                         key={`${court.id}-${time}`}
                                                         onClick={() => handleSlotClick(court, time)}
                                                         className={cn(
-                                                            'border-r border-b border-gray-200 p-1.5 min-h-[44px] transition-all text-xs',
+                                                            'border-r border-b border-gray-200 dark:border-slate-800 p-1.5 min-h-[44px] transition-all text-xs',
                                                             isSelected
                                                                 ? 'bg-[#004d40] text-white ring-2 ring-[#004d40] ring-offset-1'
                                                                 : isBooked
-                                                                    ? 'bg-blue-50 border-l-[3px] border-l-blue-500 cursor-default'
-                                                                    : 'bg-white hover:bg-[#004d40]/5 cursor-pointer'
+                                                                    ? 'bg-blue-50 dark:bg-blue-950/40 border-l-[3px] border-l-blue-500 cursor-default'
+                                                                    : 'bg-white dark:bg-slate-900 hover:bg-[#004d40]/5 dark:hover:bg-[#004d40]/20 cursor-pointer'
                                                         )}
                                                     >
                                                         {isSelected ? (
@@ -406,7 +406,7 @@ export default function BookingUI({
                                                             </span>
                                                         ) : booking ? (
                                                             <div>
-                                                                <div className="font-semibold text-blue-700 text-[11px] truncate">
+                                                                <div className="font-semibold text-blue-700 dark:text-blue-400 text-[11px] truncate">
                                                                     {booking.profiles?.full_name
                                                                         ? booking.profiles.full_name.split(
                                                                             ' '
@@ -414,7 +414,7 @@ export default function BookingUI({
                                                                         : 'Booked'}
                                                                 </div>
                                                                 {booking.num_players && (
-                                                                    <div className="text-[10px] text-blue-500 flex items-center gap-0.5">
+                                                                    <div className="text-[10px] text-blue-500 dark:text-blue-400 flex items-center gap-0.5">
                                                                         <Users className="w-3 h-3" />
                                                                         {booking.num_players}
                                                                     </div>
@@ -457,7 +457,7 @@ export default function BookingUI({
 
                         {/* Duration */}
                         <div>
-                            <label className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase mb-1.5">
+                            <label className="flex items-center gap-1 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase mb-1.5">
                                 <Clock className="w-3 h-3" /> Duration
                             </label>
                             <div className="flex gap-2">
@@ -469,7 +469,7 @@ export default function BookingUI({
                                             'flex-1 py-2 text-sm font-bold rounded-lg border transition-all',
                                             duration === d
                                                 ? 'bg-[#004d40] text-white border-[#004d40]'
-                                                : 'bg-white text-gray-600 border-gray-200'
+                                                : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-700 hover:border-[#004d40]'
                                         )}
                                     >
                                         {d} min
@@ -482,7 +482,7 @@ export default function BookingUI({
                                             'flex-1 py-2 text-sm font-bold rounded-lg border transition-all',
                                             duration === 90
                                                 ? 'bg-yellow-500 text-white border-yellow-500'
-                                                : 'bg-yellow-50 text-yellow-700 border-yellow-300'
+                                                : 'bg-yellow-50 dark:bg-yellow-950/40 text-yellow-700 dark:text-yellow-400 border-yellow-300 dark:border-yellow-800'
                                         )}
                                         title="Monthly leaderboard reward — one-time 90-min slot"
                                     >
@@ -491,7 +491,7 @@ export default function BookingUI({
                                 )}
                             </div>
                             {hasPriorityBooking && duration === 90 && (
-                                <p className="text-[11px] text-yellow-700 mt-1">
+                                <p className="text-[11px] text-yellow-700 dark:text-yellow-400 mt-1">
                                     Using your monthly leaderboard reward (one-time use)
                                 </p>
                             )}
@@ -505,7 +505,7 @@ export default function BookingUI({
                                 const atMax = limits.max ? totalPlayers >= limits.max : false
                                 return (
                                     <>
-                                        <label className="flex items-center justify-between text-xs font-bold text-gray-500 uppercase mb-1.5">
+                                        <label className="flex items-center justify-between text-xs font-bold text-gray-500 dark:text-slate-400 uppercase mb-1.5">
                                             <span className="flex items-center gap-1">
                                                 <Users className="w-3 h-3" /> Players (
                                                 {totalPlayers}
@@ -516,7 +516,7 @@ export default function BookingUI({
                                                     onClick={() =>
                                                         setPlayerSearch(playerSearch ? '' : ' ')
                                                     }
-                                                    className="flex items-center gap-1 text-[#004d40] text-xs font-bold normal-case"
+                                                    className="flex items-center gap-1 text-[#004d40] dark:text-teal-400 text-xs font-bold normal-case"
                                                 >
                                                     <UserPlus className="w-3.5 h-3.5" /> Add
                                                 </button>
@@ -540,7 +540,7 @@ export default function BookingUI({
                                     {selectedPlayers.map((p) => (
                                         <span
                                             key={p.id}
-                                            className="flex items-center gap-1 bg-[#004d40]/10 text-[#004d40] px-2 py-1 rounded-full text-xs font-medium"
+                                            className="flex items-center gap-1 bg-[#004d40]/10 dark:bg-teal-950/60 text-[#004d40] dark:text-teal-300 px-2 py-1 rounded-full text-xs font-medium"
                                         >
                                             {p.full_name}
                                             <button
@@ -559,18 +559,18 @@ export default function BookingUI({
                             {playerSearch !== '' && (
                                 <div className="relative">
                                     <div className="relative">
-                                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+                                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 dark:text-slate-500" />
                                         <input
                                             type="text"
                                             value={playerSearch}
                                             onChange={(e) => setPlayerSearch(e.target.value)}
                                             placeholder="Search by name..."
-                                            className="w-full pl-8 pr-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] placeholder:text-gray-400"
+                                            className="w-full pl-8 pr-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400 placeholder:text-gray-400 dark:placeholder:text-slate-500"
                                             autoFocus
                                         />
                                     </div>
                                     {searchResults.length > 0 && (
-                                        <div className="absolute z-20 w-full mt-1 bg-white border rounded-lg shadow-lg max-h-36 overflow-y-auto">
+                                        <div className="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-lg max-h-36 overflow-y-auto">
                                             {searchResults.map((s) => (
                                                 <button
                                                     key={s.id}
@@ -579,17 +579,17 @@ export default function BookingUI({
                                                         setPlayerSearch('')
                                                         setSearchResults([])
                                                     }}
-                                                    className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center justify-between text-sm border-b last:border-0"
+                                                    className="w-full text-left px-3 py-2 hover:bg-gray-50 dark:hover:bg-slate-700 flex items-center justify-between text-sm border-b border-gray-100 dark:border-slate-700 last:border-0"
                                                 >
                                                     <div>
-                                                        <p className="font-medium">{s.full_name}</p>
+                                                        <p className="font-medium text-gray-900 dark:text-slate-100">{s.full_name}</p>
                                                         {s.student_id && (
-                                                            <p className="text-xs text-gray-400">
+                                                            <p className="text-xs text-gray-400 dark:text-slate-400">
                                                                 Roll: {s.student_id}
                                                             </p>
                                                         )}
                                                     </div>
-                                                    <UserPlus className="w-4 h-4 text-[#004d40]" />
+                                                    <UserPlus className="w-4 h-4 text-[#004d40] dark:text-teal-400" />
                                                 </button>
                                             ))}
                                         </div>
@@ -600,11 +600,11 @@ export default function BookingUI({
 
                         {/* Equipment */}
                         <div>
-                            <label className="flex items-center gap-1 text-xs font-bold text-gray-500 uppercase mb-1.5">
+                            <label className="flex items-center gap-1 text-xs font-bold text-gray-500 dark:text-slate-400 uppercase mb-1.5">
                                 <Package className="w-3 h-3" /> Equipment
                             </label>
                             {loadingEquipment ? (
-                                <p className="text-xs text-gray-400">Loading equipment...</p>
+                                <p className="text-xs text-gray-400 dark:text-slate-500">Loading equipment...</p>
                             ) : availableEquipment.length > 0 ? (
                                 <div className="flex flex-wrap gap-1.5">
                                     {availableEquipment.map((eq) => (
@@ -622,10 +622,10 @@ export default function BookingUI({
                                             className={cn(
                                                 'px-2.5 py-1 text-xs rounded-full border transition-all',
                                                 eq.in_use
-                                                    ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                                                    ? 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-500 border-gray-200 dark:border-slate-700 cursor-not-allowed'
                                                     : selectedEquipment.includes(eq.id)
                                                         ? 'bg-[#004d40] text-white border-[#004d40]'
-                                                        : 'bg-white text-gray-600 border-gray-200 hover:border-[#004d40]'
+                                                        : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-700 hover:border-[#004d40]'
                                             )}
                                         >
                                             {eq.name}{' '}
@@ -636,7 +636,7 @@ export default function BookingUI({
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-xs text-gray-400">No equipment available</p>
+                                <p className="text-xs text-gray-400 dark:text-slate-500">No equipment available</p>
                             )}
                         </div>
 

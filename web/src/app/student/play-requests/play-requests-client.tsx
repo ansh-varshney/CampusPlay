@@ -24,22 +24,22 @@ type PlayRequest = {
 const statusConfig: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
     pending: {
         label: 'Pending',
-        color: 'bg-yellow-100 text-yellow-700',
+        color: 'bg-yellow-100 dark:bg-yellow-950/60 text-yellow-700 dark:text-yellow-400',
         icon: <Clock className="w-4 h-4" />,
     },
     accepted: {
         label: 'Accepted',
-        color: 'bg-green-100 text-green-700',
+        color: 'bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-400',
         icon: <CheckCircle className="w-4 h-4" />,
     },
     rejected: {
         label: 'Declined',
-        color: 'bg-red-100 text-red-700',
+        color: 'bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-400',
         icon: <XCircle className="w-4 h-4" />,
     },
     expired: {
         label: 'Expired',
-        color: 'bg-gray-100 text-gray-500',
+        color: 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400',
         icon: <Clock className="w-4 h-4" />,
     },
 }
@@ -96,7 +96,7 @@ export function PlayRequestsClient({ requests }: { requests: PlayRequest[] }) {
 
     if (list.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-20 text-gray-400 gap-3">
+            <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-slate-500 gap-3">
                 <Inbox className="w-12 h-12 opacity-30" />
                 <p className="text-sm font-medium">No play requests yet</p>
             </div>
@@ -113,17 +113,17 @@ export function PlayRequestsClient({ requests }: { requests: PlayRequest[] }) {
         return (
             <div
                 className={cn(
-                    'p-4 rounded-xl border bg-white space-y-3',
-                    isPending ? 'border-blue-200 shadow-sm' : 'border-gray-100 opacity-80'
+                    'p-4 rounded-xl border bg-white dark:bg-slate-900 space-y-3',
+                    isPending ? 'border-blue-200 dark:border-blue-800 shadow-sm' : 'border-gray-100 dark:border-slate-800 opacity-80'
                 )}
             >
                 {/* Header row */}
                 <div className="flex items-start justify-between gap-2">
                     <div>
-                        <p className="text-sm font-semibold text-gray-900">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
                             {r.requester?.full_name}
                         </p>
-                        <p className="text-xs text-gray-400">{r.requester?.student_id}</p>
+                        <p className="text-xs text-gray-400 dark:text-slate-500">{r.requester?.student_id}</p>
                     </div>
                     <span
                         className={cn(
@@ -139,14 +139,14 @@ export function PlayRequestsClient({ requests }: { requests: PlayRequest[] }) {
                 {/* Booking details */}
                 {booking && (
                     <div className="space-y-1.5">
-                        <div className="flex items-center gap-2 text-sm text-gray-700">
-                            <MapPin className="w-4 h-4 text-gray-400 shrink-0" />
+                        <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-slate-300">
+                            <MapPin className="w-4 h-4 text-gray-400 dark:text-slate-500 shrink-0" />
                             <span>
                                 {court?.name} — {sportLabel(court?.sport || '')}
                             </span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-700">
-                            <CalendarDays className="w-4 h-4 text-gray-400 shrink-0" />
+                        <div className="flex items-center gap-2 text-sm text-gray-700 dark:text-slate-300">
+                            <CalendarDays className="w-4 h-4 text-gray-400 dark:text-slate-500 shrink-0" />
                             <span>
                                 {format(new Date(booking.start_time), 'EEE, MMM d · h:mm a')}
                                 {' – '}
@@ -157,7 +157,7 @@ export function PlayRequestsClient({ requests }: { requests: PlayRequest[] }) {
                 )}
 
                 {/* Requested at */}
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-400 dark:text-slate-500">
                     Requested {format(new Date(r.created_at), 'MMM d, yyyy · h:mm a')}
                 </p>
 
@@ -174,7 +174,7 @@ export function PlayRequestsClient({ requests }: { requests: PlayRequest[] }) {
                         <button
                             onClick={() => handleReject(r.id)}
                             disabled={isLoading}
-                            className="flex-1 py-2 text-sm font-semibold rounded-lg border border-red-300 text-red-600 hover:bg-red-50 disabled:opacity-50 transition-colors"
+                            className="flex-1 py-2 text-sm font-semibold rounded-lg border border-red-300 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 disabled:opacity-50 transition-colors"
                         >
                             {isLoading ? 'Processing…' : 'Decline'}
                         </button>
@@ -188,7 +188,7 @@ export function PlayRequestsClient({ requests }: { requests: PlayRequest[] }) {
         <div className="space-y-6">
             {pending.length > 0 && (
                 <section className="space-y-3">
-                    <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                    <h2 className="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wide">
                         Pending ({pending.length})
                     </h2>
                     {pending.map((r) => (
@@ -199,7 +199,7 @@ export function PlayRequestsClient({ requests }: { requests: PlayRequest[] }) {
 
             {past.length > 0 && (
                 <section className="space-y-3">
-                    <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                    <h2 className="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wide">
                         History
                     </h2>
                     {past.map((r) => (

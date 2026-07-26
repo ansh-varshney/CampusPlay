@@ -74,64 +74,64 @@ export default async function ProfilePage() {
 
     return (
         <div className="p-4 md:p-8 space-y-6">
-            <h1 className="text-2xl font-bold text-gray-900">My Profile</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">My Profile</h1>
 
             {/* Profile Card */}
             <Card>
                 <CardContent className="p-6 space-y-4">
                     <div className="flex items-center space-x-4">
-                        <div className="w-16 h-16 bg-[#004d40] rounded-full flex items-center justify-center text-2xl font-bold text-white">
+                        <div className="w-16 h-16 bg-[#004d40] dark:bg-teal-700 rounded-full flex items-center justify-center text-2xl font-bold text-white">
                             {profile?.full_name?.[0]?.toUpperCase() || 'U'}
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-gray-900">
+                            <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100">
                                 {profile?.full_name}
                             </h2>
-                            <p className="text-gray-500 text-sm">{profile?.email}</p>
+                            <p className="text-gray-500 dark:text-slate-400 text-sm">{profile?.email}</p>
                             {profile?.student_id && (
-                                <p className="text-gray-400 text-xs mt-0.5">
+                                <p className="text-gray-400 dark:text-slate-500 text-xs mt-0.5">
                                     Roll: {profile.student_id}
                                 </p>
                             )}
                             {profile?.phone_number && (
-                                <p className="text-gray-400 text-xs">{profile.phone_number}</p>
+                                <p className="text-gray-400 dark:text-slate-500 text-xs">{profile.phone_number}</p>
                             )}
                         </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-3 mt-4">
-                        <div className="bg-[#004d40]/5 p-4 rounded-xl text-center">
-                            <Star className="w-5 h-5 text-yellow-500 mx-auto mb-1" />
-                            <p className="text-2xl font-black text-[#004d40]">
+                        <div className="bg-[#004d40]/5 dark:bg-teal-950/40 p-4 rounded-xl text-center">
+                            <Star className="w-5 h-5 text-yellow-500 dark:text-yellow-400 mx-auto mb-1" />
+                            <p className="text-2xl font-black text-[#004d40] dark:text-teal-400">
                                 {profile?.points || 0}
                             </p>
-                            <p className="text-xs text-gray-500 font-medium">Points</p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400 font-medium">Points</p>
                         </div>
-                        <div className="bg-gray-50 p-4 rounded-xl text-center">
-                            <Calendar className="w-5 h-5 text-blue-500 mx-auto mb-1" />
-                            <p className="text-2xl font-black text-gray-800">{totalSessions}</p>
-                            <p className="text-xs text-gray-500 font-medium">Sessions</p>
+                        <div className="bg-gray-50 dark:bg-slate-800/60 p-4 rounded-xl text-center">
+                            <Calendar className="w-5 h-5 text-blue-500 dark:text-blue-400 mx-auto mb-1" />
+                            <p className="text-2xl font-black text-gray-800 dark:text-slate-100">{totalSessions}</p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400 font-medium">Sessions</p>
                         </div>
-                        <div className="bg-gray-50 p-4 rounded-xl text-center">
-                            <Shield className="w-5 h-5 text-gray-400 mx-auto mb-1" />
-                            <p className="text-xl font-black text-gray-800 capitalize">
+                        <div className="bg-gray-50 dark:bg-slate-800/60 p-4 rounded-xl text-center">
+                            <Shield className="w-5 h-5 text-gray-400 dark:text-slate-500 mx-auto mb-1" />
+                            <p className="text-xl font-black text-gray-800 dark:text-slate-100 capitalize">
                                 {profile?.role}
                             </p>
-                            <p className="text-xs text-gray-500 font-medium">Role</p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400 font-medium">Role</p>
                         </div>
                     </div>
                 </CardContent>
             </Card>
 
             {(profile?.priority_booking_remaining ?? 0) > 0 && (
-                <Card className="border-2 border-yellow-400 bg-yellow-50">
+                <Card className="border-2 border-yellow-400 bg-yellow-50 dark:bg-yellow-950/30 dark:border-yellow-600">
                     <CardContent className="p-4 flex items-start gap-3">
-                        <Trophy className="w-6 h-6 text-yellow-600 shrink-0 mt-0.5" />
+                        <Trophy className="w-6 h-6 text-yellow-600 dark:text-yellow-400 shrink-0 mt-0.5" />
                         <div>
-                            <p className="font-bold text-yellow-700">
+                            <p className="font-bold text-yellow-700 dark:text-yellow-400">
                                 Monthly Top-5 Reward Active!
                             </p>
-                            <p className="text-sm text-yellow-600 mt-0.5">
+                            <p className="text-sm text-yellow-600 dark:text-yellow-300 mt-0.5">
                                 You finished in the top 5 last month. You have{' '}
                                 <span className="font-semibold">1 priority booking</span> available
                                 — book a <span className="font-semibold">90-minute session</span>{' '}
@@ -147,8 +147,8 @@ export default async function ProfilePage() {
             {/* Academic Profile */}
             <Card>
                 <CardHeader className="py-3">
-                    <CardTitle className="text-lg flex items-center gap-2 text-gray-800">
-                        <GraduationCap className="w-5 h-5 text-[#004d40]" />
+                    <CardTitle className="text-lg flex items-center gap-2 text-gray-800 dark:text-slate-100">
+                        <GraduationCap className="w-5 h-5 text-[#004d40] dark:text-teal-400" />
                         Academic Profile
                     </CardTitle>
                 </CardHeader>
@@ -166,14 +166,14 @@ export default async function ProfilePage() {
 
             {/* Active 14-day ban */}
             {isBanned && profile?.banned_until && (
-                <Card className="border-2 border-orange-500 bg-orange-50">
+                <Card className="border-2 border-orange-500 bg-orange-50 dark:bg-orange-950/30 dark:border-orange-600">
                     <CardContent className="p-4 flex items-center gap-3">
-                        <Ban className="w-6 h-6 text-orange-600 shrink-0" />
+                        <Ban className="w-6 h-6 text-orange-600 dark:text-orange-400 shrink-0" />
                         <div>
-                            <p className="font-bold text-orange-700">
+                            <p className="font-bold text-orange-700 dark:text-orange-400">
                                 Temporarily Banned — Late Arrivals
                             </p>
-                            <p className="text-sm text-orange-600">
+                            <p className="text-sm text-orange-600 dark:text-orange-300">
                                 You have accumulated 3 late-arrival strikes. Booking is disabled
                                 until{' '}
                                 <span className="font-semibold">
@@ -192,12 +192,12 @@ export default async function ProfilePage() {
 
             {/* Suspension warning */}
             {!isBanned && isSuspended && (
-                <Card className="border-2 border-red-500 bg-red-50">
+                <Card className="border-2 border-red-500 bg-red-50 dark:bg-red-950/30 dark:border-red-600">
                     <CardContent className="p-4 flex items-center gap-3">
-                        <AlertTriangle className="w-6 h-6 text-red-600 shrink-0" />
+                        <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400 shrink-0" />
                         <div>
-                            <p className="font-bold text-red-700">Account Suspended</p>
-                            <p className="text-sm text-red-600">
+                            <p className="font-bold text-red-700 dark:text-red-400">Account Suspended</p>
+                            <p className="text-sm text-red-600 dark:text-red-300">
                                 {violationCount} violations recorded. Booking is disabled. Contact
                                 admin to resolve.
                             </p>
@@ -212,8 +212,8 @@ export default async function ProfilePage() {
                     className={cn(
                         'border',
                         lateArrivalCount >= 2
-                            ? 'border-orange-300 bg-orange-50'
-                            : 'border-yellow-200 bg-yellow-50'
+                            ? 'border-orange-300 bg-orange-50 dark:bg-orange-950/30 dark:border-orange-800'
+                            : 'border-yellow-200 bg-yellow-50 dark:bg-yellow-950/30 dark:border-yellow-800'
                     )}
                 >
                     <CardContent className="p-4 flex items-center gap-3">
@@ -227,12 +227,12 @@ export default async function ProfilePage() {
                             <p
                                 className={cn(
                                     'font-semibold text-sm',
-                                    lateArrivalCount >= 2 ? 'text-orange-700' : 'text-yellow-700'
+                                    lateArrivalCount >= 2 ? 'text-orange-700 dark:text-orange-400' : 'text-yellow-700 dark:text-yellow-400'
                                 )}
                             >
                                 Late Arrival Strikes: {lateArrivalCount} / 3
                             </p>
-                            <p className="text-xs text-gray-600 mt-0.5">
+                            <p className="text-xs text-gray-600 dark:text-slate-300 mt-0.5">
                                 3 strikes will result in a 14-day booking ban.
                                 {lateArrivalCount === 2 && ' One more and you will be banned!'}
                             </p>
@@ -242,12 +242,12 @@ export default async function ProfilePage() {
             )}
 
             {/* Violations */}
-            <Card className={cn(violationCount > 0 ? 'border-red-200' : 'border-green-200')}>
+            <Card className={cn(violationCount > 0 ? 'border-red-200 dark:border-red-900' : 'border-green-200 dark:border-green-900')}>
                 <CardHeader className="py-3">
                     <CardTitle
                         className={cn(
                             'text-lg flex items-center gap-2',
-                            violationCount > 0 ? 'text-red-700' : 'text-green-700'
+                            violationCount > 0 ? 'text-red-700 dark:text-red-400' : 'text-green-700 dark:text-green-400'
                         )}
                     >
                         <AlertTriangle className="w-5 h-5" />
@@ -256,7 +256,7 @@ export default async function ProfilePage() {
                 </CardHeader>
                 <CardContent>
                     {violationCount === 0 ? (
-                        <div className="flex items-center gap-2 text-green-600">
+                        <div className="flex items-center gap-2 text-green-600 dark:text-green-400">
                             <CheckCircle className="w-5 h-5" />
                             <p className="text-sm font-medium">
                                 No violations. Keep up the good sportsmanship!
@@ -267,14 +267,14 @@ export default async function ProfilePage() {
                             {violations.map((v) => {
                                 const message = v.reason || readableViolationType(v.violation_type)
                                 const severityColors: Record<string, string> = {
-                                    severe: 'bg-red-200 text-red-800',
-                                    moderate: 'bg-orange-200 text-orange-800',
-                                    minor: 'bg-yellow-200 text-yellow-800',
+                                    severe: 'bg-red-200 dark:bg-red-950 text-red-800 dark:text-red-300',
+                                    moderate: 'bg-orange-200 dark:bg-orange-950 text-orange-800 dark:text-orange-300',
+                                    minor: 'bg-yellow-200 dark:bg-yellow-950 text-yellow-800 dark:text-yellow-300',
                                 }
                                 return (
                                     <div
                                         key={v.id}
-                                        className="p-3 bg-red-50 rounded-lg border border-red-100"
+                                        className="p-3 bg-red-50 dark:bg-red-950/30 rounded-lg border border-red-100 dark:border-red-900"
                                     >
                                         <div className="flex items-center justify-between mb-1">
                                             <div className="flex items-center gap-2">
@@ -287,15 +287,15 @@ export default async function ProfilePage() {
                                                 >
                                                     {v.severity || 'minor'}
                                                 </span>
-                                                <span className="text-xs text-gray-500 font-medium">
+                                                <span className="text-xs text-gray-500 dark:text-slate-400 font-medium">
                                                     {readableViolationType(v.violation_type)}
                                                 </span>
                                             </div>
-                                            <span className="text-xs text-gray-400">
+                                            <span className="text-xs text-gray-400 dark:text-slate-500">
                                                 {format(new Date(v.created_at), 'MMM d, yyyy')}
                                             </span>
                                         </div>
-                                        <p className="text-sm text-gray-700">{message}</p>
+                                        <p className="text-sm text-gray-700 dark:text-slate-300">{message}</p>
                                     </div>
                                 )
                             })}
@@ -307,8 +307,8 @@ export default async function ProfilePage() {
             {/* Feedback & Complaints */}
             <Card>
                 <CardHeader className="py-3">
-                    <CardTitle className="text-lg flex items-center gap-2 text-gray-800">
-                        <MessageSquare className="w-5 h-5 text-[#004d40]" />
+                    <CardTitle className="text-lg flex items-center gap-2 text-gray-800 dark:text-slate-100">
+                        <MessageSquare className="w-5 h-5 text-[#004d40] dark:text-teal-400" />
                         Submit Feedback / Complaint
                     </CardTitle>
                 </CardHeader>
@@ -320,8 +320,8 @@ export default async function ProfilePage() {
             {feedbacks.length > 0 && (
                 <Card>
                     <CardHeader className="py-3">
-                        <CardTitle className="text-lg flex items-center gap-2 text-gray-800">
-                            <Clock className="w-5 h-5 text-gray-500" />
+                        <CardTitle className="text-lg flex items-center gap-2 text-gray-800 dark:text-slate-100">
+                            <Clock className="w-5 h-5 text-gray-500 dark:text-slate-400" />
                             My Past Feedbacks ({feedbacks.length})
                         </CardTitle>
                     </CardHeader>
@@ -330,7 +330,7 @@ export default async function ProfilePage() {
                             {feedbacks.map((fb) => (
                                 <div
                                     key={fb.id}
-                                    className="p-3 bg-gray-50 rounded-lg border border-gray-100"
+                                    className="p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg border border-gray-100 dark:border-slate-700"
                                 >
                                     <div className="flex items-center justify-between mb-1">
                                         <div className="flex items-center gap-2">
@@ -338,23 +338,23 @@ export default async function ProfilePage() {
                                                 className={cn(
                                                     'text-xs font-bold uppercase px-2 py-0.5 rounded-full',
                                                     statusColors[fb.status ?? 'open'] ??
-                                                        'bg-gray-100 text-gray-600'
+                                                        'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-300'
                                                 )}
                                             >
                                                 {(fb.status || 'open').replace('_', ' ')}
                                             </span>
-                                            <span className="text-xs text-gray-400 capitalize">
+                                            <span className="text-xs text-gray-400 dark:text-slate-400 capitalize">
                                                 {fb.category || 'feedback'}
                                             </span>
                                         </div>
-                                        <span className="text-xs text-gray-400">
+                                        <span className="text-xs text-gray-400 dark:text-slate-500">
                                             {format(new Date(fb.created_at), 'MMM d, yyyy')}
                                         </span>
                                     </div>
-                                    <p className="text-sm font-semibold text-gray-900">
+                                    <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
                                         {fb.title}
                                     </p>
-                                    <p className="text-sm text-gray-600 mt-0.5">{fb.description}</p>
+                                    <p className="text-sm text-gray-600 dark:text-slate-300 mt-0.5">{fb.description}</p>
                                 </div>
                             ))}
                         </div>
