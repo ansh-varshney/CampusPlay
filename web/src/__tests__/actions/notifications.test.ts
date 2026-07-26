@@ -374,7 +374,9 @@ describe('acceptPlayRequest', () => {
                 players_list: [{ id: 'student-1', status: 'pending' }],
             },
         ])
-        // DB call 3: select profile
+        // DB call 3: select userConflicts
+        mockDrizzleDb.enqueue([])
+        // DB call 4: select profile
         mockDrizzleDb.enqueue([
             { id: 'student-1', full_name: 'Alice', branch: 'CSE', gender: 'female', year: '2' },
         ])
@@ -394,6 +396,7 @@ describe('acceptPlayRequest', () => {
         const pr = { ...PLAY_REQUEST, status: 'pending', notification_id: null }
         mockDrizzleDb.enqueue([pr])
         mockDrizzleDb.enqueue([{ ...BOOKING, num_players: 2, players_list: [] }])
+        mockDrizzleDb.enqueue([]) // userConflicts
         mockDrizzleDb.enqueue([
             { id: 'student-1', full_name: 'Alice', branch: 'CSE', gender: 'female', year: '2' },
         ])

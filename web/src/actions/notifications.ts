@@ -265,7 +265,7 @@ export async function acceptPlayRequest(playRequestId: string) {
     const user = await getCurrentUser()
     if (!user) return { error: 'Unauthorized' }
 
-    const { inArray } = await import('drizzle-orm')
+    const { inArray, or, lt, gt, sql } = await import('drizzle-orm')
     const { courts } = await import('@/db/schema')
 
     const [pr] = await db
@@ -282,6 +282,7 @@ export async function acceptPlayRequest(playRequestId: string) {
             status: bookings.status,
             user_id: bookings.user_id,
             start_time: bookings.start_time,
+            end_time: bookings.end_time,
             players_list: bookings.players_list,
             num_players: bookings.num_players,
             court_name: courts.name,
@@ -299,6 +300,27 @@ export async function acceptPlayRequest(playRequestId: string) {
             .set({ status: 'expired', responded_at: new Date() })
             .where(eq(playRequests.id, playRequestId))
         return { error: 'The booking has already been cancelled or completed' }
+    }
+
+    // NEW: Check if user is already confirmed for overlapping time slot
+    const userConflicts = await db
+        .select({ id: bookings.id })
+        .from(bookings)
+        .where(
+            and(
+                or(
+                    eq(bookings.user_id, user.id),
+                    sql`${bookings.players_list} @> ${JSON.stringify([{ id: user.id, status: 'confirmed' }])}::jsonb`
+                ),
+                ne(bookings.status, 'cancelled'),
+                ne(bookings.status, 'rejected'),
+                lt(bookings.start_time, bkRow.end_time),
+                gt(bookings.end_time, bkRow.start_time)
+            )
+        )
+
+    if (userConflicts.length > 0) {
+        return { error: 'You already have a confirmed booking during this time slot.' }
     }
 
     const [profile] = await db

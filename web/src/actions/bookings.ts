@@ -216,7 +216,10 @@ export async function createBooking(prevState: any, formData: FormData) {
         .from(bookings)
         .where(
             and(
-                eq(bookings.user_id, user.id),
+                or(
+                    eq(bookings.user_id, user.id),
+                    sql`${bookings.players_list} @> ${JSON.stringify([{ id: user.id, status: 'confirmed' }])}::jsonb`
+                ),
                 ne(bookings.status, 'cancelled'),
                 ne(bookings.status, 'rejected'),
                 lt(bookings.start_time, endTime),
@@ -233,6 +236,31 @@ export async function createBooking(prevState: any, formData: FormData) {
     const numPlayers = numPlayersStr ? parseInt(numPlayersStr) : 2
     const rawPlayersList: { id: string; full_name?: string; [key: string]: unknown }[] =
         playersListStr ? JSON.parse(playersListStr) : []
+
+    // Prevent double-booking for invited players
+    if (rawPlayersList.length > 0) {
+        for (const player of rawPlayersList) {
+            const playerConflicts = await db
+                .select({ id: bookings.id })
+                .from(bookings)
+                .where(
+                    and(
+                        or(
+                            eq(bookings.user_id, player.id),
+                            sql`${bookings.players_list} @> ${JSON.stringify([{ id: player.id, status: 'confirmed' }])}::jsonb`
+                        ),
+                        ne(bookings.status, 'cancelled'),
+                        ne(bookings.status, 'rejected'),
+                        lt(bookings.start_time, endTime),
+                        gt(bookings.end_time, startTime)
+                    )
+                )
+
+            if (playerConflicts.length > 0) {
+                return { error: `Player ${player.full_name || 'invited'} is already booked during this time` }
+            }
+        }
+    }
 
     // Enrich players_list with profile snapshot
     let playersList = rawPlayersList

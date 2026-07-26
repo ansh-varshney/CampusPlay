@@ -223,6 +223,7 @@ describe('createBooking', () => {
         mockDrizzleDb.enqueue(VIOLATIONS_ZERO) // 2: violations
         mockDrizzleDb.enqueue(NO_CONFLICTS) // 3: court overlap
         mockDrizzleDb.enqueue(NO_CONFLICTS) // 4: student conflict
+        mockDrizzleDb.enqueue(NO_CONFLICTS) // 4.5: player conflicts
         mockDrizzleDb.enqueue([
             // 5: player enrichment
             { id: 'student-2', full_name: 'Bob', branch: 'ECE', gender: 'male', year: '3' },
