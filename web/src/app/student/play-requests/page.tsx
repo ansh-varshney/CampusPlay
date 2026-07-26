@@ -11,8 +11,8 @@ export default async function PlayRequestsPage() {
 
     return (
         <div className="p-4 md:p-8 space-y-4">
-            <h1 className="text-2xl font-bold text-gray-900">Play Requests</h1>
-            <p className="text-sm text-gray-500">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Play Requests</h1>
+            <p className="text-sm text-gray-500 dark:text-slate-400">
                 Requests from other students to join their booking.
             </p>
             <PlayRequestsClient requests={requests as any} />

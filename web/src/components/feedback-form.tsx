@@ -57,7 +57,7 @@ export function FeedbackForm() {
                         className={`flex-1 py-2 text-sm font-semibold rounded-lg border transition-all capitalize ${
                             category === cat
                                 ? 'bg-[#004d40] text-white border-[#004d40]'
-                                : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
+                                : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-700 hover:border-gray-400'
                         }`}
                     >
                         {cat}
@@ -72,7 +72,7 @@ export function FeedbackForm() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#004d40] focus:border-transparent"
+                className="w-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400 focus:border-transparent"
             />
 
             {/* Description */}
@@ -82,7 +82,7 @@ export function FeedbackForm() {
                 onChange={(e) => setDescription(e.target.value)}
                 required
                 rows={4}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#004d40] focus:border-transparent resize-none"
+                className="w-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400 focus:border-transparent resize-none"
             />
 
             {error && <p className="text-sm text-red-600 bg-red-50 p-2 rounded-lg">{error}</p>}

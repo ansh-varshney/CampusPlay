@@ -41,21 +41,21 @@ export function ProfileEditForm({ current }: Props) {
         return (
             <div className="space-y-3">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-                    <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-400 mb-0.5">Branch</p>
-                        <p className="font-semibold text-gray-900">{current.branch || '—'}</p>
+                    <div className="bg-gray-50 dark:bg-slate-800 rounded-lg p-3">
+                        <p className="text-xs text-gray-400 dark:text-slate-400 mb-0.5">Branch</p>
+                        <p className="font-semibold text-gray-900 dark:text-slate-100">{current.branch || '—'}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-400 mb-0.5">Year</p>
-                        <p className="font-semibold text-gray-900">{current.year || '—'}</p>
+                    <div className="bg-gray-50 dark:bg-slate-800 rounded-lg p-3">
+                        <p className="text-xs text-gray-400 dark:text-slate-400 mb-0.5">Year</p>
+                        <p className="font-semibold text-gray-900 dark:text-slate-100">{current.year || '—'}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-400 mb-0.5">Gender</p>
-                        <p className="font-semibold text-gray-900">{current.gender || '—'}</p>
+                    <div className="bg-gray-50 dark:bg-slate-800 rounded-lg p-3">
+                        <p className="text-xs text-gray-400 dark:text-slate-400 mb-0.5">Gender</p>
+                        <p className="font-semibold text-gray-900 dark:text-slate-100">{current.gender || '—'}</p>
                     </div>
-                    <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-400 mb-0.5">Phone</p>
-                        <p className="font-semibold text-gray-900">{current.phone_number || '—'}</p>
+                    <div className="bg-gray-50 dark:bg-slate-800 rounded-lg p-3">
+                        <p className="text-xs text-gray-400 dark:text-slate-400 mb-0.5">Phone</p>
+                        <p className="font-semibold text-gray-900 dark:text-slate-100">{current.phone_number || '—'}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export function ProfileEditForm({ current }: Props) {
                         Edit
                     </Button>
                     {saved && (
-                        <span className="flex items-center gap-1 text-sm text-green-600">
+                        <span className="flex items-center gap-1 text-sm text-green-600 dark:text-green-400">
                             <Check className="w-4 h-4" /> Saved!
                         </span>
                     )}
@@ -82,12 +82,12 @@ export function ProfileEditForm({ current }: Props) {
         <form onSubmit={handleSubmit} className="space-y-3">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <div className="space-y-1">
-                    <label className="text-xs font-medium text-gray-600">Branch</label>
+                    <label className="text-xs font-medium text-gray-600 dark:text-slate-400">Branch</label>
                     <select
                         name="branch"
                         required
                         defaultValue={current.branch || ''}
-                        className="w-full h-10 border border-gray-300 rounded-lg px-3 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#004d40]"
+                        className="w-full h-10 border border-gray-300 dark:border-slate-700 rounded-lg px-3 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400"
                     >
                         <option value="" disabled>
                             Select
@@ -100,12 +100,12 @@ export function ProfileEditForm({ current }: Props) {
                     </select>
                 </div>
                 <div className="space-y-1">
-                    <label className="text-xs font-medium text-gray-600">Year</label>
+                    <label className="text-xs font-medium text-gray-600 dark:text-slate-400">Year</label>
                     <select
                         name="year"
                         required
                         defaultValue={current.year || ''}
-                        className="w-full h-10 border border-gray-300 rounded-lg px-3 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#004d40]"
+                        className="w-full h-10 border border-gray-300 dark:border-slate-700 rounded-lg px-3 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400"
                     >
                         <option value="" disabled>
                             Select
@@ -118,12 +118,12 @@ export function ProfileEditForm({ current }: Props) {
                     </select>
                 </div>
                 <div className="space-y-1">
-                    <label className="text-xs font-medium text-gray-600">Gender</label>
+                    <label className="text-xs font-medium text-gray-600 dark:text-slate-400">Gender</label>
                     <select
                         name="gender"
                         required
                         defaultValue={current.gender || ''}
-                        className="w-full h-10 border border-gray-300 rounded-lg px-3 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#004d40]"
+                        className="w-full h-10 border border-gray-300 dark:border-slate-700 rounded-lg px-3 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400"
                     >
                         <option value="" disabled>
                             Select
@@ -136,13 +136,13 @@ export function ProfileEditForm({ current }: Props) {
                     </select>
                 </div>
                 <div className="space-y-1">
-                    <label className="text-xs font-medium text-gray-600">Phone Number</label>
+                    <label className="text-xs font-medium text-gray-600 dark:text-slate-400">Phone Number</label>
                     <input
                         type="tel"
                         name="phone_number"
                         defaultValue={current.phone_number || ''}
                         placeholder="+91 98765 43210"
-                        className="w-full h-10 border border-gray-300 rounded-lg px-3 text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#004d40]"
+                        className="w-full h-10 border border-gray-300 dark:border-slate-700 rounded-lg px-3 text-sm bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400 placeholder:text-gray-400 dark:placeholder:text-slate-500"
                     />
                 </div>
             </div>

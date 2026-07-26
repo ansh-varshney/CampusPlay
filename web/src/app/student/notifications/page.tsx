@@ -11,7 +11,7 @@ export default async function StudentNotificationsPage() {
 
     return (
         <div className="p-4 md:p-8 space-y-4">
-            <h1 className="text-2xl font-bold text-gray-900">Notifications</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Notifications</h1>
             <NotificationsClient notifications={notifications} />
         </div>
     )
