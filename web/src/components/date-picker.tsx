@@ -15,7 +15,7 @@ export function DatePicker() {
 
     return (
         <div className="flex items-center gap-3">
-            <label htmlFor="date-picker" className="text-sm font-semibold text-gray-900">
+            <label htmlFor="date-picker" className="text-sm font-semibold text-gray-900 dark:text-slate-100">
                 Select Date:
             </label>
             <input
@@ -24,7 +24,7 @@ export function DatePicker() {
                 min={new Date().toISOString().split('T')[0]}
                 value={selectedDate}
                 onChange={(e) => handleDateChange(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40] focus:border-transparent"
+                className="px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-sm text-gray-900 dark:text-slate-100 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40] focus:border-transparent"
             />
         </div>
     )

@@ -38,8 +38,8 @@ export default async function EquipmentManagement({
         <div className="p-6 space-y-6">
             <header className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Equipment Management</h1>
-                    <p className="text-gray-500 text-sm">
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Equipment Management</h1>
+                    <p className="text-gray-500 dark:text-slate-400 text-sm">
                         Track condition, usage, and manage inventory
                     </p>
                 </div>
@@ -61,13 +61,13 @@ export default async function EquipmentManagement({
                 <Card>
                     <CardContent className="p-12">
                         <div className="text-center space-y-3">
-                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                                <ImageIcon className="w-8 h-8 text-gray-400" />
+                            <div className="w-16 h-16 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto">
+                                <ImageIcon className="w-8 h-8 text-gray-400 dark:text-slate-500" />
                             </div>
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
                                 Please Select a Sport
                             </h3>
-                            <p className="text-gray-500 text-sm max-w-md mx-auto">
+                            <p className="text-gray-500 dark:text-slate-400 text-sm max-w-md mx-auto">
                                 Choose a sport from the dropdown above to view and manage equipment
                                 for that sport.
                             </p>
@@ -78,13 +78,13 @@ export default async function EquipmentManagement({
                 /* Equipment Table */
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold text-gray-900">
+                        <CardTitle className="text-lg font-bold text-gray-900 dark:text-slate-100">
                             Equipment Inventory ({equipment.length})
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         {equipment.length === 0 ? (
-                            <div className="text-center py-12 text-gray-500">
+                            <div className="text-center py-12 text-gray-500 dark:text-slate-400">
                                 <p>No equipment found for {sport}.</p>
                                 <EquipmentForm mode="create" sport={sport}>
                                     <Button variant="outline" className="mt-4">
@@ -126,10 +126,10 @@ export default async function EquipmentManagement({
                                             <TableRow key={item.id}>
                                                 <TableCell>
                                                     <div>
-                                                        <div className="font-semibold text-gray-900">
+                                                        <div className="font-semibold text-gray-900 dark:text-slate-100">
                                                             {item.equipment_id || 'N/A'}
                                                         </div>
-                                                        <div className="text-sm text-gray-600">
+                                                        <div className="text-sm text-gray-600 dark:text-slate-400">
                                                             {item.name}
                                                         </div>
                                                     </div>
@@ -146,14 +146,14 @@ export default async function EquipmentManagement({
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <span className="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-700 rounded text-sm font-medium">
+                                                    <span className="inline-flex items-center px-2 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 rounded text-sm font-medium">
                                                         {item.total_usage_count || 0}
                                                     </span>
                                                 </TableCell>
-                                                <TableCell className="text-gray-900">
+                                                <TableCell className="text-gray-900 dark:text-slate-100">
                                                     {item.vendor_name || '-'}
                                                 </TableCell>
-                                                <TableCell className="text-gray-900 font-medium">
+                                                <TableCell className="text-gray-900 dark:text-slate-100 font-medium">
                                                     {item.cost
                                                         ? `₹${parseFloat(String(item.cost)).toFixed(2)}`
                                                         : '-'}
@@ -161,11 +161,11 @@ export default async function EquipmentManagement({
                                                 <TableCell>
                                                     {item.condition === 'damaged' ||
                                                     item.condition === 'lost' ? (
-                                                        <span className="inline-flex items-center px-2 py-1 bg-red-50 text-red-700 rounded text-sm font-medium">
+                                                        <span className="inline-flex items-center px-2 py-1 bg-red-50 dark:bg-red-950/60 text-red-700 dark:text-red-300 rounded text-sm font-medium">
                                                             {item.total_usage_count || 0} uses
                                                         </span>
                                                     ) : (
-                                                        <span className="text-gray-500 text-sm">
+                                                        <span className="text-gray-500 dark:text-slate-400 text-sm">
                                                             Active
                                                         </span>
                                                     )}
@@ -176,7 +176,7 @@ export default async function EquipmentManagement({
                                                             images={item.pictures}
                                                             equipmentName={item.name}
                                                         >
-                                                            <button className="text-sm text-blue-600 hover:text-blue-800 font-medium underline">
+                                                            <button className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">
                                                                 {item.pictures.length} image
                                                                 {item.pictures.length > 1
                                                                     ? 's'
@@ -184,12 +184,12 @@ export default async function EquipmentManagement({
                                                             </button>
                                                         </ImageGallery>
                                                     ) : (
-                                                        <span className="text-xs text-gray-400">
+                                                        <span className="text-xs text-gray-400 dark:text-slate-500">
                                                             None
                                                         </span>
                                                     )}
                                                 </TableCell>
-                                                <TableCell className="max-w-xs truncate text-sm text-gray-900">
+                                                <TableCell className="max-w-xs truncate text-sm text-gray-900 dark:text-slate-100">
                                                     {item.notes || '-'}
                                                 </TableCell>
                                                 <TableCell className="text-right">

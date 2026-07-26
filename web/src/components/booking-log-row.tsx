@@ -24,38 +24,38 @@ const STATUS_CONFIG: Record<
     completed: {
         label: 'Completed',
         icon: CheckCircle,
-        color: 'text-green-700',
-        bg: 'bg-green-50 border-green-200',
+        color: 'text-green-700 dark:text-green-300',
+        bg: 'bg-green-50 dark:bg-green-950/40 border-green-200 dark:border-green-900',
     },
     rejected: {
         label: 'Rejected',
         icon: XCircle,
-        color: 'text-red-700',
-        bg: 'bg-red-50 border-red-200',
+        color: 'text-red-700 dark:text-red-300',
+        bg: 'bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900',
     },
     cancelled: {
         label: 'Cancelled',
         icon: XCircle,
-        color: 'text-gray-600',
-        bg: 'bg-gray-50 border-gray-200',
+        color: 'text-gray-600 dark:text-slate-400',
+        bg: 'bg-gray-50 dark:bg-slate-800 border-gray-200 dark:border-slate-700',
     },
     active: {
         label: 'Active',
         icon: Clock,
-        color: 'text-blue-700',
-        bg: 'bg-blue-50 border-blue-200',
+        color: 'text-blue-700 dark:text-blue-300',
+        bg: 'bg-blue-50 dark:bg-blue-950/40 border-blue-200 dark:border-blue-900',
     },
     confirmed: {
         label: 'Confirmed',
         icon: CheckCircle,
-        color: 'text-teal-700',
-        bg: 'bg-teal-50 border-teal-200',
+        color: 'text-teal-700 dark:text-teal-300',
+        bg: 'bg-teal-50 dark:bg-teal-950/40 border-teal-200 dark:border-teal-900',
     },
     pending: {
         label: 'Pending',
         icon: Clock,
-        color: 'text-amber-700',
-        bg: 'bg-amber-50 border-amber-200',
+        color: 'text-amber-700 dark:text-amber-300',
+        bg: 'bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-900',
     },
 }
 
@@ -93,15 +93,15 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
             <tr
                 onClick={() => setExpanded(!expanded)}
                 className={cn(
-                    'cursor-pointer hover:bg-gray-50 transition border-b border-gray-100',
-                    expanded && 'bg-gray-50'
+                    'cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800/50 transition border-b border-gray-100 dark:border-slate-800',
+                    expanded && 'bg-gray-50 dark:bg-slate-800/80'
                 )}
             >
                 <td className="px-4 py-3">
                     {expanded ? (
-                        <ChevronDown className="w-4 h-4 text-gray-400" />
+                        <ChevronDown className="w-4 h-4 text-gray-400 dark:text-slate-500" />
                     ) : (
-                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                        <ChevronRight className="w-4 h-4 text-gray-400 dark:text-slate-500" />
                     )}
                 </td>
 
@@ -121,10 +121,10 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
 
                 {/* Court */}
                 <td className="px-4 py-3">
-                    <div className="font-semibold text-gray-900 text-sm">
+                    <div className="font-semibold text-gray-900 dark:text-slate-100 text-sm">
                         {booking.courts?.name ?? '—'}
                     </div>
-                    <div className="text-xs text-gray-500 capitalize">
+                    <div className="text-xs text-gray-500 dark:text-slate-400 capitalize">
                         {booking.courts?.sport ?? '—'}
                     </div>
                 </td>
@@ -132,15 +132,15 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
                 {/* Booker */}
                 <td className="px-4 py-3">
                     {isAdminBooking ? (
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700">
+                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
                             {booking.is_maintenance ? 'Maintenance' : 'Priority'}
                         </span>
                     ) : (
                         <div>
-                            <div className="text-sm font-medium text-gray-900">
+                            <div className="text-sm font-medium text-gray-900 dark:text-slate-100">
                                 {booking.profiles?.full_name ?? '—'}
                             </div>
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-gray-500 dark:text-slate-400">
                                 {booking.profiles?.student_id ?? ''}
                             </div>
                         </div>
@@ -148,23 +148,23 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
                 </td>
 
                 {/* Time */}
-                <td className="px-4 py-3 text-sm text-gray-700 whitespace-nowrap">
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-slate-300 whitespace-nowrap">
                     {format(new Date(booking.start_time), 'h:mm a')}
-                    <span className="text-gray-400"> → </span>
+                    <span className="text-gray-400 dark:text-slate-500"> → </span>
                     {format(new Date(booking.end_time), 'h:mm a')}
                 </td>
 
                 {/* Players */}
                 <td className="px-4 py-3 text-center">
-                    <span className="inline-flex items-center gap-1 text-sm text-gray-700">
-                        <Users className="w-3.5 h-3.5 text-gray-400" />
+                    <span className="inline-flex items-center gap-1 text-sm text-gray-700 dark:text-slate-300">
+                        <Users className="w-3.5 h-3.5 text-gray-400 dark:text-slate-500" />
                         {booking.num_players || '—'}
                     </span>
                 </td>
 
                 {/* Equipment count */}
                 <td className="px-4 py-3 text-center">
-                    <span className="text-sm text-gray-700">
+                    <span className="text-sm text-gray-700 dark:text-slate-300">
                         {booking.equipment?.length > 0 ? booking.equipment.length : '—'}
                     </span>
                 </td>
@@ -172,16 +172,16 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
 
             {/* Expanded details */}
             {expanded && (
-                <tr className="bg-gray-50 border-b border-gray-200">
+                <tr className="bg-gray-50 dark:bg-slate-900/90 border-b border-gray-200 dark:border-slate-800">
                     <td colSpan={7} className="px-6 py-4">
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                             {/* All Players — spans 2 cols */}
                             <div className="md:col-span-2 space-y-2">
-                                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 flex items-center gap-1.5">
                                     <Users className="w-3.5 h-3.5" /> Players Involved
                                 </h4>
                                 {isAdminBooking ? (
-                                    <p className="text-sm text-gray-700 font-medium">
+                                    <p className="text-sm text-gray-700 dark:text-slate-300 font-medium">
                                         Admin / Manager booking
                                     </p>
                                 ) : booking.players && booking.players.length > 0 ? (
@@ -189,28 +189,28 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
                                         {booking.players.map((player, idx) => (
                                             <div
                                                 key={player.id}
-                                                className="flex items-start gap-2 p-2 bg-white rounded-lg border border-gray-100"
+                                                className="flex items-start gap-2 p-2 bg-white dark:bg-slate-800 rounded-lg border border-gray-100 dark:border-slate-700"
                                             >
-                                                <div className="w-6 h-6 rounded-full bg-[#004d40]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                                    <span className="text-[10px] font-bold text-[#004d40]">
+                                                <div className="w-6 h-6 rounded-full bg-[#004d40]/10 dark:bg-teal-950/60 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <span className="text-[10px] font-bold text-[#004d40] dark:text-teal-400">
                                                         {idx + 1}
                                                     </span>
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <p className="text-sm font-semibold text-gray-900 truncate">
+                                                    <p className="text-sm font-semibold text-gray-900 dark:text-slate-100 truncate">
                                                         {player.full_name}
                                                         {player.id ===
                                                             booking.profiles?.student_id && (
-                                                            <span className="ml-1.5 text-[10px] font-bold bg-[#004d40]/10 text-[#004d40] px-1.5 py-0.5 rounded">
+                                                            <span className="ml-1.5 text-[10px] font-bold bg-[#004d40]/10 dark:bg-teal-950/60 text-[#004d40] dark:text-teal-400 px-1.5 py-0.5 rounded">
                                                                 Booker
                                                             </span>
                                                         )}
                                                     </p>
-                                                    <p className="text-xs text-gray-500">
+                                                    <p className="text-xs text-gray-500 dark:text-slate-400">
                                                         Roll: {player.student_id || '—'}
                                                     </p>
                                                     {player.email && (
-                                                        <p className="text-xs text-gray-400 truncate">
+                                                        <p className="text-xs text-gray-400 dark:text-slate-500 truncate">
                                                             {player.email}
                                                         </p>
                                                     )}
@@ -220,19 +220,19 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
                                     </div>
                                 ) : (
                                     /* Fallback: only booker info available */
-                                    <div className="p-2 bg-white rounded-lg border border-gray-100">
-                                        <p className="text-sm font-semibold text-gray-900">
+                                    <div className="p-2 bg-white dark:bg-slate-800 rounded-lg border border-gray-100 dark:border-slate-700">
+                                        <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
                                             {booking.profiles?.full_name ?? '—'}
                                         </p>
-                                        <p className="text-xs text-gray-500">
+                                        <p className="text-xs text-gray-500 dark:text-slate-400">
                                             Roll: {booking.profiles?.student_id ?? '—'}
                                         </p>
                                         {booking.profiles?.email && (
-                                            <p className="text-xs text-gray-400">
+                                            <p className="text-xs text-gray-400 dark:text-slate-500">
                                                 {booking.profiles.email}
                                             </p>
                                         )}
-                                        <span className="text-[10px] font-bold bg-[#004d40]/10 text-[#004d40] px-1.5 py-0.5 rounded mt-1 inline-block">
+                                        <span className="text-[10px] font-bold bg-[#004d40]/10 dark:bg-teal-950/60 text-[#004d40] dark:text-teal-400 px-1.5 py-0.5 rounded mt-1 inline-block">
                                             Booker
                                         </span>
                                     </div>
@@ -241,23 +241,23 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
 
                             {/* Session */}
                             <div className="space-y-2">
-                                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 flex items-center gap-1.5">
                                     <Clock className="w-3.5 h-3.5" /> Session
                                 </h4>
                                 <div className="space-y-0.5">
-                                    <p className="text-sm text-gray-700">
+                                    <p className="text-sm text-gray-700 dark:text-slate-300">
                                         <span className="font-medium">Start:</span>{' '}
                                         {format(new Date(booking.start_time), 'h:mm a, MMM d yyyy')}
                                     </p>
-                                    <p className="text-sm text-gray-700">
+                                    <p className="text-sm text-gray-700 dark:text-slate-300">
                                         <span className="font-medium">End:</span>{' '}
                                         {format(new Date(booking.end_time), 'h:mm a, MMM d yyyy')}
                                     </p>
-                                    <p className="text-sm text-gray-700">
+                                    <p className="text-sm text-gray-700 dark:text-slate-300">
                                         <span className="font-medium">Players:</span>{' '}
                                         {booking.num_players || '—'}
                                     </p>
-                                    <p className="text-xs text-gray-400 mt-1">
+                                    <p className="text-xs text-gray-400 dark:text-slate-500 mt-1">
                                         Booked on{' '}
                                         {format(new Date(booking.created_at), 'MMM d, yyyy h:mm a')}
                                     </p>
@@ -266,7 +266,7 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
 
                             {/* Equipment */}
                             <div className="space-y-2">
-                                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
+                                <h4 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 flex items-center gap-1.5">
                                     <Dumbbell className="w-3.5 h-3.5" /> Equipment
                                 </h4>
                                 {booking.equipment?.length > 0 ? (
@@ -276,15 +276,15 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
                                                 key={eq.id}
                                                 className="flex items-center justify-between text-sm"
                                             >
-                                                <span className="text-gray-800">{eq.name}</span>
+                                                <span className="text-gray-800 dark:text-slate-200">{eq.name}</span>
                                                 <span
                                                     className={cn(
                                                         'text-[11px] font-bold px-1.5 py-0.5 rounded',
                                                         eq.condition === 'good'
-                                                            ? 'bg-green-100 text-green-700'
+                                                            ? 'bg-green-100 dark:bg-green-950/60 text-green-700 dark:text-green-300'
                                                             : eq.condition === 'minor_damage'
-                                                              ? 'bg-amber-100 text-amber-700'
-                                                              : 'bg-red-100 text-red-700'
+                                                              ? 'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300'
+                                                              : 'bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300'
                                                     )}
                                                 >
                                                     {eq.condition?.replace('_', ' ') ?? 'unknown'}
@@ -293,7 +293,7 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
                                         ))}
                                     </div>
                                 ) : (
-                                    <p className="text-sm text-gray-500">No equipment issued</p>
+                                    <p className="text-sm text-gray-500 dark:text-slate-400">No equipment issued</p>
                                 )}
                             </div>
                         </div>

@@ -49,7 +49,7 @@ export function DialogContent({ className, children, onClose, ...props }: Dialog
     return (
         <div
             className={cn(
-                'bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto',
+                'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-gray-900 dark:text-slate-100 rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto',
                 className
             )}
             {...props}
@@ -77,7 +77,7 @@ export function DialogTitle({
     ...props
 }: React.HTMLAttributes<HTMLHeadingElement>) {
     return (
-        <h2 className={cn('text-lg font-semibold text-gray-900', className)} {...props}>
+        <h2 className={cn('text-lg font-semibold text-gray-900 dark:text-slate-100', className)} {...props}>
             {children}
         </h2>
     )
@@ -87,7 +87,7 @@ export function DialogClose({ onClose }: { onClose: () => void }) {
     return (
         <button
             onClick={onClose}
-            className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-gray-500 dark:text-slate-400"
         >
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
@@ -115,7 +115,7 @@ export function DialogFooter({
     return (
         <div
             className={cn(
-                'flex items-center justify-end gap-3 px-6 py-4 bg-gray-50 rounded-b-lg',
+                'flex items-center justify-end gap-3 px-6 py-4 bg-gray-50 dark:bg-slate-800/50 border-t border-gray-100 dark:border-slate-800 rounded-b-lg',
                 className
             )}
             {...props}
