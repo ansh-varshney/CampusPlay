@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { eq, and, gt, ne, desc } from 'drizzle-orm'
+import { eq, and, gt, ne, desc, sql } from 'drizzle-orm'
 import { db } from '@/db'
 import { profiles, notifications, playRequests, bookings } from '@/db/schema'
 import { getCurrentUser } from '@/lib/session'
