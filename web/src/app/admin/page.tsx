@@ -16,6 +16,7 @@ import {
     DollarSign,
     TrendingUp,
     ScrollText,
+    ShoppingCart,
 } from 'lucide-react'
 
 export default async function AdminHome() {
@@ -87,6 +88,28 @@ export default async function AdminHome() {
                                         </div>
                                         <p className="text-sm text-gray-500 dark:text-slate-400">
                                             Manage courts, maintenance, and availability
+                                        </p>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </Link>
+
+                    <Link href="/admin/store">
+                        <Card className="hover:shadow-lg transition-all border-l-4 border-l-amber-500 cursor-pointer group">
+                            <CardContent className="p-6">
+                                <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <div className="w-10 h-10 bg-amber-50 dark:bg-amber-950/60 rounded-lg flex items-center justify-center group-hover:bg-amber-100 dark:group-hover:bg-amber-900/60 transition-colors">
+                                                <ShoppingCart className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                                            </div>
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
+                                                IIIT Teams Store
+                                            </h3>
+                                        </div>
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
+                                            Manage bulk equipment stock and team deductions
                                         </p>
                                     </div>
                                 </div>
