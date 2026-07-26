@@ -188,7 +188,7 @@ export function NotificationPopup({ initial = [] }: NotificationPopupProps) {
             timersRef.current.delete(id)
         }, 300)
         // Mark read in background
-        markNotificationRead(id).catch(() => {})
+        markNotificationRead(id).catch(() => { })
     }
 
     // Wire auto-dismiss for initial toasts
@@ -219,7 +219,7 @@ export function NotificationPopup({ initial = [] }: NotificationPopupProps) {
                                 if (is_read) dismiss(id)
                             }
                         })
-                        .catch(() => {})
+                        .catch(() => { })
                 }
                 return current
             })

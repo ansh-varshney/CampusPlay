@@ -54,11 +54,10 @@ export function FeedbackForm() {
                         key={cat}
                         type="button"
                         onClick={() => setCategory(cat)}
-                        className={`flex-1 py-2 text-sm font-semibold rounded-lg border transition-all capitalize ${
-                            category === cat
+                        className={`flex-1 py-2 text-sm font-semibold rounded-lg border transition-all capitalize ${category === cat
                                 ? 'bg-[#004d40] text-white border-[#004d40]'
                                 : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
-                        }`}
+                            }`}
                     >
                         {cat}
                     </button>

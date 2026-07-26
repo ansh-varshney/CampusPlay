@@ -85,10 +85,10 @@ export function ManagerBookingCard({ booking }: BookingCardProps) {
                     statusLabel.includes('Running')
                         ? 'border-l-green-500'
                         : statusLabel.includes('Overdue')
-                          ? 'border-l-amber-500'
-                          : statusLabel.includes('Waiting')
-                            ? 'border-l-orange-400'
-                            : 'border-l-blue-500',
+                            ? 'border-l-amber-500'
+                            : statusLabel.includes('Waiting')
+                                ? 'border-l-orange-400'
+                                : 'border-l-blue-500',
                     isAdmin ? 'bg-amber-50/50' : 'bg-white'
                 )}
             >
@@ -109,12 +109,12 @@ export function ManagerBookingCard({ booking }: BookingCardProps) {
                                 statusLabel.includes('Running')
                                     ? 'bg-green-100 text-green-700'
                                     : statusLabel.includes('Overdue')
-                                      ? 'bg-amber-100 text-amber-700'
-                                      : statusLabel.includes('Starts')
-                                        ? 'bg-yellow-100 text-yellow-700'
-                                        : statusLabel.includes('Waiting')
-                                          ? 'bg-orange-100 text-orange-700'
-                                          : 'bg-blue-50 text-blue-600'
+                                        ? 'bg-amber-100 text-amber-700'
+                                        : statusLabel.includes('Starts')
+                                            ? 'bg-yellow-100 text-yellow-700'
+                                            : statusLabel.includes('Waiting')
+                                                ? 'bg-orange-100 text-orange-700'
+                                                : 'bg-blue-50 text-blue-600'
                             )}
                         >
                             {statusLabel}

@@ -201,10 +201,10 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
                                                         {player.full_name}
                                                         {player.id ===
                                                             booking.profiles?.student_id && (
-                                                            <span className="ml-1.5 text-[10px] font-bold bg-[#004d40]/10 text-[#004d40] px-1.5 py-0.5 rounded">
-                                                                Booker
-                                                            </span>
-                                                        )}
+                                                                <span className="ml-1.5 text-[10px] font-bold bg-[#004d40]/10 text-[#004d40] px-1.5 py-0.5 rounded">
+                                                                    Booker
+                                                                </span>
+                                                            )}
                                                     </p>
                                                     <p className="text-xs text-gray-500">
                                                         Roll: {player.student_id || '—'}
@@ -283,8 +283,8 @@ export function BookingLogRow({ booking }: BookingLogRowProps) {
                                                         eq.condition === 'good'
                                                             ? 'bg-green-100 text-green-700'
                                                             : eq.condition === 'minor_damage'
-                                                              ? 'bg-amber-100 text-amber-700'
-                                                              : 'bg-red-100 text-red-700'
+                                                                ? 'bg-amber-100 text-amber-700'
+                                                                : 'bg-red-100 text-red-700'
                                                     )}
                                                 >
                                                     {eq.condition?.replace('_', ' ') ?? 'unknown'}
