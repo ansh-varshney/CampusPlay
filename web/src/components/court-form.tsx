@@ -40,36 +40,35 @@ export function CourtForm({ mode, court, sport, children }: CourtFormProps) {
     const [loading, setLoading] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState<File[]>([])
     const [previewUrls, setPreviewUrls] = useState<string[]>(court?.pictures || [])
+    const [isDragging, setIsDragging] = useState(false)
     const router = useRouter()
 
-    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || [])
-
+    const processFiles = (filesList: File[]) => {
         // Validate total count
-        if (previewUrls.length + files.length > 5) {
-            alert('Maximum 5 images allowed')
+        const maxFiles = 5
+        const totalFiles = previewUrls.length + filesList.length
+
+        if (totalFiles > maxFiles) {
+            alert(`Maximum ${maxFiles} images allowed`)
             return
         }
 
         // Validate each file
-        for (const file of files) {
-            const maxSize = 5 * 1024 * 1024 // 5MB
-            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-
-            if (!allowedTypes.includes(file.type)) {
-                alert(`${file.name}: Invalid file type. Only JPEG, PNG, and WebP are allowed.`)
+        for (const file of filesList) {
+            if (!['image/jpeg', 'image/jpg'].includes(file.type)) {
+                alert(`${file.name}: Only JPEG and JPG images are allowed`)
                 return
             }
-            if (file.size > maxSize) {
-                alert(`${file.name}: File too large. Maximum size is 5MB.`)
+            if (file.size > 3 * 1024 * 1024) {
+                alert(`${file.name}: File too large. Maximum 3MB per image`)
                 return
             }
         }
 
-        setSelectedFiles((prev) => [...prev, ...files])
+        // Add files and create previews
+        setSelectedFiles((prev) => [...prev, ...filesList])
 
-        // Create preview URLs
-        files.forEach((file) => {
+        filesList.forEach((file) => {
             const reader = new FileReader()
             reader.onloadend = () => {
                 setPreviewUrls((prev) => [...prev, reader.result as string])
@@ -78,16 +77,48 @@ export function CourtForm({ mode, court, sport, children }: CourtFormProps) {
         })
     }
 
-    const removeImage = (index: number) => {
-        if (index < (court?.pictures?.length || 0)) {
-            // Removing existing image
-            setPreviewUrls((prev) => prev.filter((_, i) => i !== index))
-        } else {
-            // Removing newly selected file
-            const newFileIndex = index - (court?.pictures?.length || 0)
-            setSelectedFiles((prev) => prev.filter((_, i) => i !== newFileIndex))
-            setPreviewUrls((prev) => prev.filter((_, i) => i !== index))
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || [])
+        processFiles(files)
+    }
+
+    const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(true)
+    }
+
+    const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(false)
+    }
+
+    const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(false)
+        const files = Array.from(e.dataTransfer.files || [])
+        if (files.length > 0) {
+            processFiles(files)
         }
+    }
+
+    const removeImage = (index: number) => {
+        const urlToRemove = previewUrls[index]
+        
+        // If it's a new file (not in original court pictures)
+        if (!court?.pictures?.includes(urlToRemove)) {
+            // Find its index among the new files to remove it from selectedFiles
+            const newFileUrls = previewUrls.filter((url) => !court?.pictures?.includes(url))
+            const fileIndex = newFileUrls.indexOf(urlToRemove)
+            
+            if (fileIndex !== -1) {
+                setSelectedFiles((prev) => prev.filter((_, i) => i !== fileIndex))
+            }
+        }
+        
+        setPreviewUrls((prev) => prev.filter((_, i) => i !== index))
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -302,15 +333,24 @@ export function CourtForm({ mode, court, sport, children }: CourtFormProps) {
 
                                     {/* Upload Button */}
                                     {previewUrls.length < 5 && (
-                                        <label className="flex items-center justify-center w-full h-24 px-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#004d40] transition-colors">
-                                            <div className="text-center">
-                                                <Upload className="w-6 h-6 mx-auto mb-1 text-gray-400" />
+                                        <label
+                                            onDragOver={handleDragOver}
+                                            onDragLeave={handleDragLeave}
+                                            onDrop={handleDrop}
+                                            className={`flex items-center justify-center w-full h-24 px-4 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+                                                isDragging
+                                                    ? 'border-[#004d40] bg-[#004d40]/5'
+                                                    : 'border-gray-300 hover:border-[#004d40]'
+                                            }`}
+                                        >
+                                            <div className="text-center pointer-events-none">
+                                                <Upload className={`w-6 h-6 mx-auto mb-1 ${isDragging ? 'text-[#004d40]' : 'text-gray-400'}`} />
                                                 <span className="text-sm font-medium text-gray-700">
-                                                    Click to upload ({previewUrls.length}/5)
+                                                    {isDragging ? 'Drop images here' : `Click or drag to upload (${previewUrls.length}/5)`}
                                                 </span>
                                                 <input
                                                     type="file"
-                                                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                                                    accept="image/jpeg,image/jpg"
                                                     multiple
                                                     onChange={handleFileSelect}
                                                     className="hidden"
@@ -319,7 +359,7 @@ export function CourtForm({ mode, court, sport, children }: CourtFormProps) {
                                         </label>
                                     )}
                                     <p className="text-xs text-gray-700 mt-1">
-                                        Supported: JPEG, PNG, WebP (Max 5MB each)
+                                        Supported: JPEG, JPG (Max 3MB each)
                                     </p>
                                 </div>
 
