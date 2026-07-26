@@ -36,8 +36,8 @@ export default async function CourtsManagement({
         <div className="p-6 space-y-6">
             <header className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Court Management</h1>
-                    <p className="text-gray-500 text-sm">Manage all sports courts and facilities</p>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Court Management</h1>
+                    <p className="text-gray-500 dark:text-slate-400 text-sm">Manage all sports courts and facilities</p>
                 </div>
                 {sport && sport !== 'all' && (
                     <CourtForm mode="create" sport={sport}>
@@ -57,13 +57,13 @@ export default async function CourtsManagement({
                 <Card>
                     <CardContent className="p-12">
                         <div className="text-center space-y-3">
-                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                                <Dribbble className="w-8 h-8 text-gray-400" />
+                            <div className="w-16 h-16 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto">
+                                <Dribbble className="w-8 h-8 text-gray-400 dark:text-slate-500" />
                             </div>
-                            <h3 className="text-lg font-semibold text-gray-900">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100">
                                 Please Select a Sport
                             </h3>
-                            <p className="text-gray-500 text-sm max-w-md mx-auto">
+                            <p className="text-gray-500 dark:text-slate-400 text-sm max-w-md mx-auto">
                                 Choose a sport from the dropdown above to view and manage courts for
                                 that sport.
                             </p>
@@ -74,13 +74,13 @@ export default async function CourtsManagement({
                 /* Courts Table */
                 <Card>
                     <CardHeader>
-                        <CardTitle className="text-lg font-bold text-gray-900">
+                        <CardTitle className="text-lg font-bold text-gray-900 dark:text-slate-100">
                             Courts List ({courts.length})
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         {courts.length === 0 ? (
-                            <div className="text-center py-12 text-gray-500">
+                            <div className="text-center py-12 text-gray-500 dark:text-slate-400">
                                 <p>No courts found for {sport}.</p>
                                 <CourtForm mode="create" sport={sport}>
                                     <Button variant="outline" className="mt-4">
@@ -118,10 +118,10 @@ export default async function CourtsManagement({
                                             <TableRow key={court.id}>
                                                 <TableCell>
                                                     <div>
-                                                        <div className="font-semibold text-gray-900">
+                                                        <div className="font-semibold text-gray-900 dark:text-slate-100">
                                                             {court.court_id || 'N/A'}
                                                         </div>
-                                                        <div className="text-sm text-gray-600">
+                                                        <div className="text-sm text-gray-600 dark:text-slate-400">
                                                             {court.name}
                                                         </div>
                                                     </div>
@@ -138,7 +138,7 @@ export default async function CourtsManagement({
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <span className="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-700 rounded text-sm font-medium">
+                                                    <span className="inline-flex items-center px-2 py-1 bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 rounded text-sm font-medium">
                                                         {court.usage_count || 0}
                                                     </span>
                                                 </TableCell>
@@ -148,7 +148,7 @@ export default async function CourtsManagement({
                                                             images={court.pictures}
                                                             equipmentName={court.name}
                                                         >
-                                                            <button className="text-sm text-blue-600 hover:text-blue-800 font-medium underline">
+                                                            <button className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium underline">
                                                                 {court.pictures.length} image
                                                                 {court.pictures.length > 1
                                                                     ? 's'
@@ -156,14 +156,14 @@ export default async function CourtsManagement({
                                                             </button>
                                                         </ImageGallery>
                                                     ) : (
-                                                        <span className="text-xs text-gray-400">
+                                                        <span className="text-xs text-gray-400 dark:text-slate-500">
                                                             None
                                                         </span>
                                                     )}
                                                 </TableCell>
                                                 <TableCell>
                                                     <div className="text-sm">
-                                                        <div className="text-gray-900 font-medium">
+                                                        <div className="text-gray-900 dark:text-slate-100 font-medium">
                                                             Repaired:{' '}
                                                             {court.last_maintenance_date
                                                                 ? new Date(
@@ -171,7 +171,7 @@ export default async function CourtsManagement({
                                                                   ).toLocaleDateString()
                                                                 : 'N/A'}
                                                         </div>
-                                                        <div className="text-gray-600">
+                                                        <div className="text-gray-600 dark:text-slate-400">
                                                             Checked:{' '}
                                                             {court.next_check_date
                                                                 ? new Date(
@@ -181,7 +181,7 @@ export default async function CourtsManagement({
                                                         </div>
                                                     </div>
                                                 </TableCell>
-                                                <TableCell className="max-w-xs truncate text-sm text-gray-900">
+                                                <TableCell className="max-w-xs truncate text-sm text-gray-900 dark:text-slate-100">
                                                     {court.notes || '-'}
                                                 </TableCell>
                                                 <TableCell className="text-right">

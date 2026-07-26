@@ -36,8 +36,8 @@ export default async function AdminHome() {
         <div className="p-6 space-y-6">
             <header className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-                    <p className="text-gray-500 text-sm">Welcome back, {adminName}</p>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Admin Dashboard</h1>
+                    <p className="text-gray-500 dark:text-slate-400 text-sm">Welcome back, {adminName}</p>
                 </div>
                 <div className="w-10 h-10 bg-[#004d40] rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-sm">
@@ -48,7 +48,7 @@ export default async function AdminHome() {
 
             {/* Core Management Modules */}
             <section>
-                <h2 className="text-lg font-bold text-gray-900 mb-4">Core Management</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4">Core Management</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <Link href="/admin/equipment">
                         <Card className="hover:shadow-lg transition-all border-l-4 border-l-[#004d40] cursor-pointer group">
@@ -56,14 +56,14 @@ export default async function AdminHome() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-[#004d40]/10 rounded-lg flex items-center justify-center group-hover:bg-[#004d40]/20 transition-colors">
-                                                <Package className="w-5 h-5 text-[#004d40]" />
+                                            <div className="w-10 h-10 bg-[#004d40]/10 dark:bg-teal-950/60 rounded-lg flex items-center justify-center group-hover:bg-[#004d40]/20 transition-colors">
+                                                <Package className="w-5 h-5 text-[#004d40] dark:text-teal-400" />
                                             </div>
-                                            <h3 className="font-bold text-gray-900">
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
                                                 Equipment Management
                                             </h3>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
                                             Track condition, usage, and manage inventory
                                         </p>
                                     </div>
@@ -78,14 +78,14 @@ export default async function AdminHome() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-                                                <MapPin className="w-5 h-5 text-blue-600" />
+                                            <div className="w-10 h-10 bg-blue-50 dark:bg-blue-950/60 rounded-lg flex items-center justify-center group-hover:bg-blue-100 dark:group-hover:bg-blue-900/60 transition-colors">
+                                                <MapPin className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                                             </div>
-                                            <h3 className="font-bold text-gray-900">
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
                                                 Court Management
                                             </h3>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
                                             Manage courts, maintenance, and availability
                                         </p>
                                     </div>
@@ -100,14 +100,14 @@ export default async function AdminHome() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-red-50 rounded-lg flex items-center justify-center group-hover:bg-red-100 transition-colors">
-                                                <AlertTriangle className="w-5 h-5 text-red-600" />
+                                            <div className="w-10 h-10 bg-red-50 dark:bg-red-950/60 rounded-lg flex items-center justify-center group-hover:bg-red-100 dark:group-hover:bg-red-900/60 transition-colors">
+                                                <AlertTriangle className="w-5 h-5 text-red-600 dark:text-red-400" />
                                             </div>
-                                            <h3 className="font-bold text-gray-900">
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
                                                 Defaulter Students
                                             </h3>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
                                             View flagged students and violation history
                                         </p>
                                     </div>
@@ -122,14 +122,14 @@ export default async function AdminHome() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center group-hover:bg-purple-100 transition-colors">
-                                                <Calendar className="w-5 h-5 text-purple-600" />
+                                            <div className="w-10 h-10 bg-purple-50 dark:bg-purple-950/60 rounded-lg flex items-center justify-center group-hover:bg-purple-100 dark:group-hover:bg-purple-900/60 transition-colors">
+                                                <Calendar className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                                             </div>
-                                            <h3 className="font-bold text-gray-900">
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
                                                 Reservations
                                             </h3>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
                                             View and manage court reservations
                                         </p>
                                     </div>
@@ -144,14 +144,14 @@ export default async function AdminHome() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-yellow-50 rounded-lg flex items-center justify-center group-hover:bg-yellow-100 transition-colors">
-                                                <Bell className="w-5 h-5 text-yellow-600" />
+                                            <div className="w-10 h-10 bg-yellow-50 dark:bg-yellow-950/60 rounded-lg flex items-center justify-center group-hover:bg-yellow-100 dark:group-hover:bg-yellow-900/60 transition-colors">
+                                                <Bell className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
                                             </div>
-                                            <h3 className="font-bold text-gray-900">
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
                                                 Announcements
                                             </h3>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
                                             Add and edit facility announcements
                                         </p>
                                     </div>
@@ -166,14 +166,14 @@ export default async function AdminHome() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
-                                                <MessageSquare className="w-5 h-5 text-indigo-600" />
+                                            <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-950/60 rounded-lg flex items-center justify-center group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60 transition-colors">
+                                                <MessageSquare className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                                             </div>
-                                            <h3 className="font-bold text-gray-900">
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
                                                 Feedback & Complaints
                                             </h3>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
                                             Review student feedback and complaints
                                         </p>
                                     </div>
@@ -188,12 +188,12 @@ export default async function AdminHome() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center group-hover:bg-green-100 transition-colors">
-                                                <Users className="w-5 h-5 text-green-600" />
+                                            <div className="w-10 h-10 bg-green-50 dark:bg-green-950/60 rounded-lg flex items-center justify-center group-hover:bg-green-100 dark:group-hover:bg-green-900/60 transition-colors">
+                                                <Users className="w-5 h-5 text-green-600 dark:text-green-400" />
                                             </div>
-                                            <h3 className="font-bold text-gray-900">Sport Info</h3>
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">Sport Info</h3>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
                                             View sport details and information
                                         </p>
                                     </div>
@@ -208,14 +208,14 @@ export default async function AdminHome() {
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <div className="w-10 h-10 bg-cyan-50 rounded-lg flex items-center justify-center group-hover:bg-cyan-100 transition-colors">
-                                                <ScrollText className="w-5 h-5 text-cyan-600" />
+                                            <div className="w-10 h-10 bg-cyan-50 dark:bg-cyan-950/60 rounded-lg flex items-center justify-center group-hover:bg-cyan-100 dark:group-hover:bg-cyan-900/60 transition-colors">
+                                                <ScrollText className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
                                             </div>
-                                            <h3 className="font-bold text-gray-900">
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
                                                 Booking Logs
                                             </h3>
                                         </div>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
                                             View all bookings by sport and date
                                         </p>
                                     </div>
@@ -228,7 +228,7 @@ export default async function AdminHome() {
 
             {/* Analytics Dashboards */}
             <section>
-                <h2 className="text-lg font-bold text-gray-900 mb-4">Analytics Dashboards</h2>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-slate-100 mb-4">Analytics Dashboards</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Link href="/admin/analytics/financials">
                         <Card className="hover:shadow-lg transition-all bg-gradient-to-br from-[#004d40] to-[#00695c] text-white cursor-pointer group">

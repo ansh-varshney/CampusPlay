@@ -20,8 +20,8 @@ export default async function AnnouncementsManagement() {
         <div className="p-6 space-y-6">
             <header className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Announcements Management</h1>
-                    <p className="text-gray-500 text-sm">
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Announcements Management</h1>
+                    <p className="text-gray-500 dark:text-slate-400 text-sm">
                         Manage facility announcements for all students
                     </p>
                 </div>
@@ -36,13 +36,13 @@ export default async function AnnouncementsManagement() {
             {/* Announcements List */}
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-lg text-gray-900">
+                    <CardTitle className="text-lg text-gray-900 dark:text-slate-100">
                         All Announcements ({announcements.length})
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
                     {announcements.length === 0 ? (
-                        <div className="text-center py-12 text-gray-500">
+                        <div className="text-center py-12 text-gray-500 dark:text-slate-400">
                             <p>No announcements yet.</p>
                             <AnnouncementForm mode="create">
                                 <Button variant="outline" className="mt-4">
@@ -55,19 +55,19 @@ export default async function AnnouncementsManagement() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-1/4 text-gray-900 font-semibold">
+                                    <TableHead className="w-1/4 text-gray-900 dark:text-slate-100 font-semibold">
                                         Title
                                     </TableHead>
-                                    <TableHead className="w-1/2 text-gray-900 font-semibold">
+                                    <TableHead className="w-1/2 text-gray-900 dark:text-slate-100 font-semibold">
                                         Content
                                     </TableHead>
-                                    <TableHead className="text-gray-900 font-semibold">
+                                    <TableHead className="text-gray-900 dark:text-slate-100 font-semibold">
                                         Created By
                                     </TableHead>
-                                    <TableHead className="text-gray-900 font-semibold">
+                                    <TableHead className="text-gray-900 dark:text-slate-100 font-semibold">
                                         Date
                                     </TableHead>
-                                    <TableHead className="text-right text-gray-900 font-semibold">
+                                    <TableHead className="text-right text-gray-900 dark:text-slate-100 font-semibold">
                                         Actions
                                     </TableHead>
                                 </TableRow>
@@ -75,18 +75,18 @@ export default async function AnnouncementsManagement() {
                             <TableBody>
                                 {announcements.map((announcement: any) => (
                                     <TableRow key={announcement.id}>
-                                        <TableCell className="font-semibold text-gray-900">
+                                        <TableCell className="font-semibold text-gray-900 dark:text-slate-100">
                                             {announcement.title}
                                         </TableCell>
-                                        <TableCell className="text-gray-800">
+                                        <TableCell className="text-gray-800 dark:text-slate-300">
                                             {announcement.content.length > 100
                                                 ? announcement.content.substring(0, 100) + '...'
                                                 : announcement.content}
                                         </TableCell>
-                                        <TableCell className="text-gray-800">
+                                        <TableCell className="text-gray-800 dark:text-slate-300">
                                             {announcement.profiles?.full_name || 'Unknown'}
                                         </TableCell>
-                                        <TableCell className="text-gray-800">
+                                        <TableCell className="text-gray-800 dark:text-slate-300">
                                             {format(
                                                 new Date(announcement.created_at),
                                                 'MMM d, yyyy'

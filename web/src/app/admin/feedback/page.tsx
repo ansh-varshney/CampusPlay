@@ -14,18 +14,18 @@ import { StatusFilter } from '@/components/status-filter'
 import { format } from 'date-fns'
 
 const CATEGORY_LABELS: Record<string, { label: string; color: string }> = {
-    complaint: { label: 'Complaints', color: 'bg-gray-100 text-gray-700' },
-    feedback: { label: 'Feedback', color: 'bg-blue-100 text-blue-700' },
-    emergency_by_manager: { label: 'Emergency', color: 'bg-red-100 text-red-700' },
+    complaint: { label: 'Complaints', color: 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300' },
+    feedback: { label: 'Feedback', color: 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300' },
+    emergency_by_manager: { label: 'Emergency', color: 'bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300' },
     // fallback mappings for legacy data
-    general: { label: 'Complaints', color: 'bg-gray-100 text-gray-700' },
-    emergency_by_student: { label: 'Emergency', color: 'bg-red-100 text-red-700' },
+    general: { label: 'Complaints', color: 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300' },
+    emergency_by_student: { label: 'Emergency', color: 'bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300' },
 }
 
 const CATEGORY_PILLS = [
-    { key: 'complaint', label: 'Complaints', color: 'bg-gray-100 text-gray-700' },
-    { key: 'feedback', label: 'Feedback', color: 'bg-blue-100 text-blue-700' },
-    { key: 'emergency_by_manager', label: 'Emergency', color: 'bg-red-100 text-red-700' },
+    { key: 'complaint', label: 'Complaints', color: 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300' },
+    { key: 'feedback', label: 'Feedback', color: 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300' },
+    { key: 'emergency_by_manager', label: 'Emergency', color: 'bg-red-100 dark:bg-red-950/60 text-red-700 dark:text-red-300' },
 ]
 
 export default async function FeedbackManagement({
@@ -47,8 +47,8 @@ export default async function FeedbackManagement({
     return (
         <div className="p-6 space-y-6">
             <header>
-                <h1 className="text-2xl font-bold text-gray-900">Feedback & Complaints</h1>
-                <p className="text-gray-500 text-sm">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Feedback & Complaints</h1>
+                <p className="text-gray-500 dark:text-slate-400 text-sm">
                     Monitor and resolve student feedback and manager reports
                 </p>
             </header>
@@ -56,7 +56,7 @@ export default async function FeedbackManagement({
             {/* Filters */}
             <div className="flex flex-wrap items-center gap-4 justify-between">
                 <StatusFilter />
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-500 dark:text-slate-400">
                     Total: <strong>{feedback.length}</strong>
                 </span>
             </div>
@@ -77,36 +77,36 @@ export default async function FeedbackManagement({
             {/* Feedback Table */}
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-lg text-gray-900">Complaints List</CardTitle>
+                    <CardTitle className="text-lg text-gray-900 dark:text-slate-100">Complaints List</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {feedback.length === 0 ? (
-                        <div className="text-center py-12 text-gray-500">
+                        <div className="text-center py-12 text-gray-500 dark:text-slate-400">
                             <p>No feedback found for this filter.</p>
                         </div>
                     ) : (
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="text-gray-900 font-semibold">
+                                    <TableHead className="text-gray-900 dark:text-slate-100 font-semibold">
                                         Category
                                     </TableHead>
-                                    <TableHead className="text-gray-900 font-semibold">
+                                    <TableHead className="text-gray-900 dark:text-slate-100 font-semibold">
                                         Filed By
                                     </TableHead>
-                                    <TableHead className="text-gray-900 font-semibold">
+                                    <TableHead className="text-gray-900 dark:text-slate-100 font-semibold">
                                         Title
                                     </TableHead>
-                                    <TableHead className="w-80 text-gray-900 font-semibold">
+                                    <TableHead className="w-80 text-gray-900 dark:text-slate-100 font-semibold">
                                         Description
                                     </TableHead>
-                                    <TableHead className="text-gray-900 font-semibold">
+                                    <TableHead className="text-gray-900 dark:text-slate-100 font-semibold">
                                         Status
                                     </TableHead>
-                                    <TableHead className="text-gray-900 font-semibold">
+                                    <TableHead className="text-gray-900 dark:text-slate-100 font-semibold">
                                         Date
                                     </TableHead>
-                                    <TableHead className="text-right text-gray-900 font-semibold">
+                                    <TableHead className="text-right text-gray-900 dark:text-slate-100 font-semibold">
                                         Actions
                                     </TableHead>
                                 </TableRow>
@@ -127,18 +127,18 @@ export default async function FeedbackManagement({
                                             </TableCell>
                                             <TableCell>
                                                 <div>
-                                                    <div className="font-semibold text-gray-900">
+                                                    <div className="font-semibold text-gray-900 dark:text-slate-100">
                                                         {item.profiles?.full_name || 'Unknown'}
                                                     </div>
-                                                    <div className="text-xs text-gray-600">
+                                                    <div className="text-xs text-gray-600 dark:text-slate-400">
                                                         {item.profiles?.student_id || '-'}
                                                     </div>
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="font-semibold text-gray-900">
+                                            <TableCell className="font-semibold text-gray-900 dark:text-slate-100">
                                                 {item.title}
                                             </TableCell>
-                                            <TableCell className="text-gray-800 text-sm">
+                                            <TableCell className="text-gray-800 dark:text-slate-300 text-sm">
                                                 {item.description.length > 100
                                                     ? item.description.substring(0, 100) + '...'
                                                     : item.description}
@@ -153,7 +153,7 @@ export default async function FeedbackManagement({
                                                     {(item.status ?? '').replace('_', ' ')}
                                                 </Badge>
                                             </TableCell>
-                                            <TableCell className="text-gray-800 text-sm">
+                                            <TableCell className="text-gray-800 dark:text-slate-300 text-sm">
                                                 {format(new Date(item.created_at), 'MMM d, yyyy')}
                                             </TableCell>
                                             <TableCell className="text-right">

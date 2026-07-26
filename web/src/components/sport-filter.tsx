@@ -16,14 +16,14 @@ export function SportFilter() {
 
     return (
         <div className="flex items-center gap-3">
-            <label htmlFor="sport-filter" className="text-sm font-semibold text-gray-900">
+            <label htmlFor="sport-filter" className="text-sm font-semibold text-gray-900 dark:text-slate-100">
                 Filter by Sport:
             </label>
             <select
                 id="sport-filter"
                 value={sport}
                 onChange={handleChange}
-                className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40] focus:border-transparent"
+                className="px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-sm text-gray-900 dark:text-slate-100 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40] focus:border-transparent"
             >
                 <option value="">Select Sport</option>
                 <option value="badminton">Badminton</option>

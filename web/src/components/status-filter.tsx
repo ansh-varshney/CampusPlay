@@ -17,11 +17,11 @@ export function StatusFilter() {
     return (
         <div className="flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700">Status:</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-slate-300">Status:</label>
                 <select
                     value={statusFilter}
                     onChange={(e) => handleChange('status', e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] text-gray-900"
+                    className="px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] text-gray-900 dark:text-slate-100"
                 >
                     <option value="all">All</option>
                     <option value="open">Open</option>
@@ -30,11 +30,11 @@ export function StatusFilter() {
                 </select>
             </div>
             <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-gray-700">Category:</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-slate-300">Category:</label>
                 <select
                     value={categoryFilter}
                     onChange={(e) => handleChange('category', e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] text-gray-900"
+                    className="px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#004d40] text-gray-900 dark:text-slate-100"
                 >
                     <option value="all">All Categories</option>
                     <option value="complaint">Complaints</option>

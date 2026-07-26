@@ -124,7 +124,7 @@ export function ReservationCalendar({
         return (
             <Card>
                 <CardContent className="p-12">
-                    <div className="text-center text-gray-500">
+                    <div className="text-center text-gray-500 dark:text-slate-400">
                         <p>No courts available for {sport}.</p>
                     </div>
                 </CardContent>
@@ -146,20 +146,20 @@ export function ReservationCalendar({
                                 }}
                             >
                                 {/* Header Row */}
-                                <div className="sticky top-0 left-0 z-20 bg-gray-50 border-b border-r border-gray-200 p-3">
-                                    <span className="text-xs font-semibold text-gray-600">
+                                <div className="sticky top-0 left-0 z-20 bg-gray-50 dark:bg-slate-800 border-b border-r border-gray-200 dark:border-slate-700 p-3">
+                                    <span className="text-xs font-semibold text-gray-600 dark:text-slate-400">
                                         TIME
                                     </span>
                                 </div>
                                 {courts.map((court) => (
                                     <div
                                         key={court.id}
-                                        className="sticky top-0 z-10 bg-gray-50 border-b border-r border-gray-200 p-3"
+                                        className="sticky top-0 z-10 bg-gray-50 dark:bg-slate-800 border-b border-r border-gray-200 dark:border-slate-700 p-3"
                                     >
-                                        <div className="font-semibold text-sm text-gray-900">
+                                        <div className="font-semibold text-sm text-gray-900 dark:text-slate-100">
                                             {court.court_id}
                                         </div>
-                                        <div className="text-xs text-gray-600">{court.name}</div>
+                                        <div className="text-xs text-gray-600 dark:text-slate-400">{court.name}</div>
                                     </div>
                                 ))}
 
@@ -167,7 +167,7 @@ export function ReservationCalendar({
                                 {timeSlots.map((time, timeIndex) => (
                                     <React.Fragment key={time}>
                                         {/* Time Label */}
-                                        <div className="sticky left-0 z-10 bg-white border-r border-b border-gray-200 p-2 text-xs text-gray-600 font-medium">
+                                        <div className="sticky left-0 z-10 bg-white dark:bg-slate-900 border-r border-b border-gray-200 dark:border-slate-800 p-2 text-xs text-gray-600 dark:text-slate-400 font-medium">
                                             {formatTime(time)}
                                         </div>
 
@@ -189,43 +189,43 @@ export function ReservationCalendar({
                                                         handleSlotClick(court, time, reservation)
                                                     }
                                                     className={`
-                                                        border-r border-b border-gray-200 p-2 min-h-[50px] transition-colors
+                                                        border-r border-b border-gray-200 dark:border-slate-800 p-2 min-h-[50px] transition-colors
                                                         ${
                                                             isPast
-                                                                ? 'bg-gray-100 cursor-not-allowed opacity-60'
+                                                                ? 'bg-gray-100 dark:bg-slate-800/50 cursor-not-allowed opacity-60'
                                                                 : isReserved
                                                                   ? isMaintenance
-                                                                      ? 'bg-orange-50 hover:bg-orange-100 border-l-4 border-l-orange-500 cursor-pointer'
+                                                                      ? 'bg-orange-50 dark:bg-orange-950/40 hover:bg-orange-100 dark:hover:bg-orange-900/50 border-l-4 border-l-orange-500 cursor-pointer'
                                                                       : isPriority
-                                                                        ? 'bg-purple-50 hover:bg-purple-100 border-l-4 border-l-purple-500 cursor-pointer'
-                                                                        : 'bg-blue-50 hover:bg-blue-100 border-l-4 border-l-blue-500 cursor-pointer'
-                                                                  : 'bg-white hover:bg-gray-50 cursor-pointer'
+                                                                        ? 'bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 dark:hover:bg-purple-900/50 border-l-4 border-l-purple-500 cursor-pointer'
+                                                                        : 'bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/50 border-l-4 border-l-blue-500 cursor-pointer'
+                                                                  : 'bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800 cursor-pointer'
                                                         }
                                                     `}
                                                 >
                                                     {isPast && !isReserved ? (
-                                                        <div className="text-[10px] text-gray-400 italic">
+                                                        <div className="text-[10px] text-gray-400 dark:text-slate-500 italic">
                                                             Passed
                                                         </div>
                                                     ) : reservation ? (
                                                         <div className="text-xs">
                                                             {isMaintenance ? (
-                                                                <div className="font-semibold text-orange-700">
+                                                                <div className="font-semibold text-orange-700 dark:text-orange-300">
                                                                     🔧 Maintenance
                                                                 </div>
                                                             ) : isPriority ? (
-                                                                <div className="font-semibold text-purple-700">
+                                                                <div className="font-semibold text-purple-700 dark:text-purple-300">
                                                                     Admin Priority
                                                                 </div>
                                                             ) : (
                                                                 <>
-                                                                    <div className="font-semibold text-blue-700">
+                                                                    <div className="font-semibold text-blue-700 dark:text-blue-300">
                                                                         {
                                                                             reservation.profiles
                                                                                 ?.full_name
                                                                         }
                                                                     </div>
-                                                                    <div className="text-gray-500 text-[10px]">
+                                                                    <div className="text-gray-500 dark:text-slate-400 text-[10px]">
                                                                         {
                                                                             reservation.profiles
                                                                                 ?.student_id
