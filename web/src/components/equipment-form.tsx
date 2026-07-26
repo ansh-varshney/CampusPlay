@@ -42,14 +42,13 @@ export function EquipmentForm({ mode, equipment, sport, children }: EquipmentFor
     const [loading, setLoading] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState<File[]>([])
     const [previewUrls, setPreviewUrls] = useState<string[]>(equipment?.pictures || [])
+    const [isDragging, setIsDragging] = useState(false)
     const router = useRouter()
 
-    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || [])
-
-        // Validate files
+    const processFiles = (filesList: File[]) => {
+        // Validate total count
         const maxFiles = 5
-        const totalFiles = selectedFiles.length + previewUrls.length + files.length
+        const totalFiles = previewUrls.length + filesList.length
 
         if (totalFiles > maxFiles) {
             alert(`Maximum ${maxFiles} images allowed`)
@@ -57,21 +56,21 @@ export function EquipmentForm({ mode, equipment, sport, children }: EquipmentFor
         }
 
         // Validate each file
-        for (const file of files) {
-            if (!['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type)) {
-                alert(`${file.name}: Only JPEG, PNG, and WebP images are allowed`)
+        for (const file of filesList) {
+            if (!['image/jpeg', 'image/jpg'].includes(file.type)) {
+                alert(`${file.name}: Only JPEG and JPG images are allowed`)
                 return
             }
-            if (file.size > 5 * 1024 * 1024) {
-                alert(`${file.name}: File too large. Maximum 5MB per image`)
+            if (file.size > 3 * 1024 * 1024) {
+                alert(`${file.name}: File too large. Maximum 3MB per image`)
                 return
             }
         }
 
         // Add files and create previews
-        setSelectedFiles((prev) => [...prev, ...files])
+        setSelectedFiles((prev) => [...prev, ...filesList])
 
-        files.forEach((file) => {
+        filesList.forEach((file) => {
             const reader = new FileReader()
             reader.onloadend = () => {
                 setPreviewUrls((prev) => [...prev, reader.result as string])
@@ -80,12 +79,47 @@ export function EquipmentForm({ mode, equipment, sport, children }: EquipmentFor
         })
     }
 
-    const removeImage = (index: number) => {
-        // If it's a new file (not yet uploaded)
-        if (index >= (equipment?.pictures?.length || 0)) {
-            const fileIndex = index - (equipment?.pictures?.length || 0)
-            setSelectedFiles((prev) => prev.filter((_, i) => i !== fileIndex))
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || [])
+        processFiles(files)
+    }
+
+    const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(true)
+    }
+
+    const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(false)
+    }
+
+    const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+        setIsDragging(false)
+        const files = Array.from(e.dataTransfer.files || [])
+        if (files.length > 0) {
+            processFiles(files)
         }
+    }
+
+    const removeImage = (index: number) => {
+        const urlToRemove = previewUrls[index]
+        
+        // If it's a new file (not in original equipment pictures)
+        if (!equipment?.pictures?.includes(urlToRemove)) {
+            // Find its index among the new files to remove it from selectedFiles
+            const newFileUrls = previewUrls.filter((url) => !equipment?.pictures?.includes(url))
+            const fileIndex = newFileUrls.indexOf(urlToRemove)
+            
+            if (fileIndex !== -1) {
+                setSelectedFiles((prev) => prev.filter((_, i) => i !== fileIndex))
+            }
+        }
+        
         setPreviewUrls((prev) => prev.filter((_, i) => i !== index))
     }
 
@@ -343,15 +377,24 @@ export function EquipmentForm({ mode, equipment, sport, children }: EquipmentFor
 
                                     {/* File Input */}
                                     {previewUrls.length < 5 && (
-                                        <label className="flex items-center justify-center w-full h-24 px-4 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-[#004d40] transition-colors">
-                                            <div className="text-center">
-                                                <Upload className="w-6 h-6 mx-auto mb-1 text-gray-400" />
+                                        <label
+                                            onDragOver={handleDragOver}
+                                            onDragLeave={handleDragLeave}
+                                            onDrop={handleDrop}
+                                            className={`flex items-center justify-center w-full h-24 px-4 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+                                                isDragging
+                                                    ? 'border-[#004d40] bg-[#004d40]/5'
+                                                    : 'border-gray-300 hover:border-[#004d40]'
+                                            }`}
+                                        >
+                                            <div className="text-center pointer-events-none">
+                                                <Upload className={`w-6 h-6 mx-auto mb-1 ${isDragging ? 'text-[#004d40]' : 'text-gray-400'}`} />
                                                 <span className="text-sm font-medium text-gray-700">
-                                                    Click to upload ({previewUrls.length}/5)
+                                                    {isDragging ? 'Drop images here' : `Click or drag to upload (${previewUrls.length}/5)`}
                                                 </span>
                                                 <input
                                                     type="file"
-                                                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                                                    accept="image/jpeg,image/jpg"
                                                     multiple
                                                     onChange={handleFileSelect}
                                                     className="hidden"
@@ -360,7 +403,7 @@ export function EquipmentForm({ mode, equipment, sport, children }: EquipmentFor
                                         </label>
                                     )}
                                     <p className="text-xs text-gray-700 mt-1">
-                                        Supported: JPEG, PNG, WebP (Max 5MB each)
+                                        Supported: JPEG, JPG (Max 3MB each)
                                     </p>
                                 </div>
 
