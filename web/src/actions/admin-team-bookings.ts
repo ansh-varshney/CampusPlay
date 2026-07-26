@@ -83,11 +83,11 @@ export async function createTeamBooking(prevState: any, formData: FormData) {
             
             // Notify student
             await sendNotification({
-                userId: conflict.user_id,
+                recipientId: conflict.user_id,
                 title: 'Booking Cancelled (Admin Override)',
-                message: `Your booking for ${courtInfo?.name || 'Court'} at ${timeStr} was cancelled by an Admin for a Team Practice session.`,
+                body: `Your booking for ${courtInfo?.name || 'Court'} at ${timeStr} was cancelled by an Admin for a Team Practice session.`,
                 type: 'system',
-                relatedId: conflict.id
+                data: { relatedId: conflict.id }
             })
         }
 
