@@ -238,7 +238,7 @@ export default function BookingUI({
             }
 
             const result = await createBooking(null, formData)
-            if (result && 'error' in result && typeof result.error === 'string') {
+            if (result?.error) {
                 setMessage({ text: result.error, type: 'error' })
             } else {
                 setMessage({ text: 'Slot booked successfully!', type: 'success' })
