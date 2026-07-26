@@ -39,13 +39,13 @@ interface ReservationsListProps {
 }
 
 const statusColors: Record<string, string> = {
-    pending_confirmation: 'bg-yellow-100 text-yellow-800',
-    confirmed: 'bg-blue-100 text-blue-800',
-    waiting_manager: 'bg-amber-100 text-amber-800',
-    active: 'bg-green-100 text-green-800',
-    completed: 'bg-gray-100 text-gray-600',
-    cancelled: 'bg-red-100 text-red-700',
-    rejected: 'bg-red-100 text-red-700',
+    pending_confirmation: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-950/60 dark:text-yellow-300',
+    confirmed: 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300',
+    waiting_manager: 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300',
+    active: 'bg-green-100 text-green-800 dark:bg-green-950/60 dark:text-green-300',
+    completed: 'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400',
+    cancelled: 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300',
+    rejected: 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300',
 }
 
 export function ReservationsList({ current, upcoming, past, userId }: ReservationsListProps) {
@@ -92,7 +92,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
             {/* Active Session */}
             {current.length > 0 && (
                 <div className="space-y-3">
-                    <h2 className="text-sm font-bold text-green-700 uppercase tracking-wide flex items-center gap-2">
+                    <h2 className="text-sm font-bold text-green-700 dark:text-green-400 uppercase tracking-wide flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                         Active Session
                     </h2>
@@ -104,33 +104,33 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
 
             {/* Upcoming */}
             <div className="space-y-3">
-                <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wide flex items-center gap-2">
+                <h2 className="text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wide flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
                     Upcoming ({upcoming.length})
                 </h2>
                 {upcoming.length === 0 ? (
-                    <div className="p-6 text-center text-gray-400 border-2 border-dashed rounded-xl">
+                    <div className="p-6 text-center text-gray-400 dark:text-slate-500 border-2 border-dashed border-gray-200 dark:border-slate-800 rounded-xl">
                         No upcoming bookings
                     </div>
                 ) : (
                     upcoming.map((booking) => (
-                        <Card key={booking.id} className="border-l-4 border-l-blue-400">
+                        <Card key={booking.id} className="border-l-4 border-l-blue-400 dark:border-l-blue-500">
                             <CardContent className="p-4 flex justify-between items-start">
                                 <div>
-                                    <h3 className="font-bold text-gray-800">
+                                    <h3 className="font-bold text-gray-800 dark:text-slate-100">
                                         {booking.courts?.name}
                                     </h3>
-                                    <span className="text-xs uppercase tracking-wider font-semibold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                                    <span className="text-xs uppercase tracking-wider font-semibold text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
                                         {booking.courts?.sport}
                                     </span>
-                                    <p className="text-sm text-gray-600 mt-2 flex items-center gap-1">
+                                    <p className="text-sm text-gray-600 dark:text-slate-300 mt-2 flex items-center gap-1">
                                         <Clock className="w-3 h-3" />
                                         {format(
                                             new Date(booking.start_time),
                                             'MMM d, h:mm a'
                                         )} — {format(new Date(booking.end_time), 'h:mm a')}
                                     </p>
-                                    <p className="text-xs text-gray-400 mt-1">
+                                    <p className="text-xs text-gray-400 dark:text-slate-500 mt-1">
                                         {booking.num_players || 2} players
                                     </p>
                                 </div>
@@ -139,7 +139,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                                         className={cn(
                                             'px-2 py-1 text-xs rounded-full font-semibold capitalize',
                                             statusColors[booking.status ?? ''] ||
-                                                'bg-gray-100 text-gray-600'
+                                                'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400'
                                         )}
                                     >
                                         {(booking.status ?? '').replace(/_/g, ' ')}
@@ -153,7 +153,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                className="text-red-500 hover:text-red-700 hover:bg-red-50 text-xs"
+                                                className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs"
                                                 onClick={() => handleCancel(booking.id)}
                                                 disabled={cancellingId === booking.id}
                                             >
@@ -170,7 +170,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
-                                                className="text-orange-500 hover:text-orange-700 hover:bg-orange-50 text-xs"
+                                                className="text-orange-500 hover:text-orange-700 hover:bg-orange-50 dark:hover:bg-orange-950/40 text-xs"
                                                 onClick={() => handleWithdraw(booking.id)}
                                                 disabled={withdrawingId === booking.id}
                                             >
@@ -195,7 +195,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
             <div className="space-y-3">
                 <button
                     onClick={() => setShowPast(!showPast)}
-                    className="text-sm font-bold text-gray-400 uppercase tracking-wide flex items-center gap-2 hover:text-gray-600 transition-colors w-full"
+                    className="text-sm font-bold text-gray-400 dark:text-slate-500 uppercase tracking-wide flex items-center gap-2 hover:text-gray-600 dark:hover:text-slate-300 transition-colors w-full"
                 >
                     <Clock className="w-4 h-4" />
                     Past ({past.length})
@@ -208,7 +208,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                 {showPast && (
                     <div className="space-y-2">
                         {past.length === 0 ? (
-                            <p className="text-center text-gray-400 text-sm p-4">
+                            <p className="text-center text-gray-400 dark:text-slate-500 text-sm p-4">
                                 No past bookings
                             </p>
                         ) : (
@@ -217,10 +217,10 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                                     <Card key={booking.id} className="opacity-70">
                                         <CardContent className="p-3 flex justify-between items-center">
                                             <div>
-                                                <h3 className="font-semibold text-gray-700 text-sm">
+                                                <h3 className="font-semibold text-gray-700 dark:text-slate-200 text-sm">
                                                     {booking.courts?.name}
                                                 </h3>
-                                                <p className="text-xs text-gray-400">
+                                                <p className="text-xs text-gray-400 dark:text-slate-500">
                                                     {format(
                                                         new Date(booking.start_time),
                                                         'MMM d, h:mm a'
@@ -231,7 +231,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                                                 className={cn(
                                                     'px-2 py-0.5 text-xs rounded-full capitalize',
                                                     statusColors[booking.status ?? ''] ||
-                                                        'bg-gray-100 text-gray-600'
+                                                        'bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-400'
                                                 )}
                                             >
                                                 {(booking.status ?? '').replace(/_/g, ' ')}
@@ -242,7 +242,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                                 {past.length > pastLimit && (
                                     <button
                                         onClick={() => setPastLimit((l) => l + 10)}
-                                        className="w-full text-xs text-gray-400 hover:text-gray-600 py-2 transition-colors"
+                                        className="w-full text-xs text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 py-2 transition-colors"
                                     >
                                         Show more ({past.length - pastLimit} remaining)
                                     </button>

@@ -91,11 +91,11 @@ export default async function StudentHome() {
         <div className="p-4 md:p-8 space-y-6">
             <header className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Welcome, {userName}</h1>
-                    <p className="text-gray-500 text-sm">Let&apos;s play some sports!</p>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Welcome, {userName}</h1>
+                    <p className="text-gray-500 dark:text-slate-400 text-sm">Let&apos;s play some sports!</p>
                 </div>
                 <Link href="/student/profile">
-                    <div className="w-10 h-10 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="w-10 h-10 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden">
                         {profile?.avatar_url && (
                             <img
                                 src={profile.avatar_url}
@@ -110,10 +110,10 @@ export default async function StudentHome() {
             {/* Quick Actions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Link href="/student/book" className="block">
-                    <Card className="bg-[#004d40] text-white hover:bg-[#004d40]/90 transition-colors border-0 shadow-lg">
+                    <Card className="bg-[#004d40] dark:bg-teal-900 text-white hover:bg-[#004d40]/90 dark:hover:bg-teal-800 transition-colors border-0 shadow-lg">
                         <CardContent className="p-6 flex items-center justify-between">
                             <div>
-                                <h2 className="text-xl font-bold mb-1">Book a Court</h2>
+                                <h2 className="text-xl font-bold mb-1 text-white">Book a Court</h2>
                                 <p className="text-white/80 text-sm">Reserve your slot now</p>
                             </div>
                             <CalendarPlus className="w-10 h-10 text-white/90" />
@@ -122,13 +122,13 @@ export default async function StudentHome() {
                 </Link>
 
                 <Link href="/student/leaderboard" className="block">
-                    <Card className="hover:border-[#004d40]/20 transition-colors">
+                    <Card className="hover:border-[#004d40]/20 dark:hover:border-teal-500/30 transition-colors">
                         <CardContent className="p-6 flex items-center justify-between">
                             <div>
-                                <h2 className="text-xl font-bold text-gray-900 mb-1">
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-slate-100 mb-1">
                                     Leaderboard
                                 </h2>
-                                <p className="text-gray-500 text-sm">
+                                <p className="text-gray-500 dark:text-slate-400 text-sm">
                                     {profile?.points || 0} pts · See your rank
                                 </p>
                             </div>
@@ -141,21 +141,21 @@ export default async function StudentHome() {
             {/* Upcoming Reservations */}
             <section>
                 <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-lg">Upcoming</h3>
+                    <h3 className="font-semibold text-lg text-gray-900 dark:text-slate-100">Upcoming</h3>
                     <Link
                         href="/student/reservations"
-                        className="text-[#004d40] text-sm font-medium hover:underline"
+                        className="text-[#004d40] dark:text-teal-400 text-sm font-medium hover:underline"
                     >
                         View all →
                     </Link>
                 </div>
                 {upcomingBookings.length === 0 ? (
-                    <Card className="bg-gray-50 border-dashed">
-                        <CardContent className="p-8 text-center text-gray-400">
+                    <Card className="bg-gray-50 dark:bg-slate-900/50 border-dashed border-gray-200 dark:border-slate-800">
+                        <CardContent className="p-8 text-center text-gray-400 dark:text-slate-500">
                             <p>No upcoming bookings.</p>
                             <Link
                                 href="/student/book"
-                                className="text-[#004d40] font-medium text-sm mt-2 inline-block"
+                                className="text-[#004d40] dark:text-teal-400 font-medium text-sm mt-2 inline-block"
                             >
                                 Book now →
                             </Link>
@@ -174,10 +174,10 @@ export default async function StudentHome() {
                                 >
                                     <CardContent className="p-4 flex justify-between items-center">
                                         <div>
-                                            <h4 className="font-semibold text-gray-800">
+                                            <h4 className="font-semibold text-gray-800 dark:text-slate-100">
                                                 {booking.court_name}
                                             </h4>
-                                            <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                                            <p className="text-xs text-gray-500 dark:text-slate-400 flex items-center gap-1 mt-1">
                                                 <Clock className="w-3 h-3" />
                                                 {formatDateTimeIST(booking.start_time)}
                                             </p>
@@ -186,10 +186,10 @@ export default async function StudentHome() {
                                             className={cn(
                                                 'px-2 py-1 text-xs rounded-full font-semibold capitalize',
                                                 booking.status === 'active'
-                                                    ? 'bg-green-100 text-green-800'
+                                                    ? 'bg-green-100 dark:bg-green-950/60 text-green-800 dark:text-green-300'
                                                     : booking.status === 'confirmed'
-                                                      ? 'bg-blue-100 text-blue-800'
-                                                      : 'bg-yellow-100 text-yellow-800'
+                                                      ? 'bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300'
+                                                      : 'bg-yellow-100 dark:bg-yellow-950/60 text-yellow-800 dark:text-yellow-300'
                                             )}
                                         >
                                             {booking.status === 'pending_confirmation'
@@ -206,13 +206,13 @@ export default async function StudentHome() {
 
             {/* Announcements */}
             <section>
-                <h3 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                    <Megaphone className="w-5 h-5 text-[#004d40]" />
+                <h3 className="font-semibold text-lg text-gray-900 dark:text-slate-100 mb-3 flex items-center gap-2">
+                    <Megaphone className="w-5 h-5 text-[#004d40] dark:text-teal-400" />
                     Announcements
                 </h3>
                 {announcementList.length === 0 ? (
-                    <Card className="bg-gray-50 border-dashed">
-                        <CardContent className="p-6 text-center text-gray-400 text-sm">
+                    <Card className="bg-gray-50 dark:bg-slate-900/50 border-dashed border-gray-200 dark:border-slate-800">
+                        <CardContent className="p-6 text-center text-gray-400 dark:text-slate-500 text-sm">
                             No announcements right now
                         </CardContent>
                     </Card>
@@ -223,15 +223,15 @@ export default async function StudentHome() {
                                 <CardContent className="p-4 flex gap-3">
                                     <AlertCircle className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
                                     <div>
-                                        <p className="font-medium text-sm text-gray-800">
+                                        <p className="font-medium text-sm text-gray-800 dark:text-slate-100">
                                             {ann.title}
                                         </p>
                                         {ann.content && (
-                                            <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                                            <p className="text-xs text-gray-500 dark:text-slate-400 mt-1 line-clamp-2">
                                                 {ann.content}
                                             </p>
                                         )}
-                                        <p className="text-xs text-gray-400 mt-1">
+                                        <p className="text-xs text-gray-400 dark:text-slate-500 mt-1">
                                             {formatDateTimeIST(ann.created_at)}
                                         </p>
                                     </div>

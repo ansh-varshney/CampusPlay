@@ -24,7 +24,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     const initialNotifications = await getMyNotifications(true, 10)
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-20 md:pb-0 md:pl-64">
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-950 text-gray-900 dark:text-slate-100 pb-20 md:pb-0 md:pl-64 transition-colors duration-200">
             <NotificationPopup initial={initialNotifications} />
             {children}
             <AdminNav />
