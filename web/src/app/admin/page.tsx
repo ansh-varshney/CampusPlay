@@ -117,6 +117,28 @@ export default async function AdminHome() {
                         </Card>
                     </Link>
 
+                    <Link href="/admin/team-booking">
+                        <Card className="hover:shadow-lg transition-all border-l-4 border-l-indigo-600 cursor-pointer group">
+                            <CardContent className="p-6">
+                                <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-950/60 rounded-lg flex items-center justify-center group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/60 transition-colors">
+                                                <Calendar className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                                            </div>
+                                            <h3 className="font-bold text-gray-900 dark:text-slate-100">
+                                                Team Booking
+                                            </h3>
+                                        </div>
+                                        <p className="text-sm text-gray-500 dark:text-slate-400">
+                                            Book practice slots for IIIT Teams (up to 20 days ahead)
+                                        </p>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </Link>
+
                     <Link href="/admin/defaulters">
                         <Card className="hover:shadow-lg transition-all border-l-4 border-l-red-600 cursor-pointer group">
                             <CardContent className="p-6">

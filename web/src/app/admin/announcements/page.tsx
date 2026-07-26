@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getAnnouncements } from '@/actions/admin'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {

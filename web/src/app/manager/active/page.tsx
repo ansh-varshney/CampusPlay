@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getCurrentBookings } from '@/actions/manager'
 import { Card, CardContent } from '@/components/ui/card'
 import Link from 'next/link'

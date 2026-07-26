@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getCurrentBookings, getUnderMaintenanceCourts } from '@/actions/manager'
 import { ManagerBookingCard } from '@/components/manager-booking-card'
 import { MaintenanceFlashcard } from '@/components/maintenance-flashcard'
