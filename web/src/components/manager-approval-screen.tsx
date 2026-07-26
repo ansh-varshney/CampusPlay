@@ -98,7 +98,7 @@ function ActiveSessionScreen({
             100,
             (secondsLeft /
                 differenceInSeconds(new Date(booking.end_time), new Date(booking.start_time))) *
-            100
+                100
         )
     )
 
@@ -435,20 +435,20 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                                                 ? c === 'good'
                                                     ? 'bg-[#004d40] text-white border-[#004d40]'
                                                     : c === 'minor_damage'
-                                                        ? 'bg-amber-500 text-white border-amber-500'
-                                                        : c === 'damaged'
-                                                            ? 'bg-red-600 text-white border-red-600'
-                                                            : 'bg-red-800 text-white border-red-800'
+                                                      ? 'bg-amber-500 text-white border-amber-500'
+                                                      : c === 'damaged'
+                                                        ? 'bg-red-600 text-white border-red-600'
+                                                        : 'bg-red-800 text-white border-red-800'
                                                 : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
                                         )}
                                     >
                                         {c === 'minor_damage'
                                             ? 'Minor'
                                             : c === 'good'
-                                                ? 'Good'
-                                                : c === 'damaged'
-                                                    ? 'Damaged'
-                                                    : 'Lost'}
+                                              ? 'Good'
+                                              : c === 'damaged'
+                                                ? 'Damaged'
+                                                : 'Lost'}
                                     </button>
                                 ))}
                             </div>
@@ -871,8 +871,8 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                     {isUpcoming
                         ? `Accept Play (starts in ${fmt(secondsToStart)})`
                         : loading
-                            ? 'Starting...'
-                            : 'Accept Play'}
+                          ? 'Starting...'
+                          : 'Accept Play'}
                 </button>
 
                 <button

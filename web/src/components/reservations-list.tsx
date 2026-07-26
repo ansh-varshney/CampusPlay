@@ -77,7 +77,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                 if (result.cancelled) {
                     alert(
                         result.reason ||
-                        'Booking was cancelled as player count dropped below minimum.'
+                            'Booking was cancelled as player count dropped below minimum.'
                     )
                 }
                 router.refresh()
@@ -139,7 +139,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                                         className={cn(
                                             'px-2 py-1 text-xs rounded-full font-semibold capitalize',
                                             statusColors[booking.status ?? ''] ||
-                                            'bg-gray-100 text-gray-600'
+                                                'bg-gray-100 text-gray-600'
                                         )}
                                     >
                                         {(booking.status ?? '').replace(/_/g, ' ')}
@@ -231,7 +231,7 @@ export function ReservationsList({ current, upcoming, past, userId }: Reservatio
                                                 className={cn(
                                                     'px-2 py-0.5 text-xs rounded-full capitalize',
                                                     statusColors[booking.status ?? ''] ||
-                                                    'bg-gray-100 text-gray-600'
+                                                        'bg-gray-100 text-gray-600'
                                                 )}
                                             >
                                                 {(booking.status ?? '').replace(/_/g, ' ')}
