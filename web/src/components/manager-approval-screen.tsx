@@ -120,7 +120,7 @@ function ActiveSessionScreen({
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-950 flex flex-col">
             {/* Header */}
             <div className="bg-[#004d40] text-white px-4 py-5">
                 <p className="text-xs uppercase tracking-widest text-teal-300 mb-1">
@@ -131,7 +131,7 @@ function ActiveSessionScreen({
             </div>
 
             {/* Timer Circle */}
-            <div className="flex flex-col items-center justify-center py-12 bg-white border-b">
+            <div className="flex flex-col items-center justify-center py-12 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800">
                 <div className="relative w-48 h-48">
                     <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
                         <circle
@@ -139,8 +139,9 @@ function ActiveSessionScreen({
                             cy="60"
                             r="54"
                             fill="none"
-                            stroke="#e5e7eb"
+                            stroke="currentColor"
                             strokeWidth="8"
+                            className="text-gray-200 dark:text-slate-800"
                         />
                         <circle
                             cx="60"
@@ -159,28 +160,28 @@ function ActiveSessionScreen({
                         <span
                             className={cn(
                                 'text-4xl font-mono font-bold tabular-nums',
-                                secondsLeft < 300 ? 'text-red-600' : 'text-[#004d40]'
+                                secondsLeft < 300 ? 'text-red-600' : 'text-[#004d40] dark:text-teal-400'
                             )}
                         >
                             {fmt(secondsLeft)}
                         </span>
-                        <span className="text-xs text-gray-500 mt-1">remaining</span>
+                        <span className="text-xs text-gray-500 dark:text-slate-400 mt-1">remaining</span>
                     </div>
                 </div>
-                <p className="mt-4 text-sm text-gray-500">
+                <p className="mt-4 text-sm text-gray-500 dark:text-slate-400">
                     Ends at {format(new Date(booking.end_time), 'h:mm a')}
                 </p>
             </div>
 
             {/* Players */}
-            <div className="px-4 py-5 bg-white border-b space-y-3">
-                <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Players</p>
+            <div className="px-4 py-5 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 space-y-3">
+                <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500">Players</p>
                 {booking.all_players.map((p) => (
                     <div key={p.id} className="flex items-center justify-between">
                         <div>
-                            <p className="font-semibold text-gray-900 text-sm">{p.full_name}</p>
+                            <p className="font-semibold text-gray-900 dark:text-slate-100 text-sm">{p.full_name}</p>
                             {p.student_id && (
-                                <p className="text-xs text-gray-500">Roll: {p.student_id}</p>
+                                <p className="text-xs text-gray-500 dark:text-slate-400">Roll: {p.student_id}</p>
                             )}
                         </div>
                         {p.phone && (
@@ -199,7 +200,7 @@ function ActiveSessionScreen({
             <div className="px-4 py-5 mt-auto space-y-3">
                 <button
                     onClick={() => router.push('/manager')}
-                    className="w-full py-3 border-2 border-gray-300 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-100 flex items-center justify-center gap-2 transition"
+                    className="w-full py-3 border-2 border-gray-300 dark:border-slate-700 rounded-xl text-sm font-semibold text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 flex items-center justify-center gap-2 transition"
                 >
                     <ArrowLeft className="w-4 h-4" />
                     Back to Manager Home
@@ -214,13 +215,13 @@ function ActiveSessionScreen({
                         Emergency End Session
                     </button>
                 ) : (
-                    <div className="bg-red-50 border border-red-200 rounded-xl p-4 space-y-3">
-                        <div className="flex items-center gap-2 text-red-700 font-bold">
+                    <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl p-4 space-y-3">
+                        <div className="flex items-center gap-2 text-red-700 dark:text-red-300 font-bold">
                             <Zap className="w-4 h-4" />
                             Emergency Stop - Reason Required
                         </div>
                         <textarea
-                            className="w-full border border-red-200 rounded-lg p-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
+                            className="w-full border border-red-200 dark:border-red-900 rounded-lg p-3 text-sm text-gray-900 dark:text-slate-100 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
                             rows={3}
                             placeholder="Describe the emergency reason..."
                             value={emergencyReason}
@@ -229,7 +230,7 @@ function ActiveSessionScreen({
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setEmergencyOpen(false)}
-                                className="flex-1 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700"
+                                className="flex-1 py-2.5 border border-gray-300 dark:border-slate-700 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300"
                             >
                                 Cancel
                             </button>
@@ -334,7 +335,7 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
     ]
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-8">
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-950 pb-8">
             {/* Header */}
             <div className="bg-[#004d40] text-white px-4 py-5">
                 <p className="text-xs uppercase tracking-widest text-teal-300 mb-1">
@@ -345,31 +346,31 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
             </div>
 
             {/* Session Info */}
-            <div className="mx-4 mt-4 bg-white rounded-xl border p-4 flex items-center gap-2 text-gray-500">
+            <div className="mx-4 mt-4 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-4 flex items-center gap-2 text-gray-500 dark:text-slate-400">
                 <CheckCircle className="w-4 h-4 text-green-600" />
                 <span className="text-sm">
-                    Session completed ┬╖ {format(new Date(booking.start_time), 'h:mm a')} -{' '}
+                    Session completed · {format(new Date(booking.start_time), 'h:mm a')} -{' '}
                     {format(new Date(booking.end_time), 'h:mm a')}
                 </span>
             </div>
 
             {/* Players */}
-            <div className="mx-4 mt-4 bg-white rounded-xl border overflow-hidden">
-                <div className="px-4 py-3 border-b">
-                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
+            <div className="mx-4 mt-4 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 overflow-hidden">
+                <div className="px-4 py-3 border-b border-gray-200 dark:border-slate-800">
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500">
                         Involved Students
                     </p>
                 </div>
                 {booking.all_players.map((p, idx) => (
-                    <div key={p.id} className={cn('px-4 py-4', idx > 0 && 'border-t')}>
+                    <div key={p.id} className={cn('px-4 py-4', idx > 0 && 'border-t border-gray-200 dark:border-slate-800')}>
                         <div className="flex items-start justify-between gap-2">
                             <div className="flex-1 min-w-0">
-                                <p className="font-semibold text-gray-900 text-sm">{p.full_name}</p>
+                                <p className="font-semibold text-gray-900 dark:text-slate-100 text-sm">{p.full_name}</p>
                                 {p.student_id && (
-                                    <p className="text-xs text-gray-500">Roll: {p.student_id}</p>
+                                    <p className="text-xs text-gray-500 dark:text-slate-400">Roll: {p.student_id}</p>
                                 )}
                                 {p.phone && (
-                                    <p className="text-xs text-gray-500">Phone: {p.phone}</p>
+                                    <p className="text-xs text-gray-500 dark:text-slate-400">Phone: {p.phone}</p>
                                 )}
                                 {p.phone && (
                                     <a
@@ -396,7 +397,7 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                                                 'w-5 h-5 transition-colors',
                                                 star <= (starRatings[p.id] ?? 5)
                                                     ? 'text-amber-500'
-                                                    : 'text-gray-300'
+                                                    : 'text-gray-300 dark:text-slate-700'
                                             )}
                                             fill="currentColor"
                                             viewBox="0 0 20 20"
@@ -414,19 +415,19 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
             {/* Equipment Condition */}
             {booking.equipment.length > 0 && (
                 <div className="mx-4 mt-4 space-y-3">
-                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400 px-1">
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500 px-1">
                         Equipment List
                     </p>
                     {booking.equipment.map((eq) => (
                         <div
                             key={eq.id}
                             className={cn(
-                                'bg-white rounded-xl border p-4',
-                                equipConds[eq.id] === 'lost' && 'border-red-300 bg-red-50/50'
+                                'bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-4',
+                                equipConds[eq.id] === 'lost' && 'border-red-300 dark:border-red-900 bg-red-50/50 dark:bg-red-950/40'
                             )}
                         >
-                            <p className="font-semibold text-gray-900 mb-3">{eq.name}</p>
-                            <p className="text-xs text-gray-500 mb-2">Select Condition:</p>
+                            <p className="font-semibold text-gray-900 dark:text-slate-100 mb-3">{eq.name}</p>
+                            <p className="text-xs text-gray-500 dark:text-slate-400 mb-2">Select Condition:</p>
                             <div className="grid grid-cols-4 gap-1.5">
                                 {(['good', 'minor_damage', 'damaged', 'lost'] as const).map((c) => (
                                     <button
@@ -444,7 +445,7 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                                                       : c === 'damaged'
                                                         ? 'bg-red-600 text-white border-red-600'
                                                         : 'bg-red-800 text-white border-red-800'
-                                                : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                                                : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700'
                                         )}
                                     >
                                         {c === 'minor_damage'
@@ -458,8 +459,8 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                                 ))}
                             </div>
                             {equipConds[eq.id] === 'lost' && (
-                                <p className="text-xs text-red-600 mt-2 font-medium">
-                                    ΓÜá Admin will be notified. This item will be removed from
+                                <p className="text-xs text-red-600 dark:text-red-400 mt-2 font-medium">
+                                    ⚠️ Admin will be notified. This item will be removed from
                                     future bookings.
                                 </p>
                             )}
@@ -474,7 +475,7 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                 {(studentPlayers.length > 0 || isAdminBooking) && (
                     <button
                         onClick={() => setReportModal(true)}
-                        className="w-full py-3.5 border border-gray-200 bg-white text-[#004d40] rounded-xl flex items-center justify-center gap-2 font-semibold text-sm hover:bg-gray-50 transition"
+                        className="w-full py-3.5 border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-[#004d40] dark:text-teal-400 rounded-xl flex items-center justify-center gap-2 font-semibold text-sm hover:bg-gray-50 dark:hover:bg-slate-800 transition"
                     >
                         <Flag className="w-4 h-4" />
                         Report Student(s)
@@ -494,15 +495,15 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
             {/* Report Student Modal */}
             {reportModal && (
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-end">
-                    <div className="bg-white w-full rounded-t-2xl p-5 space-y-4 max-h-[85vh] overflow-y-auto">
-                        <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                    <div className="bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 w-full rounded-t-2xl p-5 space-y-4 max-h-[85vh] overflow-y-auto">
+                        <h3 className="font-bold text-gray-900 dark:text-slate-100 flex items-center gap-2">
                             <Flag className="w-4 h-4 text-amber-600" />
                             Report Student
                         </h3>
 
                         {/* Student selector */}
                         <div>
-                            <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+                            <p className="text-xs font-semibold text-gray-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
                                 Select Student
                             </p>
                             <div className="space-y-2">
@@ -510,7 +511,7 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                                     (p) => (
                                         <label
                                             key={p.id}
-                                            className="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:bg-gray-50"
+                                            className="flex items-center gap-3 p-3 border border-gray-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800"
                                         >
                                             <input
                                                 type="radio"
@@ -521,11 +522,11 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                                                 className="w-4 h-4 accent-[#004d40]"
                                             />
                                             <div>
-                                                <p className="text-sm font-semibold text-gray-900">
+                                                <p className="text-sm font-semibold text-gray-900 dark:text-slate-100">
                                                     {p.full_name}
                                                 </p>
                                                 {p.student_id && (
-                                                    <p className="text-xs text-gray-500">
+                                                    <p className="text-xs text-gray-500 dark:text-slate-400">
                                                         {p.student_id}
                                                     </p>
                                                 )}
@@ -538,14 +539,14 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
 
                         {/* Reason selector */}
                         <div>
-                            <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+                            <p className="text-xs font-semibold text-gray-500 dark:text-slate-400 mb-2 uppercase tracking-wide">
                                 Reason
                             </p>
                             <div className="space-y-2">
                                 {REPORT_REASONS.map((r) => (
                                     <label
                                         key={r.value}
-                                        className="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:bg-gray-50"
+                                        className="flex items-center gap-3 p-3 border border-gray-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800"
                                     >
                                         <input
                                             type="radio"
@@ -555,7 +556,7 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                                             onChange={() => setReportReason(r.value)}
                                             className="w-4 h-4 accent-[#004d40]"
                                         />
-                                        <span className="text-sm text-gray-800">{r.label}</span>
+                                        <span className="text-sm text-gray-800 dark:text-slate-200">{r.label}</span>
                                     </label>
                                 ))}
                             </div>
@@ -563,7 +564,7 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
 
                         {reportReason === 'other' && (
                             <textarea
-                                className="w-full border border-gray-200 rounded-xl p-3 text-sm text-gray-900 resize-none focus:outline-none focus:ring-2 focus:ring-[#004d40]"
+                                className="w-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl p-3 text-sm text-gray-900 dark:text-slate-100 resize-none focus:outline-none focus:ring-2 focus:ring-[#004d40]"
                                 rows={2}
                                 placeholder="Describe the issue..."
                                 value={reportCustom}
@@ -574,7 +575,7 @@ function PostSessionScreen({ booking }: { booking: BookingDetails }) {
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setReportModal(false)}
-                                className="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-700"
+                                className="flex-1 py-3 border border-gray-200 dark:border-slate-700 rounded-xl text-sm font-medium text-gray-700 dark:text-slate-300"
                             >
                                 Cancel
                             </button>
@@ -694,17 +695,17 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
 
     if (isExpired) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-950">
                 <div className="bg-red-700 text-white px-4 py-5">
                     <p className="text-xs uppercase tracking-widest text-red-200 mb-1">
                         Auto Cancelled
                     </p>
                     <h1 className="text-xl font-bold">{booking.courts?.name}</h1>
                 </div>
-                <div className="mx-4 mt-8 bg-white rounded-xl border border-red-100 p-6 text-center space-y-3">
+                <div className="mx-4 mt-8 bg-white dark:bg-slate-900 rounded-xl border border-red-100 dark:border-red-950 p-6 text-center space-y-3">
                     <AlertTriangle className="w-10 h-10 text-red-500 mx-auto" />
-                    <h2 className="font-bold text-gray-900">Booking Expired</h2>
-                    <p className="text-sm text-gray-600">
+                    <h2 className="font-bold text-gray-900 dark:text-slate-100">Booking Expired</h2>
+                    <p className="text-sm text-gray-600 dark:text-slate-400">
                         This booking was not approved within 10 minutes of the start time and has
                         been auto-cancelled. A penalty has been issued to all involved students.
                     </p>
@@ -724,15 +725,15 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
     // -- CANCELLED/REJECTED --------------------------------------------------
     if (booking.status === 'cancelled' || booking.status === 'rejected') {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-950">
                 <div className="bg-gray-700 text-white px-4 py-5">
                     <p className="text-xs uppercase tracking-widest text-gray-300 mb-1">
                         {booking.status === 'cancelled' ? 'Cancelled' : 'Rejected'}
                     </p>
                     <h1 className="text-xl font-bold">{booking.courts?.name}</h1>
                 </div>
-                <div className="mx-4 mt-8 bg-white rounded-xl border p-6 text-center space-y-3">
-                    <p className="text-sm text-gray-600">This booking has been {booking.status}.</p>
+                <div className="mx-4 mt-8 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-6 text-center space-y-3">
+                    <p className="text-sm text-gray-600 dark:text-slate-400">This booking has been {booking.status}.</p>
                 </div>
                 <div className="mx-4 mt-4">
                     <button
@@ -748,7 +749,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
 
     // -- PENDING APPROVAL ----------------------------------------------------
     return (
-        <div className="min-h-screen bg-gray-50 pb-8">
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-950 pb-8">
             {/* Header */}
             <div className="bg-[#004d40] text-white px-4 py-5">
                 <div className="flex items-start mb-3">
@@ -767,59 +768,59 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
             </div>
 
             {/* Timer */}
-            <div className="mx-4 mt-4 bg-white rounded-xl border p-4 flex items-center gap-3">
+            <div className="mx-4 mt-4 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 p-4 flex items-center gap-3">
                 <Clock
                     className={cn('w-5 h-5', isUpcoming ? 'text-amber-500' : 'text-green-600')}
                 />
                 <div>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 dark:text-slate-400">
                         {isUpcoming ? 'Session starts in' : 'Started - awaiting approval'}
                     </p>
                     {isUpcoming ? (
-                        <p className="text-xl font-mono font-bold text-[#004d40]">
+                        <p className="text-xl font-mono font-bold text-[#004d40] dark:text-teal-400">
                             {fmt(secondsToStart, isHindi)}
                         </p>
                     ) : (
-                        <p className="text-sm font-semibold text-green-700">Ready to accept now</p>
+                        <p className="text-sm font-semibold text-green-700 dark:text-green-400">Ready to accept now</p>
                     )}
                 </div>
             </div>
 
             {/* Booking Info */}
-            <div className="mx-4 mt-4 bg-white rounded-xl border overflow-hidden">
-                <div className="px-4 py-3 border-b">
-                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
+            <div className="mx-4 mt-4 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 overflow-hidden">
+                <div className="px-4 py-3 border-b border-gray-200 dark:border-slate-800">
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500">
                         Booking Details
                     </p>
                 </div>
                 <div className="px-4 py-3 space-y-2 text-sm">
                     <div className="flex justify-between">
-                        <span className="text-gray-500">{isHindi ? 'समय' : 'Time'}</span>
-                        <span className="font-medium text-gray-900">
+                        <span className="text-gray-500 dark:text-slate-400">{isHindi ? 'समय' : 'Time'}</span>
+                        <span className="font-medium text-gray-900 dark:text-slate-100">
                             {format(startTime, 'h:mm a')} - {format(endTime, 'h:mm a')}
                         </span>
                     </div>
                     <div className="flex justify-between">
-                        <span className="text-gray-500">{isHindi ? 'खिलाड़ी' : 'Players'}</span>
-                        <span className="font-medium text-gray-900">{booking.num_players}</span>
+                        <span className="text-gray-500 dark:text-slate-400">{isHindi ? 'खिलाड़ी' : 'Players'}</span>
+                        <span className="font-medium text-gray-900 dark:text-slate-100">{booking.num_players}</span>
                     </div>
                     {booking.equipment.length > 0 && (
                         <div className="flex justify-between">
-                            <span className="text-gray-500">{isHindi ? 'उपकरण' : 'Equipment'}</span>
-                            <span className="font-medium text-gray-900 text-right max-w-[55%]">
+                            <span className="text-gray-500 dark:text-slate-400">{isHindi ? 'उपकरण' : 'Equipment'}</span>
+                            <span className="font-medium text-gray-900 dark:text-slate-100 text-right max-w-[55%]">
                                 {booking.equipment.map((e) => e.name).join(', ')}
                             </span>
                         </div>
                     )}
                     {isAdminBooking && (
                         <div className="flex justify-between">
-                            <span className="text-gray-500">Type</span>
+                            <span className="text-gray-500 dark:text-slate-400">Type</span>
                             <span
                                 className={cn(
                                     'font-bold text-xs px-2 py-0.5 rounded-full',
                                     booking.is_maintenance
-                                        ? 'bg-orange-100 text-orange-700'
-                                        : 'bg-blue-100 text-blue-700'
+                                        ? 'bg-orange-100 dark:bg-orange-950/60 text-orange-700 dark:text-orange-300'
+                                        : 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300'
                                 )}
                             >
                                 {booking.is_maintenance ? 'Maintenance' : 'Priority'}
@@ -830,16 +831,16 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
             </div>
 
             {/* Players */}
-            <div className="mx-4 mt-4 bg-white rounded-xl border overflow-hidden">
-                <div className="px-4 py-3 border-b">
-                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
+            <div className="mx-4 mt-4 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 overflow-hidden">
+                <div className="px-4 py-3 border-b border-gray-200 dark:border-slate-800">
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-slate-500">
                         {isAdminBooking ? 'Booked By' : (isHindi ? 'शामिल छात्र' : 'Involved Students')}
                     </p>
                 </div>
                 {isAdminBooking ? (
                     <div className="px-4 py-3">
-                        <p className="font-semibold text-gray-900">{booking.profiles?.full_name}</p>
-                        <p className="text-xs text-gray-500">Administrator</p>
+                        <p className="font-semibold text-gray-900 dark:text-slate-100">{booking.profiles?.full_name}</p>
+                        <p className="text-xs text-gray-500 dark:text-slate-400">Administrator</p>
                     </div>
                 ) : (
                     booking.all_players.map((p, idx) => (
@@ -847,15 +848,15 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                             key={p.id}
                             className={cn(
                                 'px-4 py-3 flex items-center justify-between',
-                                idx > 0 && 'border-t'
+                                idx > 0 && 'border-t border-gray-200 dark:border-slate-800'
                             )}
                         >
                             <div>
-                                <p className="font-semibold text-gray-900 text-sm">{p.full_name}</p>
+                                <p className="font-semibold text-gray-900 dark:text-slate-100 text-sm">{p.full_name}</p>
                                 {p.student_id && (
-                                    <p className="text-xs text-gray-500">Roll: {p.student_id}</p>
+                                    <p className="text-xs text-gray-500 dark:text-slate-400">Roll: {p.student_id}</p>
                                 )}
-                                {p.email && <p className="text-xs text-gray-400">{p.email}</p>}
+                                {p.email && <p className="text-xs text-gray-400 dark:text-slate-500">{p.email}</p>}
                             </div>
                             {p.phone && (
                                 <a
@@ -879,7 +880,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                         'w-full py-4 rounded-xl font-bold text-base transition',
                         canAccept
                             ? 'bg-[#004d40] hover:bg-[#00695c] text-white'
-                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-600 cursor-not-allowed'
                     )}
                 >
                     {isUpcoming
@@ -894,7 +895,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                 <button
                     onClick={() => setShowRejectModal(true)}
                     disabled={loading}
-                    className="w-full py-3.5 border border-red-200 text-red-600 rounded-xl font-semibold text-sm hover:bg-red-50 transition"
+                    className="w-full py-3.5 border border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 rounded-xl font-semibold text-sm hover:bg-red-50 dark:hover:bg-red-950/30 transition"
                 >
                     {isHindi ? 'बुकिंग रद्द/अस्वीकार करें' : 'Reject / Cancel Booking'}
                 </button>
@@ -903,9 +904,9 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
             {/* Reject Modal */}
             {showRejectModal && (
                 <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white w-full max-w-md rounded-2xl p-5 space-y-4 max-h-[85vh] overflow-y-auto">
-                        <h3 className="font-bold text-gray-900">Reject / Cancel Booking</h3>
-                        <p className="text-sm text-gray-500">
+                    <div className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 w-full max-w-md rounded-2xl p-5 space-y-4 max-h-[85vh] overflow-y-auto">
+                        <h3 className="font-bold text-gray-900 dark:text-slate-100">Reject / Cancel Booking</h3>
+                        <p className="text-sm text-gray-500 dark:text-slate-400">
                             Select a reason. A warning will be issued to all involved students.
                         </p>
 
@@ -913,7 +914,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                             {REJECT_REASONS.map((r) => (
                                 <label
                                     key={r.value}
-                                    className="flex items-center gap-3 p-3 border rounded-xl cursor-pointer hover:bg-gray-50"
+                                    className="flex items-center gap-3 p-3 border border-gray-200 dark:border-slate-800 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800"
                                 >
                                     <input
                                         type="radio"
@@ -923,14 +924,14 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                                         onChange={() => setRejectReason(r.value)}
                                         className="w-4 h-4 accent-red-600"
                                     />
-                                    <span className="text-sm text-gray-800">{r.label}</span>
+                                    <span className="text-sm text-gray-800 dark:text-slate-200">{r.label}</span>
                                 </label>
                             ))}
                         </div>
 
                         {rejectReason === 'other' && (
                             <textarea
-                                className="w-full border border-gray-200 rounded-xl p-3 text-sm resize-none text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-400"
+                                className="w-full border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-xl p-3 text-sm resize-none text-gray-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-400"
                                 rows={2}
                                 placeholder="Describe the reason..."
                                 value={rejectCustom}
@@ -941,7 +942,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                         <div className="flex gap-3">
                             <button
                                 onClick={() => setShowRejectModal(false)}
-                                className="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-medium text-gray-700"
+                                className="flex-1 py-3 border border-gray-200 dark:border-slate-700 rounded-xl text-sm font-medium text-gray-700 dark:text-slate-300"
                             >
                                 Cancel
                             </button>
