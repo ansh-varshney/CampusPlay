@@ -276,6 +276,7 @@ describe('Play request race conditions', () => {
                 court_sport: 'badminton',
             },
         ])
+        mockDrizzleDb.enqueue([]) // userConflicts
         mockDrizzleDb.enqueue([
             { id: 'student-1', full_name: 'Alice', branch: 'CSE', gender: 'female', year: '2' },
         ]) // profile
