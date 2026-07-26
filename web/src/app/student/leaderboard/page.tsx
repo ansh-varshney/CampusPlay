@@ -100,11 +100,11 @@ export default async function LeaderboardPage() {
     return (
         <div className="p-4 md:p-8 space-y-6">
             <div className="text-center space-y-2">
-                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto">
-                    <Trophy className="w-8 h-8 text-yellow-600" />
+                <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-950/60 rounded-full flex items-center justify-center mx-auto">
+                    <Trophy className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
                 </div>
-                <h1 className="text-2xl font-bold text-gray-900">Leaderboard</h1>
-                <p className="text-sm text-gray-500">Monthly top players</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">Leaderboard</h1>
+                <p className="text-sm text-gray-500 dark:text-slate-400">Monthly top players</p>
             </div>
 
             {/* Top 5 */}

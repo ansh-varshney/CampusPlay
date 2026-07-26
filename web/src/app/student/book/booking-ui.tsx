@@ -259,7 +259,7 @@ export default function BookingUI({
                 <CardContent className="p-4">
                     <div className="flex items-center gap-4 flex-wrap">
                         <div className="flex items-center gap-2">
-                            <label className="text-sm font-semibold text-gray-900">Sport:</label>
+                            <label className="text-sm font-semibold text-gray-900 dark:text-slate-100">Sport:</label>
                             <select
                                 value={selectedSport}
                                 onChange={(e) => {
@@ -267,7 +267,7 @@ export default function BookingUI({
                                     setSelectedSlot(null)
                                     setBookings([])
                                 }}
-                                className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40]"
+                                className="px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-sm text-gray-900 dark:text-slate-100 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400"
                             >
                                 <option value="">Select Sport</option>
                                 {sports.map((s) => (
@@ -280,7 +280,7 @@ export default function BookingUI({
 
                         {selectedSport && (
                             <div className="flex items-center gap-2">
-                                <label className="text-sm font-semibold text-gray-900">Date:</label>
+                                <label className="text-sm font-semibold text-gray-900 dark:text-slate-100">Date:</label>
                                 <input
                                     type="date"
                                     min={todayStr}
@@ -290,7 +290,7 @@ export default function BookingUI({
                                         setSelectedDate(e.target.value)
                                         setSelectedSlot(null)
                                     }}
-                                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40]"
+                                    className="px-3 py-2 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-lg text-sm text-gray-900 dark:text-slate-100 font-medium focus:outline-none focus:ring-2 focus:ring-[#004d40] dark:focus:ring-teal-400"
                                 />
                             </div>
                         )}
@@ -303,11 +303,11 @@ export default function BookingUI({
                 <Card>
                     <CardContent className="p-12">
                         <div className="text-center space-y-3">
-                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                                <Package className="w-8 h-8 text-gray-400" />
+                            <div className="w-16 h-16 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto">
+                                <Package className="w-8 h-8 text-gray-400 dark:text-slate-500" />
                             </div>
-                            <h3 className="text-lg font-semibold text-gray-900">Select a Sport</h3>
-                            <p className="text-gray-500 text-sm max-w-md mx-auto">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100">Select a Sport</h3>
+                            <p className="text-gray-500 dark:text-slate-400 text-sm max-w-md mx-auto">
                                 Choose a sport from the dropdown above to see available courts and
                                 time slots.
                             </p>
@@ -318,11 +318,11 @@ export default function BookingUI({
                 <Card>
                     <CardContent className="p-12">
                         <div className="text-center space-y-3">
-                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                                <Clock className="w-8 h-8 text-gray-400" />
+                            <div className="w-16 h-16 bg-gray-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto">
+                                <Clock className="w-8 h-8 text-gray-400 dark:text-slate-500" />
                             </div>
-                            <h3 className="text-lg font-semibold text-gray-900">Select a Date</h3>
-                            <p className="text-gray-500 text-sm max-w-md mx-auto">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-slate-100">Select a Date</h3>
+                            <p className="text-gray-500 dark:text-slate-400 text-sm max-w-md mx-auto">
                                 Choose a date to view available slots for {selectedSport} courts.
                             </p>
                         </div>
@@ -435,23 +435,23 @@ export default function BookingUI({
 
             {/* Booking Dialog (slides up from bottom) */}
             {selectedSlot && (
-                <div className="fixed bottom-0 left-0 md:left-64 right-0 z-50 bg-white border-t-2 border-[#004d40] shadow-2xl rounded-t-2xl max-h-[55vh] overflow-y-auto animate-in slide-in-from-bottom-4">
+                <div className="fixed bottom-0 left-0 md:left-64 right-0 z-50 bg-white dark:bg-slate-900 border-t-2 border-[#004d40] dark:border-teal-500 shadow-2xl rounded-t-2xl max-h-[55vh] overflow-y-auto animate-in slide-in-from-bottom-4">
                     <div className="p-4 pb-20 space-y-4">
                         {/* Header */}
                         <div className="flex items-center justify-between">
                             <div>
-                                <h3 className="font-bold text-gray-900">
+                                <h3 className="font-bold text-gray-900 dark:text-slate-100">
                                     {selectedSlot.courtName}
                                 </h3>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 dark:text-slate-400">
                                     {selectedDate} · {formatTime(selectedSlot.time)}
                                 </p>
                             </div>
                             <button
                                 onClick={() => setSelectedSlot(null)}
-                                className="p-1 hover:bg-gray-100 rounded-full"
+                                className="p-1 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-full"
                             >
-                                <X className="w-5 h-5 text-gray-400" />
+                                <X className="w-5 h-5 text-gray-400 dark:text-slate-500" />
                             </button>
                         </div>
 
