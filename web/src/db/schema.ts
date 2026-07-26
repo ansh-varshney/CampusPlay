@@ -227,6 +227,16 @@ export const otpTokens = pgTable('otp_tokens', {
     created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 })
 
+// ─── IIIT Teams Store ──────────────────────────────────────────────────────────
+
+export const iiitTeamsStore = pgTable('iiit_teams_store', {
+    id: uuid('id').primaryKey().defaultRandom(),
+    name: text('name').notNull(),
+    stock_quantity: integer('stock_quantity').notNull().default(0),
+    created_at: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+    updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+})
+
 // ─── Inferred Types ───────────────────────────────────────────────────────────
 
 export type Profile = typeof profiles.$inferSelect
@@ -243,3 +253,4 @@ export type FeedbackComplaint = typeof feedbackComplaints.$inferSelect
 export type Coordinator = typeof coordinators.$inferSelect
 export type Notification = typeof notifications.$inferSelect
 export type PlayRequest = typeof playRequests.$inferSelect
+export type IiitTeamsStore = typeof iiitTeamsStore.$inferSelect
