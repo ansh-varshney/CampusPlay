@@ -5,6 +5,7 @@ import { LayoutDashboard, CheckSquare, ClipboardList, BellRing } from 'lucide-re
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { SignOutButton } from '@/components/sign-out-button'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export function ManagerNav() {
     const pathname = usePathname()
@@ -17,7 +18,7 @@ export function ManagerNav() {
     ]
 
     return (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#004d40] text-white shadow-lg md:relative md:bg-transparent md:text-gray-900 md:shadow-none">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#004d40] dark:bg-slate-900 text-white shadow-lg md:relative md:bg-transparent md:text-gray-900 md:shadow-none">
             {/* Mobile View */}
             <div className="flex justify-around items-center h-16 md:hidden">
                 {links.map(({ href, label, icon: Icon }) => {
@@ -36,12 +37,16 @@ export function ManagerNav() {
                         </Link>
                     )
                 })}
-                <SignOutButton variant="mobile" />
+                <ThemeToggle className="text-white/80 hover:text-white hover:bg-white/10" />
+                <SignOutButton variant="mobile" className="text-white/80 hover:text-red-300" />
             </div>
 
             {/* Desktop Sidebar */}
-            <div className="hidden md:flex flex-col space-y-4 fixed left-0 top-0 bottom-0 w-64 bg-[#004d40] text-white p-4">
-                <div className="h-16 flex items-center px-4 font-bold text-xl">Manager Panel</div>
+            <div className="hidden md:flex flex-col space-y-4 fixed left-0 top-0 bottom-0 w-64 bg-[#004d40] dark:bg-slate-900 text-white p-4 border-r border-teal-800 dark:border-slate-800">
+                <div className="h-16 flex items-center justify-between px-4 font-bold text-xl">
+                    <span>Manager Panel</span>
+                    <ThemeToggle className="text-white/80 hover:text-white hover:bg-white/10 dark:text-gray-300 dark:hover:bg-slate-800" />
+                </div>
                 {links.map(({ href, label, icon: Icon }) => {
                     const isActive = pathname === href
                     return (
@@ -51,7 +56,7 @@ export function ManagerNav() {
                             className={cn(
                                 'flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors',
                                 isActive
-                                    ? 'bg-white/10 text-yellow-400'
+                                    ? 'bg-white/10 text-yellow-400 font-semibold'
                                     : 'text-white/80 hover:bg-white/5'
                             )}
                         >
@@ -60,8 +65,8 @@ export function ManagerNav() {
                         </Link>
                     )
                 })}
-                <div className="mt-auto">
-                    <SignOutButton variant="desktop" />
+                <div className="mt-auto pt-4 border-t border-white/10 dark:border-slate-800">
+                    <SignOutButton variant="desktop" className="text-white/80 hover:text-red-300 hover:bg-white/10" />
                 </div>
             </div>
         </nav>
