@@ -6,7 +6,7 @@ export default defineConfig({
     plugins: [react()],
     test: {
         globals: true,
-        environment: 'jsdom',
+        environment: 'happy-dom',
         setupFiles: ['./vitest.setup.ts'],
         coverage: {
             provider: 'v8',
@@ -20,7 +20,7 @@ export default defineConfig({
             },
         },
         // Group tests by file — keeps concurrency-test output clean
-        pool: 'threads',
+        pool: 'forks',
     },
     resolve: {
         alias: {

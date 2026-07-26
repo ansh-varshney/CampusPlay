@@ -56,14 +56,19 @@ interface BookingDetails {
 }
 
 // --- Helpers ------------------------------------------------------------------
-function fmt(seconds: number) {
+function fmt(seconds: number, isHindi: boolean = false) {
     const abs = Math.abs(seconds)
     const h = Math.floor(abs / 3600)
     const m = Math.floor((abs % 3600) / 60)
         .toString()
         .padStart(2, '0')
     const s = (abs % 60).toString().padStart(2, '0')
-    if (h > 0) return `${h}h ${m}m ${s}s`
+    
+    const hLabel = isHindi ? 'घं' : 'h'
+    const mLabel = isHindi ? 'मि' : 'm'
+    const sLabel = isHindi ? 'से' : 's'
+
+    if (h > 0) return `${h}${hLabel} ${m}${mLabel} ${s}${sLabel}`
     return `${m}:${s}`
 }
 
@@ -598,6 +603,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
     const [showRejectModal, setShowRejectModal] = useState(false)
     const [rejectReason, setRejectReason] = useState('')
     const [rejectCustom, setRejectCustom] = useState('')
+    const [isHindi, setIsHindi] = useState(false)
 
     useEffect(() => {
         const id = setInterval(() => setCurrentTime(new Date()), 1000)
@@ -745,8 +751,16 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
         <div className="min-h-screen bg-gray-50 pb-8">
             {/* Header */}
             <div className="bg-[#004d40] text-white px-4 py-5">
+                <div className="flex items-start mb-3">
+                    <button
+                        onClick={() => setIsHindi(!isHindi)}
+                        className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full text-xs font-semibold transition"
+                    >
+                        {isHindi ? 'English' : 'हिंदी'}
+                    </button>
+                </div>
                 <p className="text-xs uppercase tracking-widest text-teal-300 mb-1">
-                    Pending Approval
+                    {isHindi ? 'लंबित स्वीकृति' : 'Pending Approval'}
                 </p>
                 <h1 className="text-xl font-bold">{booking.courts?.name}</h1>
                 <p className="text-sm text-teal-200">{booking.courts?.sport}</p>
@@ -763,7 +777,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                     </p>
                     {isUpcoming ? (
                         <p className="text-xl font-mono font-bold text-[#004d40]">
-                            {fmt(secondsToStart)}
+                            {fmt(secondsToStart, isHindi)}
                         </p>
                     ) : (
                         <p className="text-sm font-semibold text-green-700">Ready to accept now</p>
@@ -780,18 +794,18 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                 </div>
                 <div className="px-4 py-3 space-y-2 text-sm">
                     <div className="flex justify-between">
-                        <span className="text-gray-500">Time</span>
+                        <span className="text-gray-500">{isHindi ? 'समय' : 'Time'}</span>
                         <span className="font-medium text-gray-900">
                             {format(startTime, 'h:mm a')} - {format(endTime, 'h:mm a')}
                         </span>
                     </div>
                     <div className="flex justify-between">
-                        <span className="text-gray-500">Players</span>
+                        <span className="text-gray-500">{isHindi ? 'खिलाड़ी' : 'Players'}</span>
                         <span className="font-medium text-gray-900">{booking.num_players}</span>
                     </div>
                     {booking.equipment.length > 0 && (
                         <div className="flex justify-between">
-                            <span className="text-gray-500">Equipment</span>
+                            <span className="text-gray-500">{isHindi ? 'उपकरण' : 'Equipment'}</span>
                             <span className="font-medium text-gray-900 text-right max-w-[55%]">
                                 {booking.equipment.map((e) => e.name).join(', ')}
                             </span>
@@ -819,7 +833,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
             <div className="mx-4 mt-4 bg-white rounded-xl border overflow-hidden">
                 <div className="px-4 py-3 border-b">
                     <p className="text-xs font-bold uppercase tracking-widest text-gray-400">
-                        {isAdminBooking ? 'Booked By' : 'Involved Students'}
+                        {isAdminBooking ? 'Booked By' : (isHindi ? 'शामिल छात्र' : 'Involved Students')}
                     </p>
                 </div>
                 {isAdminBooking ? (
@@ -869,10 +883,12 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                     )}
                 >
                     {isUpcoming
-                        ? `Accept Play (starts in ${fmt(secondsToStart)})`
+                        ? (isHindi 
+                            ? `खेल स्वीकार करें (${fmt(secondsToStart, isHindi)} में शुरू)` 
+                            : `Accept Play (starts in ${fmt(secondsToStart, isHindi)})`)
                         : loading
                           ? 'Starting...'
-                          : 'Accept Play'}
+                          : (isHindi ? 'खेल स्वीकार करें' : 'Accept Play')}
                 </button>
 
                 <button
@@ -880,7 +896,7 @@ export function ManagerApprovalScreen({ booking }: { booking: BookingDetails }) 
                     disabled={loading}
                     className="w-full py-3.5 border border-red-200 text-red-600 rounded-xl font-semibold text-sm hover:bg-red-50 transition"
                 >
-                    Reject / Cancel Booking
+                    {isHindi ? 'बुकिंग रद्द/अस्वीकार करें' : 'Reject / Cancel Booking'}
                 </button>
             </div>
 

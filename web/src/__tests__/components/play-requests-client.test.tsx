@@ -103,7 +103,8 @@ describe('PlayRequestsClient', () => {
 
     it('shows error alert when acceptPlayRequest returns an error', async () => {
         vi.mocked(acceptPlayRequest).mockResolvedValueOnce({ error: 'Already responded' } as any)
-        const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
+        const alertSpy = vi.fn()
+        vi.stubGlobal('alert', alertSpy)
 
         render(<PlayRequestsClient requests={[makeRequest()]} />)
         await userEvent.click(screen.getByRole('button', { name: /accept/i }))
@@ -111,7 +112,7 @@ describe('PlayRequestsClient', () => {
         await waitFor(() => {
             expect(alertSpy).toHaveBeenCalledWith('Already responded')
         })
-        alertSpy.mockRestore()
+        vi.unstubAllGlobals()
     })
 
     it('shows Processing… label while request is in flight', async () => {
@@ -129,6 +130,8 @@ describe('PlayRequestsClient', () => {
         // Both Accept and Decline show "Processing…" while in-flight
         const processingBtns = screen.getAllByText(/processing/i)
         expect(processingBtns.length).toBeGreaterThanOrEqual(1)
+
+        await waitFor(() => expect(resolveAccept).toBeDefined())
 
         // Resolve inside act so the resulting state update is handled
         await act(async () => {
@@ -153,6 +156,8 @@ describe('PlayRequestsClient', () => {
         const allButtons = screen.getAllByRole('button')
         const allDisabled = allButtons.every((btn) => btn.hasAttribute('disabled'))
         expect(allDisabled).toBe(true)
+
+        await waitFor(() => expect(resolveReject).toBeDefined())
 
         // Resolve inside act so the resulting state update is handled
         await act(async () => {
