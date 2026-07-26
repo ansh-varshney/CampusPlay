@@ -419,6 +419,7 @@ export async function rejectPlayRequest(playRequestId: string) {
             status: bookings.status,
             user_id: bookings.user_id,
             start_time: bookings.start_time,
+            end_time: bookings.end_time,
             num_players: bookings.num_players,
             equipment_ids: bookings.equipment_ids,
             players_list: bookings.players_list,
@@ -471,6 +472,15 @@ export async function rejectPlayRequest(playRequestId: string) {
             .set({ status: 'cancelled', players_list: updatedList, num_players: newNumPlayers })
             .where(eq(bookings.id, pr.booking_id))
         bookingCancelled = true
+
+        // Refund priority booking slot if duration is 90 mins
+        const durationMins = (new Date(bkRow.end_time).getTime() - new Date(bkRow.start_time).getTime()) / 60000
+        if (durationMins === 90) {
+            await db
+                .update(profiles)
+                .set({ priority_booking_remaining: sql`COALESCE(${profiles.priority_booking_remaining}, 0) + 1` })
+                .where(eq(profiles.id, bkRow.user_id))
+        }
 
         await sendNotification({
             recipientId: bkRow.user_id,

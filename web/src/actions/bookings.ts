@@ -429,7 +429,7 @@ export async function createBooking(prevState: any, formData: FormData) {
     if (duration === 90) {
         await db
             .update(profiles)
-            .set({ priority_booking_remaining: 0 })
+            .set({ priority_booking_remaining: sql`COALESCE(${profiles.priority_booking_remaining}, 0) - 1` })
             .where(eq(profiles.id, user.id))
 
         await sendNotification({
@@ -481,6 +481,7 @@ export async function cancelBooking(bookingId: string) {
             status: bookings.status,
             equipment_ids: bookings.equipment_ids,
             start_time: bookings.start_time,
+            end_time: bookings.end_time,
             players_list: bookings.players_list,
             courts: { name: courts.name, sport: courts.sport },
         })
@@ -505,6 +506,15 @@ export async function cancelBooking(bookingId: string) {
 
     await db.update(bookings).set({ status: 'cancelled' }).where(eq(bookings.id, bookingId))
     await cancelPendingPlayRequests(bookingId)
+
+    // Refund priority booking slot if duration is 90 mins
+    const durationMins = (new Date(booking.end_time).getTime() - new Date(booking.start_time).getTime()) / 60000
+    if (durationMins === 90) {
+        await db
+            .update(profiles)
+            .set({ priority_booking_remaining: sql`COALESCE(${profiles.priority_booking_remaining}, 0) + 1` })
+            .where(eq(profiles.id, booking.user_id))
+    }
 
     const courtInfo = booking.courts
     const playersList = Array.isArray(booking.players_list) ? booking.players_list : []
@@ -552,6 +562,7 @@ export async function withdrawFromBooking(bookingId: string) {
             num_players: bookings.num_players,
             equipment_ids: bookings.equipment_ids,
             start_time: bookings.start_time,
+            end_time: bookings.end_time,
             courts: { sport: courts.sport, name: courts.name },
         })
         .from(bookings)
@@ -581,6 +592,15 @@ export async function withdrawFromBooking(bookingId: string) {
     if (newNumPlayers < limits.min) {
         await db.update(bookings).set({ status: 'cancelled' }).where(eq(bookings.id, bookingId))
         await cancelPendingPlayRequests(bookingId)
+
+        // Refund priority booking slot if duration is 90 mins
+        const durationMins = (new Date(booking.end_time).getTime() - new Date(booking.start_time).getTime()) / 60000
+        if (durationMins === 90) {
+            await db
+                .update(profiles)
+                .set({ priority_booking_remaining: sql`COALESCE(${profiles.priority_booking_remaining}, 0) + 1` })
+                .where(eq(profiles.id, booking.user_id))
+        }
 
         const courtInfo = booking.courts
         const startDisplay = new Date(booking.start_time).toLocaleString('en-IN', {
