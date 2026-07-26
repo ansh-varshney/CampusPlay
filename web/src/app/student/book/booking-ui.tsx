@@ -248,7 +248,7 @@ export default function BookingUI({
         })
     }
 
-    const todayStr = new Date().toISOString().split('T')[0]
+    const todayStr = new Date().toLocaleDateString('en-CA')
     const maxDateStr = format(addDays(new Date(), 3), 'yyyy-MM-dd')
 
     // ─── Render ──────────────────────────────────────────────────────────────
