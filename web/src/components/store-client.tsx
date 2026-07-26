@@ -8,7 +8,6 @@ import {
     DialogTitle,
     DialogBody,
     DialogFooter,
-    DialogClose,
 } from './ui/dialog'
 import { Button } from './ui/button'
 import {
@@ -63,8 +62,7 @@ export default function StoreClient({ initialItems }: StoreClientProps) {
         setLoading(true)
         setError('')
         try {
-            const res = await createStoreItem(name, stock)
-            if (res.error) throw new Error(res.error)
+            await createStoreItem(name, stock)
             window.location.reload()
         } catch (e: any) {
             setError(e.message || 'Error adding item')
@@ -78,8 +76,7 @@ export default function StoreClient({ initialItems }: StoreClientProps) {
         setLoading(true)
         setError('')
         try {
-            const res = await updateStoreItem(selectedItem.id, name, stock)
-            if (res.error) throw new Error(res.error)
+            await updateStoreItem(selectedItem.id, name, stock)
             window.location.reload()
         } catch (e: any) {
             setError(e.message || 'Error updating item')
@@ -91,8 +88,7 @@ export default function StoreClient({ initialItems }: StoreClientProps) {
     const handleDelete = async (id: string) => {
         if (!confirm('Are you sure you want to delete this item?')) return
         try {
-            const res = await deleteStoreItem(id)
-            if (res.error) throw new Error(res.error)
+            await deleteStoreItem(id)
             window.location.reload()
         } catch (e: any) {
             alert(e.message || 'Error deleting item')
@@ -185,9 +181,7 @@ export default function StoreClient({ initialItems }: StoreClientProps) {
                         </div>
                     </DialogBody>
                     <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
+                        <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>Cancel</Button>
                         <Button onClick={handleAdd} disabled={loading || !name} className="bg-amber-600 hover:bg-amber-700 text-white">Save</Button>
                     </DialogFooter>
                 </DialogContent>
@@ -211,9 +205,7 @@ export default function StoreClient({ initialItems }: StoreClientProps) {
                         </div>
                     </DialogBody>
                     <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
+                        <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>Cancel</Button>
                         <Button onClick={handleEdit} disabled={loading || !name} className="bg-amber-600 hover:bg-amber-700 text-white">Update</Button>
                     </DialogFooter>
                 </DialogContent>
@@ -234,9 +226,7 @@ export default function StoreClient({ initialItems }: StoreClientProps) {
                         </div>
                     </DialogBody>
                     <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
-                        </DialogClose>
+                        <Button variant="outline" onClick={() => setIsDeductModalOpen(false)}>Cancel</Button>
                         <Button onClick={handleDeduct} disabled={loading || deductAmount < 1 || deductAmount > (selectedItem?.stock_quantity || 0)} className="bg-amber-600 hover:bg-amber-700 text-white">Deduct</Button>
                     </DialogFooter>
                 </DialogContent>
